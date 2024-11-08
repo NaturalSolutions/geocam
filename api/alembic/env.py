@@ -24,7 +24,6 @@ from src.models.deployment import Deployments  # noqa
 from src.models.device import Devices  # noqa
 from src.models.file import Files  # noqa
 from src.models.models import (  # noqa
-    Deepfaune,
     ExifKeyModel,
     Groups,
     GroupsUsers,

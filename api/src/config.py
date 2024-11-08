@@ -19,6 +19,9 @@ class Settings(BaseSettings):
     MINIO_ROOT_USER: str = "test"
     MINIO_ROOT_PASSWORD: str = "password"
     MINIO_BUCKET_NAME: str = "bucket"
+    CELERY_BROKER: str = "redis://:broker_pwd@broker/0"
+    CELERY_BACKEND: str = "redis://:broker_pwd@broker/0"
+    CELERY_APP: str = "deepfaune"
 
     class Config:
         env_file = ".env"

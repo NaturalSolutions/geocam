@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 
 const thumbnailStyle = {
@@ -56,7 +57,7 @@ const GalleryItem = (
                     noWrap 
                     component={"span"}
                     variant="body2"
-                    sx={{ width: "90%" }}
+                    sx={{ width: "80%" }}
                 >
                     { name }
                 </Typography>
@@ -65,38 +66,28 @@ const GalleryItem = (
     }
 
     const displayThumbnail = (item) => {
-        if (item.extension.includes("image")) {
-            return (
-                <>
-                    { displayImage(item) }
-                    <Grid 
-                        container
-                        direction="row"
-                        justifyContent="flex-start"
-                        alignItems="center"
-                    >
-                        <CameraAltIcon sx={{ color: "#616161E5", width: "10%" }}/>
-                        { displayName(item.name) }
-                    </Grid>
-                </>
-            )
-         }
-        else { 
-            return (
-                <>
-                    { displayImage(item) }
-                    <Grid 
-                        container
-                        direction="row"
-                        justifyContent="flex-start"
-                        alignItems="center"
-                    >
+        return (
+            <>
+                { displayImage(item) }
+                <Grid 
+                    container
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                >
+                    { 
+                        Object.keys(item.prediction_deepfaune).length !== 0 &&
+                        <CheckCircleOutlineIcon sx={{ color: "#616161E5", width: "10%" }} />
+                    }
+                    { 
+                        item.extension.includes("image") ? 
+                        <CameraAltIcon sx={{ color: "#616161E5", width: "10%" }} /> :
                         <VideocamIcon  sx={{ color: "#616161E5", width: "10%" }} />
-                        { displayName(item.name) }
-                    </Grid>
-                </>
-            )
-        };
+                    }
+                    { displayName(item.name) }
+                </Grid>
+            </>
+        )
     };
 
     return(

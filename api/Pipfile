@@ -7,6 +7,7 @@ name = "pypi"
 fastapi = "*"
 uvicorn = "*"
 sqlalchemy = ">=1.4.17,<=1.4.35"
+celery = {extras = ["redis"], version = "*"}
 python-multipart = "*"
 psycopg2-binary = "*"
 boto3 = "*"

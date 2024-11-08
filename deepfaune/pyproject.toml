@@ -1,0 +1,18 @@
+[tool.black]
+line-length = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
+src_paths = src,tests
+
+[tool.pylint.design]
+exclude-too-few-public-methods=".*BaseSettings.*,.*BaseModel,.*PaginatedModel.*"
+
+[tool.pylint.messages_control]
+disable = [
+    "missing-module-docstring",
+    "missing-function-docstring",
+    "missing-docstring",
+    "import-error"
+]

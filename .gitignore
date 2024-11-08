@@ -1,2 +1,3 @@
 docker/.env
-/venv
+venv
+frontend/public/env-config.js

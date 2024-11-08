@@ -103,7 +103,8 @@ def upload_file(
     deployment_id: int,
 ):
     try:
-        s3.upload_file_obj(new_file, f"{hash}.{ext}")
+        extension = ext.split("/")[1]
+        s3.upload_file_obj(new_file, f"{hash}.{extension}")
     except Exception as e:
         print(e)
         raise HTTPException(status_code=404, detail="Impossible to save the file in minio")

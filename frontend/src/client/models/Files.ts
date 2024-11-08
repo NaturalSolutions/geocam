@@ -10,7 +10,7 @@ export type Files = {
     date?: string;
     id?: string;
     megadetector_id?: number;
-    deepfaune_id?: number;
+    prediction_deepfaune?: any;
     deployment_id: number;
     treated?: boolean;
     annotations?: Array<any>;

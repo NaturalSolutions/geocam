@@ -32,11 +32,6 @@ class Megadetector(SQLModel, table=True):
     label_class: str
 
 
-class Deepfaune(SQLModel, table=True):
-    id: Optional[int] = Field(primary_key=True, index=True)
-    label_class: str
-
-
 class DeploymentTemplateSequenceCorrespondance(SQLModel, table=True):
     deployment_id: Optional[int] = Field(
         default=None, foreign_key="deployments.id", primary_key=True

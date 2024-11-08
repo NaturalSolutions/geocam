@@ -7,14 +7,15 @@ import Dropzone from "react-dropzone";
 import { Grid, Stack, Typography, capitalize } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import FolderZipIcon from '@mui/icons-material/FolderZip';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
 import { useTranslation } from "react-i18next";
 import ButtonsYesNo from "./common/buttonsYesNo";
 
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation()
   const [files, setFiles] = useState<any[]>([]);
-  const { projects, updateListFile, setCurrentDeployment, currentDeployment, deploymentData } =
+  const { projects, updateListFile, setCurrentDeployment, deploymentData } =
     useMainContext();
   let params = useParams();
 
@@ -26,11 +27,21 @@ const ImageList: FC<{}> = () => {
 
   const save = () => {
     for (const file of files) {
-      FilesService
-      .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
-      .then((res) => {
-        updateListFile();
-      });
+      console.log("file:", file)
+      if(file.name.includes("zip")) {
+        FilesService
+        .uploadZipFilesUploadZipDeploymentIdPost(Number(params.deploymentId), { zipFile: file })
+        .then((res) => {
+          updateListFile();
+        });
+      }
+      else {
+        FilesService
+        .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
+        .then((res) => {
+          updateListFile();
+        });
+      }
     }
     clear();
   };
@@ -44,10 +55,10 @@ const ImageList: FC<{}> = () => {
     setFiles(files);
   };
 
-  const dropZoneDisplayText = () => {
+  const dropZoneDisplayText = (legend) => {
     if (files.length === 0) {
       return (
-        <p>{capitalize(t("deployments.drop_files"))}</p>
+        <p>{legend}</p>
       );
     } else {
       return <p>{files.map((f) => f.name).join(", ")}</p>;
@@ -58,25 +69,47 @@ const ImageList: FC<{}> = () => {
     <>
       {deploymentData ? (
         <Stack spacing={2}>
-          <Typography variant="h6" sx={{ mb:2}}>{capitalize(t("projects.import_media"))}</Typography>
-          <Dropzone onDrop={loadFile} multiple maxFiles={10}>
-            {({ getRootProps, getInputProps }) => (
-              <section id="dropzone">
-                <div {...getRootProps()}>
-                  <input {...getInputProps()} />
-                  <Grid container direction="column" alignItems='center'>
-                    <Grid item>
-                      <CameraAltIcon fontSize="large" />
+          <Typography variant="h6" sx={{ mb:2}}>
+            {capitalize(t("projects.import_media"))}
+          </Typography>
+          <Stack spacing={2} direction="row">
+            <Dropzone onDrop={loadFile} multiple maxFiles={30}>
+              {({ getRootProps, getInputProps }) => (
+                <section id="dropzone">
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} />
+                    <Grid container direction="column" alignItems='center'>
+                      <Grid item>
+                        <PermMediaIcon fontSize="large" />
+                      </Grid>
+                      <Grid item>
+                        {dropZoneDisplayText(capitalize(t("deployments.drop_files")))}
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      {dropZoneDisplayText()}
-                    </Grid>
-                  </Grid>
 
-                </div>
-              </section>
-            )}
-          </Dropzone>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+
+            <Dropzone onDrop={loadFile} maxFiles={1}>
+              {({ getRootProps, getInputProps }) => (
+                <section id="dropzone">
+                  <div {...getRootProps()}>
+                    <input {...getInputProps()} accept="zip"/>
+                    <Grid container direction="column" alignItems='center'>
+                      <Grid item>
+                        <FolderZipIcon fontSize="large" />
+                      </Grid>
+                      <Grid item>
+                        {dropZoneDisplayText(dropZoneDisplayText(capitalize(t("deployments.drop_files_zip"))))}
+                      </Grid>
+                    </Grid>
+                  </div>
+                </section>
+              )}
+            </Dropzone>
+          </Stack>
           <Stack
             direction="row"
             justifyContent="flex-end"

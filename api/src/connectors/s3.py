@@ -35,6 +35,7 @@ config_dict_client = {
 
 s3 = boto3.resource("s3", **config_dict)
 s3_client = boto3.client("s3", **config_dict_client)
+s3_client_server = boto3.client("s3", **config_dict)
 
 
 def get_bucket_name():
@@ -79,8 +80,17 @@ def get_obj(filename: str):
     return s3.Object(get_bucket_name(), filename).get()
 
 
-def get_url(filename: str, expiration: float = 3600):
+def get_url_client(filename: str, expiration: float = 3600):
     url = s3_client.generate_presigned_url(
+        "get_object",
+        Params={"Bucket": get_bucket_name(), "Key": filename},
+        ExpiresIn=expiration,
+    )
+    return url
+
+
+def get_url_server(filename: str, expiration: float = 3600):
+    url = s3_client_server.generate_presigned_url(
         "get_object",
         Params={"Bucket": get_bucket_name(), "Key": filename},
         ExpiresIn=expiration,

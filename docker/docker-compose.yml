@@ -6,7 +6,7 @@ x-restart-policy: &restart_policy
 x-project-defaults: &project_defaults
   <<: *restart_policy
   networks:
-    - annotation_nw
+    - geocam_nw
   env_file: .env
 
 services:
@@ -27,7 +27,7 @@ services:
       dockerfile: Dockerfile
       target: development
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/openapi.json"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/openapi.json"]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -53,6 +53,35 @@ services:
       - KEYCLOAK_REALM=${KEYCLOAK_REALM:-geonature-annotation}
       - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL:-http://keycloak:8080/auth}
       - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
+
+  deepfaune:
+    <<: *project_defaults
+    build:
+      context: ../deepfaune
+      dockerfile: Dockerfile
+      target: development
+    depends_on:
+      broker:
+        condition: service_healthy
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.deepfaune.rule=PathPrefix(`/deepfaune`)
+      - traefik.http.routers.deepfaune.entrypoints=web
+      - traefik.http.routers.deepfaune.middlewares=api-stripprefix
+      - traefik.http.middlewares.deepfaune-stripprefix.stripprefix.prefixes=/deepfaune
+
+  broker:
+    <<: *project_defaults
+    image: redis:7-alpine
+    command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PWD}
+    healthcheck:
+      test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    volumes: 
+      - broker:/data
 
   taxapi:
     <<: *project_defaults
@@ -153,7 +182,9 @@ services:
 volumes:
   db_data:
   minio_data:
+  broker:
+
 
 networks:
-  annotation_nw:
+  geocam_nw:
     external: false

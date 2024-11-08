@@ -194,6 +194,8 @@ export function AnnotationContextProvider({ children }) {
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
 
+                observationTemplate,
+
                 handleCloseSaveErrorDialog,
                 updateUrl,
                 previous,

@@ -10,7 +10,8 @@
     "media_not_processed": "média non traité",
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
-    "unknown_image": "image inconnue"
+    "unknown_image": "image inconnue",
+    "prediction": "prédiction"
   },
   "medias": {
     "media": "média",
@@ -27,7 +28,8 @@
     "deploy_gallery": "Galerie du déploiement",
     "deployment": "déploiement",
     "deployments": "déploiements",
-    "drop_files": "glissez/déposez ou cliquez pour importer 10 fichiers maximum",
+    "drop_files": "glissez/déposez ou cliquez pour importer 30 fichiers maximum",
+    "drop_files_zip": "glissez/déposez ou cliquez pour importer un unique fichier zip",
     "features": "caractéristique",
     "frequency": "fréquence",
     "hanging": "support d'accroche",

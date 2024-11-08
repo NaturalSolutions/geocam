@@ -26,6 +26,16 @@ services:
     ports:
       - "5666:5666"
 
+  deepfaune:
+    build:
+      context: ../deepfaune
+      dockerfile: Dockerfile
+      target: development
+    volumes:
+      - ../deepfaune:/home/app
+    ports:
+      - "3655:8000"
+
   frontend:
     build:
       context: ../frontend

@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation } from "../../client";
 import { FC } from "react";
+import PredictionArea from "./PredictionArea";
 
 interface ObservationTabProps {
     valueTab: number;
@@ -20,7 +21,7 @@ const ObservationTab: FC<ObservationTabProps> = ({
     index
 }) => {
     const { t } = useTranslation();
-    
+
     const { 
         observations,
         annotated,
@@ -34,6 +35,8 @@ const ObservationTab: FC<ObservationTabProps> = ({
             valueTab={ valueTab } 
             index={ index }
         >
+            <PredictionArea/>
+            
             <span className="info-annotation-ctn">
             { treated ?
                 <ButtonStatus 

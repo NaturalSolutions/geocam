@@ -6,7 +6,7 @@ from pydantic import AnyHttpUrl, root_validator
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Column, Field, Relationship, SQLModel
 
-from src.connectors.s3 import get_url
+from src.connectors.s3 import get_url_client
 
 if TYPE_CHECKING:  # pragma: no cover
     from .deployment import Deployments
@@ -37,7 +37,7 @@ class Files(BaseFiles, table=True):
     name: str = Field(index=True)
     date: Optional[datetime] = Field(default_factory=datetime.utcnow)
     megadetector_id: Optional[int] = Field(foreign_key="megadetector.id")
-    deepfaune_id: Optional[int] = Field(foreign_key="deepfaune.id")
+    prediction_deepfaune: Optional[dict] = Field(sa_column=Column(JSONB), default={})
     deployment_id: int = Field(foreign_key="deployments.id")
     treated: bool = Field(default=False)
     annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])
@@ -55,5 +55,5 @@ class ReadFiles(BaseFiles):
     @root_validator
     def gen_url(cls, values):  # pylint: disable=no-self-argument,no-self-use
         filename = f"{values['hash']}.{values['ext']}"
-        values["url"] = get_url(filename)
+        values["url"] = get_url_client(filename)
         return values

@@ -2,18 +2,22 @@ from __future__ import annotations
 
 import io
 import tempfile
+import time
 import uuid as uuid_pkg
+from copy import deepcopy
 from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
 import magic
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from celery.result import AsyncResult
+from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 from sqlmodel import Session
 
 from src.config import settings
 from src.connectors import s3
+from src.connectors.celery import celery_app
 from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files
 from src.schemas.schemas import Annotation
@@ -47,7 +51,8 @@ def get_files(db: Session = Depends(get_db)):
     res = []
     for f in List_files:
         new_f = f.dict()
-        url = s3.get_url(f"{f.hash}.{f.extension}")
+        ext = f.extension.split("/")[1]
+        url = s3.get_url_client(f"{f.hash}.{ext}")
         new_f["url"] = url
         res.append(new_f)
     return res
@@ -62,7 +67,7 @@ def update_annotations(
 
 @router.get("/urls/")
 def display_file(name: str):
-    return s3.get_url(name)
+    return s3.get_url_client(name)
 
 
 @router.post("/exif/")
@@ -79,8 +84,27 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     return res
 
 
+def ask_answers_celery(task_id, file_list, db):
+    res = celery_app.AsyncResult(task_id)
+    while res.state == "PENDING":
+        pass
+    try:
+        final_res = res.get(timeout=2)
+        for res, file in zip(final_res, file_list):
+            db_file = files.get_file(db=db, file_id=file.id)
+            db_file.prediction_deepfaune = res
+            db.commit()
+    except:
+        print("failed")
+
+
 @router.post("/upload/{deployment_id}")
-def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+def upload_file(
+    deployment_id: int,
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db),
+):
     hash = dependencies.generate_checksum(file)
 
     mime = magic.from_buffer(file.file.read(), mime=True)
@@ -97,6 +121,11 @@ def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = 
         ext=mime,
         deployment_id=deployment_id,
     )
+
+    ext = mime.split("/")[1]
+    url = s3.get_url_server(f"{hash}.{ext}")
+    task = celery_app.send_task("deepfaune.pi", [[url]])
+    background_tasks.add_task(ask_answers_celery, task.get(), [insert], db)
     return insert
 
 
@@ -148,23 +177,46 @@ def download_file(id: str, db: Session = Depends(get_db)):
 
 @router.post("/upload_zip/{deployment_id}")
 def upload_zip(
+    background_tasks: BackgroundTasks,
     deployment_id: int,
-    hash: List[str] = Form(),
     zipFile: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    listHash = hash[0].split(",")
     ext = zipFile.filename.split(".")[1]
     if ext == "zip":
         with ZipFile(io.BytesIO(zipFile.file.read()), "r") as myzip:
             res = []
-            for info, hash in zip(myzip.infolist(), listHash):
+            names = []
+            for info in myzip.infolist():
                 bytes = myzip.read(info.filename)
                 with tempfile.SpooledTemporaryFile() as tf:
                     tf.write(bytes)
                     tf.seek(0)
-                    insert = files.upload_file(db, hash, tf, info.filename, "JPG", deployment_id)
-                    res.append(insert)
+
+                    hash = dependencies.generate_checksum_content(bytes)
+
+                    mime = magic.from_buffer(tf.read(), mime=True)
+                    tf.seek(0)
+
+                    if not check_mime(mime):
+                        raise HTTPException(status_code=400, detail="Invalid type file")
+                    insert = files.upload_file(
+                        db=db,
+                        hash=hash,
+                        new_file=tf,
+                        filename=info.filename,
+                        ext=mime,
+                        deployment_id=deployment_id,
+                    )
+                    res.append(deepcopy(insert))
+                    ext = mime.split("/")[1]
+                    names.append(f"{hash}.{ext}")
+            urls = []
+            for name in names:
+                url = s3.get_url_server(name)
+                urls.append(url)
+            task = celery_app.send_task("deepfaune.pi", [urls])
+            background_tasks.add_task(ask_answers_celery, task.get(), res, db)
             return res
     else:
         raise HTTPException(status_code=500, detail="Vous ne pouvez déposer que des fichiers.zip")
@@ -176,7 +228,8 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
     res = []
     for f in List_files:
         new_f = f.dict()
-        url = s3.get_url(f"{f.hash}.{f.extension}")
+        ext = f.extension.split("/")[1]
+        url = s3.get_url_client(f"{f.hash}.{ext}")
         new_f["url"] = url
         res.append(new_f)
     return res

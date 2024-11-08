@@ -39,9 +39,7 @@ try it out! User : admin ; password : password
 Docker and docker-compose must be installed on the server/machine (cf. [official website](https://docs.docker.com/engine/install/debian/)).
 
 ### Application downloading
-
 Replace the `X.Y.Z` mention by the name of the release you want to install.
-
 ```
 cd
 wget https://github.com/naturalsolutions/ecosecrets/archive/refs/tags/X.Y.Z.zip
@@ -49,9 +47,10 @@ unzip X.Y.Z.zip
 rm X.Y.Z.zip
 mv ecosecrets-X.Y.Z ecosecrets/
 ```
+### Add DeepFaune
+ecoSecrets use DeepFaune code so you need to download it and add it in the DeepFaune folder in src folder.
 
 ### Settings
-
 Copy the `.env.sample` inside the docker directory to `.env`:
 
 ```
@@ -62,6 +61,8 @@ nano docker/.env
 
 Edit freely this `.env` file to change credentials for instance. Here are the main parameters you usually want to modify:
 
+
+### Launching
 - `ENV` : uncomment it to activate the production mode (only if your app has been configured with a domain name)
 - `DOMAIN` : localhost, an IP address or a domain name (according to your context)
 - `PROTOCOL` : modify it to "https" if you want to activate HTTPS
@@ -79,7 +80,6 @@ In the current version (`0.1.1`), you can't modify the `APP_USER` and the `APP_P
 ```
 ./scripts/docker.sh up -d
 ```
-
 With the default settings, the app will run on `http://localhost:8889/` but the port of each service will be avaible to debug. This URL must be adapted to your context (depending on chosen protocol, domain and port).
 
 ## Sample data (for testing only)
