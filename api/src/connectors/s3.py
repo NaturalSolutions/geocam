@@ -28,7 +28,7 @@ config_dict_client = {
     "aws_secret_access_key": MINIO_ROOT_PASSWORD,
     "config": Config(
         signature_version="s3v4",
-        proxies={"http": "http://annotation_minio:9000"},
+        proxies={"http": "http://ecosecrets_minio:9000"},
     ),
     "region_name": "fr",
 }

@@ -1,10 +1,10 @@
-FROM python:3.8-slim as base
+FROM python:3.8-slim AS base
 
 # Setup env
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONFAULTHANDLER 1
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONFAULTHANDLER=1
 
 RUN apt-get update && apt-get install -y libmagic1 && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
 
@@ -42,6 +42,6 @@ EXPOSE 8000
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0"]
 
-FROM production as development
+FROM production AS development
 
 CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--reload"]

@@ -6,7 +6,7 @@ x-restart-policy: &restart_policy
 x-project-defaults: &project_defaults
   <<: *restart_policy
   networks:
-    - annotation_nw
+    - ecosecrets_nw
   env_file: .env
 
 services:
@@ -48,9 +48,9 @@ services:
     environment:
       - KEYCLOAK_ADMIN_CLIENT_SECRET=${KEYCLOAK_ADMIN_CLIENT_SECRET}
       - KEYCLOAK_CALLBACK_URI=${KEYCLOAK_CALLBACK_URI:-http://api:8000/callback}
-      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-geonature-annotation}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID:-ecosecrets}
       - KEYCLOAK_CLIENT_SECRET=${KEYCLOAK_CLIENT_SECRET}
-      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-geonature-annotation}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM:-ecosecrets}
       - KEYCLOAK_SERVER_URL=${KEYCLOAK_SERVER_URL:-http://keycloak:8080/auth}
       - KEYCLOAK_TOKEN_URI=${KEYCLOAK_TOKEN_URI}
 
@@ -91,7 +91,7 @@ services:
       - traefik.http.routers.frontend.entrypoints=web
     environment:
       - REACT_APP_KEYCLOAK_CLIENT_URL=${KEYCLOAK_CLIENT_URL:-http://localhost:8888/auth}
-      - REACT_APP_KEYCLOAK_CLIENT_REALM=${KEYCLOAK_REALM_ID:-geonature-annotation}
+      - REACT_APP_KEYCLOAK_CLIENT_REALM=${KEYCLOAK_REALM_ID:-ecosecrets}
       - REACT_APP_KEYCLOAK_CLIENT_CLIENT_ID=${KEYCLOAK_CLIENT_CLIENT_ID:-frontend}
 
   db:
@@ -101,7 +101,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-annotation} -h 127.0.0.1",
+          "pg_isready -U ${DB_USER-dbuser} -d ${DB_NAME-ecosecrets} -h 127.0.0.1",
         ]
       interval: 10s
       timeout: 5s
@@ -111,7 +111,7 @@ services:
       - db_data:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-dbpassword}
-      POSTGRES_DB: ${DB_NAME:-annotation}
+      POSTGRES_DB: ${DB_NAME:-ecosecrets}
       POSTGRES_USER: ${DB_USER:-dbuser}
 
   keycloak:
@@ -155,5 +155,5 @@ volumes:
   minio_data:
 
 networks:
-  annotation_nw:
+  ecosecrets_nw:
     external: false

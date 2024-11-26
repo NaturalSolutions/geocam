@@ -8,7 +8,7 @@ if [[ -n "$MSYSTEM" ]]; then
     exit 1
 fi
 
-PROJECT_NAME="geonature-annotation"
+PROJECT_NAME="ecosecrets"
 
 DOCKER_VERSION=$(docker version --format '{{.Server.Version}}')
 VERSION_PARTS=(${DOCKER_VERSION//./ })

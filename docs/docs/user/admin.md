@@ -2,7 +2,7 @@
 
 ## Création de compte utilisateur
 
-Vous pouvez créer autant de comptes utilisateur que vous le souhaitez depuis l'onglet _Users_ du menu (accessible sur `/auth/admin/geonature-annotation/console/#/geonature-annotation/users`).
+Vous pouvez créer autant de comptes utilisateur que vous le souhaitez depuis l'onglet _Users_ du menu (accessible sur `/auth/admin/ecosecrets/console/#/ecosecrets/users`).
 
 ![users](../assets/users.png)
 
@@ -13,7 +13,7 @@ Pour cela :
 1. Sélectionnez "Verify email" et "Update password" pour le premier champs (conseillé) comme ci-dessous : ![user_creation](../assets/user_creation.png)
 1. Cliquez sur "Create"
 1. Allez dans l'onglet _Credential_, puis cliquez sur "Set password" afin de créer un mot de passe temporaire à changer lors de la première connexion
-1. Vérifiez dans l'onglet _Role mapping_ que l'utilisateur a le rôle "default-roles-geonature-annotation"
+1. Vérifiez dans l'onglet _Role mapping_ que l'utilisateur a le rôle "default-roles-ecosecrets"
 
 ## Création de compte administrateur
 
