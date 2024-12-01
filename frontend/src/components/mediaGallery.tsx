@@ -4,33 +4,26 @@ import { Box, capitalize, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import GalleryItem from "./GalleryItem";
 
-
-
 export default function MediaGallery() {
+  const { files } = useMainContext();
+  const { t } = useTranslation();
 
-    const { files } = useMainContext();
-    const { t } = useTranslation();
-    console.log(files)
-    return (
-        <Box 
-            sx={{ 
-                width: "100%", 
-                minHeight: 829, 
-                paddingTop: "2vh" 
-            }}
-        >
-            <Typography 
-                variant="h6" 
-                sx={{ mb:2 }}
-            >
-                { capitalize(t("deployments.deploy_gallery")) }
-            </Typography>
-            <Masonry 
-              columns={6}
-              spacing={2}
-            >
-                {files?.map((item, index) => (<GalleryItem item={ item } index={ index } />) )}
-            </Masonry>
-        </Box>
-    );
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        minHeight: 829,
+        paddingTop: "2vh",
+      }}
+    >
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        {capitalize(t("deployments.deploy_gallery"))}
+      </Typography>
+      <Masonry columns={6} spacing={2}>
+        {files?.map((item, index) => (
+          <GalleryItem item={item} index={index} />
+        ))}
+      </Masonry>
+    </Box>
+  );
 }
