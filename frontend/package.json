@@ -32,7 +32,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    
     "start": "./window_env.sh && mv env-config.js ./public/ && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

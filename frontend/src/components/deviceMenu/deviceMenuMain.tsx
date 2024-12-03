@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 const DeviceMenu = () => {
   const { t } = useTranslation();
 
-
   return (
     <Stack direction="column" spacing={3}>
       <Box sx={{ flexGrow: 1 }}>
@@ -30,7 +29,6 @@ const DeviceMenu = () => {
         </AppBar>
       </Box>
       <Stack spacing={2} justifyContent="center">
-        {/* <Filters /> */}
         <Typography variant="h4" color="#000000" component="div">
           {capitalize(t("devices.stock"))}
         </Typography>

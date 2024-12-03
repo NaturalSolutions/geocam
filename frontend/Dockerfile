@@ -15,7 +15,7 @@ RUN apk add --no-cache curl
 RUN mkdir -p /app && chown node:node /app
 
 WORKDIR /app
-# USER node
+USER node
 
 COPY --chown=node:node --from=deps /app/node_modules ./node_modules
 COPY --chown=node:node . .
