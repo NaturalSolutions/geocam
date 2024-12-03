@@ -1,10 +1,9 @@
 import { Grid, capitalize, Stack } from "@mui/material";
 import DropzoneComponent from "./dropzoneComponent";
 import ButtonsYesNo from "./common/buttonsYesNo";
-import { useState, useEffect, useRef, Dispatch } from "react";
+import { useRef, Dispatch } from "react";
 import { useTranslation } from "react-i18next";
 import Thumbnail from "./Thumbnail";
-import ModifyThumbnail from "./ModifyThumbnail";
 
 type thumbnailFunction = () => void;
 
@@ -43,7 +42,6 @@ const ThumbnailComponent: React.FC<{
         )}`}</p>
       );
     } else {
-      console.log("called");
       return <p>{file.name}</p>;
     }
   };
@@ -53,13 +51,11 @@ const ThumbnailComponent: React.FC<{
   };
 
   const loadNewFile = (f: any) => {
-    console.log("new");
     setFile(f[0]);
     setModifyState(true);
   };
 
   const cancelModify = () => {
-    console.log("cancel");
     fileInputRef.current.value = "";
     setModifyState(false);
   };

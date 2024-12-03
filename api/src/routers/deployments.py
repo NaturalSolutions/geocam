@@ -89,10 +89,8 @@ def fetch_deployment_thumbnail(
     deployment_id: int,
     db: Session = Depends(get_db)
 ):
-    print(deployment_id)
     current_deployment = deployment.get_deployment(db=db, deployment_id=deployment_id)
     res = []
-    print(current_deployment)
     new_f = current_deployment.dict()
     if(current_deployment.image != None):
         url = s3.get_url(current_deployment.image)

@@ -1,5 +1,4 @@
-from pydantic import AnyHttpUrl, PostgresDsn,  BaseSettings
-# from pydantic_settings import
+from pydantic import AnyHttpUrl, BaseSettings, PostgresDsn
 
 class Settings(BaseSettings):
     API_ROOT_PATH: str = "/api/v1"

@@ -33,7 +33,7 @@ const SiteForm = () => {
   const [open, setOpen] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
   const [modified, setModified] = React.useState(false);
-  const [position, setPostition] = useState<any>([])
+  const [position, setPostition] = useState<any>([]);
 
   const handleFormChange = (
     params: string,
@@ -45,9 +45,10 @@ const SiteForm = () => {
   };
 
   useEffect(() => {
-    console.log(site())
-    setPostition([{ lat: site().latitude, lng: site().longitude, name: site().name }])
-  }, [site])
+    setPostition([
+      { lat: site().latitude, lng: site().longitude, name: site().name },
+    ]);
+  }, [site]);
 
   const dialog = () => {
     setOpen(true);
@@ -78,14 +79,11 @@ const SiteForm = () => {
 
   return (
     <Grid container direction="row" spacing={2}>
-      <ThumbnailSitesComponent/>
+      <ThumbnailSitesComponent />
       <Grid item lg={6} md={6} sm={12} xs={12} height={300}>
-        <Map
-          position={position}
-          zoom={3}
-        />
+        <Map position={position} zoom={3} />
       </Grid>
-      
+
       <Grid item lg={6} md={6} sm={12} xs={12}>
         <Stack direction="column" spacing={2}>
           <Grid item>
@@ -112,58 +110,58 @@ const SiteForm = () => {
           </Grid>
 
           <form key={siteData.id}>
-              <Grid container spacing={2}>
-                {modified && (
-                  <Grid item lg={12} md={12} xs={12}>
-                    <TextField
-                      required
-                      id="name"
-                      name="name"
-                      label={capitalize(t("main.name"))}
-                      value={siteData.name}
-                      onChange={(e) => handleFormChange("name", e)}
-                      fullWidth
-                      variant="filled"
-                    />
-                  </Grid>
-                )}
-                <Grid item lg={6} md={6} xs={12}>
-                  <TextField
-                    disabled={!modified}
-                    label={capitalize(t("sites.longitude"))}
-                    name="longitude"
-                    inputProps={{ type: "number" }}
-                    value={siteData.longitude}
-                    fullWidth
-                    variant="filled"
-                    onChange={(e) => handleFormChange("longitude", e)}
-                  />
-                </Grid>
-                <Grid item lg={6} md={6} xs={12}>
-                  <TextField
-                    disabled={!modified}
-                    label={capitalize(t("sites.latitude"))}
-                    name="latitude"
-                    inputProps={{ type: "number" }}
-                    value={siteData.latitude}
-                    fullWidth
-                    variant="filled"
-                    onChange={(e) => handleFormChange("latitude", e)}
-                  />
-                </Grid>
+            <Grid container spacing={2}>
+              {modified && (
                 <Grid item lg={12} md={12} xs={12}>
                   <TextField
-                    disabled={!modified}
-                    label={capitalize(t("main.description"))}
-                    id="description"
-                    value={siteData.description}
+                    required
+                    id="name"
+                    name="name"
+                    label={capitalize(t("main.name"))}
+                    value={siteData.name}
+                    onChange={(e) => handleFormChange("name", e)}
                     fullWidth
-                    multiline={true}
                     variant="filled"
-                    onChange={(e) => handleFormChange("description", e)}
                   />
                 </Grid>
+              )}
+              <Grid item lg={6} md={6} xs={12}>
+                <TextField
+                  disabled={!modified}
+                  label={capitalize(t("sites.longitude"))}
+                  name="longitude"
+                  inputProps={{ type: "number" }}
+                  value={siteData.longitude}
+                  fullWidth
+                  variant="filled"
+                  onChange={(e) => handleFormChange("longitude", e)}
+                />
               </Grid>
+              <Grid item lg={6} md={6} xs={12}>
+                <TextField
+                  disabled={!modified}
+                  label={capitalize(t("sites.latitude"))}
+                  name="latitude"
+                  inputProps={{ type: "number" }}
+                  value={siteData.latitude}
+                  fullWidth
+                  variant="filled"
+                  onChange={(e) => handleFormChange("latitude", e)}
+                />
+              </Grid>
+              <Grid item lg={12} md={12} xs={12}>
+                <TextField
+                  disabled={!modified}
+                  label={capitalize(t("main.description"))}
+                  id="description"
+                  value={siteData.description}
+                  fullWidth
+                  multiline={true}
+                  variant="filled"
+                  onChange={(e) => handleFormChange("description", e)}
+                />
+              </Grid>
+            </Grid>
           </form>
 
           <Stack direction="row" spacing={3} justifyContent="flex-end">
@@ -201,7 +199,6 @@ const SiteForm = () => {
               </DialogActions>
             </Dialog>
           </Stack>
-
         </Stack>
       </Grid>
     </Grid>

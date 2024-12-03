@@ -57,10 +57,8 @@ def fetch_device_thumbnail(
     device_id: int,
     db: Session = Depends(get_db)
 ):
-    print(device_id)
     current_device = device.get_device(db=db, device_id=device_id)
     res = []
-    print(current_device)
     new_f = current_device.dict()
     if(current_device.image != None):
         url = s3.get_url(current_device.image)

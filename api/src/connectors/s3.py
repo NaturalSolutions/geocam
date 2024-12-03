@@ -79,11 +79,11 @@ def get_obj(filename: str):
     return s3.Object(get_bucket_name(), filename).get()
 
 
-def get_url(filename: str, expiration: float = 30):
+def get_url(filename: str, expiration: float = 3600):
     url = s3_client.generate_presigned_url(
         "get_object",
         Params={"Bucket": get_bucket_name(), "Key": filename},
-        ExpiresIn=expiration
+        ExpiresIn=expiration,
     )
     return url
 
