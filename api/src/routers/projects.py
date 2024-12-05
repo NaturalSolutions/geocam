@@ -69,7 +69,7 @@ def get_stats_projects(db: Session = Depends(get_db), skip: int = 0, limit: int 
     return project.get_projects_stats(db, skip=skip, limit=limit)
 
 @router.get("/length/", response_model=int)
-def get_stats_projects(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
+def length_projects(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return project.get_projects_length(db, skip=skip, limit=limit)
 
 @router.get("/project_informations/{project_id}", response_model=ProjectSheet)

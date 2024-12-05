@@ -22,7 +22,7 @@ def read_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return sites
 
 @router.get("/length", response_model=int)
-def read_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def length_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     sites = len(site.get_sites(db, skip=skip, limit=limit))
     return sites
  

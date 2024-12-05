@@ -5,11 +5,9 @@ import { useRef, Dispatch } from "react";
 import { useTranslation } from "react-i18next";
 import Thumbnail from "./Thumbnail";
 
-type thumbnailFunction = () => void;
-
 const ThumbnailComponent: React.FC<{
   text: string;
-  saveThumbnail: thumbnailFunction;
+  saveThumbnail: () => void;
   thumbnail: string | null;
   file: any;
   setFile: any;

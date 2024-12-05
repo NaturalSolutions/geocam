@@ -37,15 +37,6 @@ const ThumbnailDeviceComponent = () => {
     setModifyState(false);
   };
 
-  const clear = () => {
-    setFile("");
-  };
-
-  const get_file_name = (fileName) => {
-    const match = fileName.match(/([^\/]+\.(png|jpg|jpeg|gif|bmp))/i);
-    return match ? match[1] : null;
-  };
-
   return (
     <ThumbnailComponent
       text="device"

@@ -46,15 +46,6 @@ const ThumbnailProjectComponent = ({
       );
     }
   };
-  const clear = () => {
-    setFile("");
-  };
-
-  const get_file_name = (fileName) => {
-    // Cette expression régulière correspond à tous les types d'extensions d'images mentionnés
-    const match = fileName.match(/([^\/]+\.(png|jpg|jpeg|gif|bmp))/i);
-    return match ? match[1] : null;
-  };
 
   return (
     <ThumbnailComponent

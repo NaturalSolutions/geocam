@@ -15,10 +15,6 @@ const AnnotationButtons = () => {
   const [confirmationDelete, setConfirmationDelete] = useState<boolean>(false);
   const [img, setImg] = useState<any>(null);
 
-  useEffect(() => {
-    console.log(project());
-    console.log(deploymentData);
-  }, [deploymentData]);
   const toggleModalDelete = () => {
     setConfirmationDelete(!confirmationDelete);
   };
@@ -28,15 +24,10 @@ const AnnotationButtons = () => {
   };
 
   const deleteMedia = () => {
-    console.log("deleted");
-    console.log(image());
-    console.log(get_file_name(image().url));
     FilesService.deleteDeploymentMediaFile(
       get_file_name(image().url),
       image().name
-    ).then((res) => {
-      console.log(res);
-    });
+    ).then((res) => {});
 
     setConfirmationDelete(false);
   };
@@ -55,7 +46,7 @@ const AnnotationButtons = () => {
           startIcon="add"
         />
       </Stack>
-      <Stack justifyContent="flex-center">
+      {/* <Stack justifyContent="flex-center">
         <Button variant="contained" color="error" onClick={toggleModalDelete}>
           {capitalize(t("main.delete"))}
         </Button>
@@ -67,7 +58,7 @@ const AnnotationButtons = () => {
           quit={toggleModalDelete}
           save={deleteMedia}
         ></AlertDialog>
-      </Stack>
+      </Stack> */}
       <Stack justifyContent="flex-end">
         <ButtonValidate
           content={capitalize(t("main.save_and_continue"))}

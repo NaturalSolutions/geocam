@@ -105,10 +105,6 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
 
   return (
     <Stack>
-      <Typography variant="h4" color="#000000" component="div">
-        {capitalize(t("projects.sheet"))}
-      </Typography>
-
       <Stack spacing={2} justifyContent="center">
         <Collapse in={success}>
           <Alert
@@ -151,44 +147,6 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
                 <></>
               )}
 
-              {/* <Grid item lg={6} xs={12}>
-                                <TextField
-                                    disabled={!modified}
-                                    select
-                                    id="acquisition_framework"
-                                    label={capitalize(t("projects.acquisition_framework"))}
-                                    variant="filled"
-                                    value={projectData['acquisition_framework']}
-                                    fullWidth
-                                    onChange={(e) => handleFormChange("acquisition_framework", e)}
-                                >
-                                    {protocoles.map((item) => (
-                                        <MenuItem key={item} value={item}>
-                                            {item}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid>
-                            <Grid item lg={6} xs={12}>
-                                <TextField
-                                    disabled={!modified}
-                                    label={capitalize(t("projects.target_species"))}
-                                    id="targetedSpecies"
-                                    select
-                                    value={projectData.targeted_species}
-                                    fullWidth
-                                    variant="filled"
-                                    onChange={(e) => handleFormChange("targeted_species", e)}
-
-                                >
-                                    {species.map((item) => (
-                                        <MenuItem key={item} value={item}>
-                                            {item}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
-                            </Grid> */}
-
               <Grid item lg={3} xs={12} className="datePicker">
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DatePicker
@@ -223,7 +181,7 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item lg={6} xs={12}>
+              <Grid item lg={12} xs={12}>
                 <TextField
                   id="protocol"
                   name="protocol"
@@ -232,17 +190,12 @@ const ProjectForm = ({ setModifyState, file, setThumbnail }) => {
                   value={projectData.protocol}
                   onChange={(e) => handleFormChange("protocol", e)}
                   disabled={!modified}
+                  multiline
+                  rows={2}
                   fullWidth
                 />
               </Grid>
             </Grid>
-            {/* <Grid 
-                            container 
-                            justifyContent='center' 
-                            alignItems='center' 
-                        >
-                            <DropzoneComponent sentence={`${capitalize(t("main.add_media"))} ${t("main.of")} ${t("projects.project")}`} />
-                        </Grid> */}
           </Stack>
         </form>
         <Stack direction="row" spacing={3} justifyContent="flex-end">

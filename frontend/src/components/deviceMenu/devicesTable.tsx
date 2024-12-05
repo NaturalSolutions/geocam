@@ -30,7 +30,7 @@ import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DialogYesNo from "../common/dialogYesNo";
-import Map from '../Map';
+import Map from "../Map";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -49,58 +49,48 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DevicesTable = () => {
-  const { deviceMenu, projects, sites, updateDeviceMenu, updateSites, devices, updateDevices} = useMainContext();
-  const [position, setPosition] = useState<any>([])
+  const {
+    deviceMenu,
+    projects,
+    sites,
+    updateDeviceMenu,
+    updateSites,
+    devices,
+    updateDevices,
+  } = useMainContext();
+  const [position, setPosition] = useState<any>([]);
   const [page, setPage] = useState<number>(0);
-  const [sortType, setSortType] = useState<"desc" | "asc" | undefined>('asc'); // État pour suivre le type de tri (ascendant ou descendant)
-  const [sortBy, setSortBy] = useState('name'); // État pour suivre la colonne par laquelle trier
-
-  const handleSort = (property) => {
-    const newSortType = sortBy === property && sortType === 'asc' ? 'desc' : 'asc';
-    setSortType(newSortType);
-    setSortBy(property);
-  };
 
   const updateProjectSheetDataFromDevice = () => {
-
     if (deviceMenu && deviceMenu.length > 0) {
-
-      deviceMenu.map(element => {
-        
-        projects.forEach(project => {
-          
-          project.deployments.map(elem => {
+      deviceMenu.map((element) => {
+        projects.forEach((project) => {
+          project.deployments.map((elem) => {
             if (element.id == elem.device_id && element.status === "Déployé") {
+              let pos = sites.find((site) => site.id == elem.site_id);
 
-              let pos = sites.find(site => site.id == elem.site_id);
-
-                setPosition(position => [...position, { lat: pos.latitude, lng: pos.longitude, name: pos.name }])
-   
-              
+              setPosition((position) => [
+                ...position,
+                { lat: pos.latitude, lng: pos.longitude, name: pos.name },
+              ]);
             }
-            
-          })
-        })
-      })
+          });
+        });
+      });
     }
-  }
-  useEffect(() => {   
-    
-      const skip = Math.abs((page) * rowsPerPage)
-      updateSites()
-      updateDeviceMenu(skip, rowsPerPage)      
-      
-  }, [])
+  };
+  useEffect(() => {
+    const skip = Math.abs(page * rowsPerPage);
+    updateSites();
+    updateDeviceMenu(skip, rowsPerPage);
+  }, []);
 
   useEffect(() => {
-
-    updateProjectSheetDataFromDevice()
-    console.log(deviceMenu)
-  }, [deviceMenu, sites])
-
+    updateProjectSheetDataFromDevice();
+    console.log(deviceMenu);
+  }, [deviceMenu, sites]);
 
   const [open, setOpen] = useState(false);
-  const defaultCenter = [34.80746, -40.4796];
   const { t } = useTranslation();
 
   const handleClickOpen = () => {
@@ -111,13 +101,10 @@ const DevicesTable = () => {
     setOpen(false);
   };
 
-
   const handleChangePage = (event: unknown, newPage: number) => {
-
     setPage(newPage);
-    const skip = Math.abs((newPage) * rowsPerPage)
-    updateDeviceMenu(skip, rowsPerPage)
-
+    const skip = Math.abs(newPage * rowsPerPage);
+    updateDeviceMenu(skip, rowsPerPage);
   };
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -127,13 +114,21 @@ const DevicesTable = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
 
-    updateDeviceMenu(page, event.target.value)
+    updateDeviceMenu(page, event.target.value);
   };
 
   return deviceMenu.length !== 0 ? (
     <Stack spacing={2} justifyContent="center">
-      <Grid container justifyContent="center" alignItems='center'>
-        <Grid container item justifyContent="center" height={400} width={1000} spacing={1} style={{ backgroundColor: "#D9D9D9" }}>
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid
+          container
+          item
+          justifyContent="center"
+          height={400}
+          width={1000}
+          spacing={1}
+          style={{ backgroundColor: "#D9D9D9" }}
+        >
           {<Map position={position} zoom={2} />}
         </Grid>
       </Grid>
@@ -146,11 +141,6 @@ const DevicesTable = () => {
           <TableHead style={{ backgroundColor: "#CCDFD9" }}>
             <TableRow>
               <StyledTableCell align="center">
-              <TableSortLabel
-            active={sortBy === 'name'}
-            direction={sortType}
-            onClick={() => handleSort('name')}
-          />
                 {capitalize(t("main.name"))}
               </StyledTableCell>
               <StyledTableCell align="center">
@@ -170,7 +160,9 @@ const DevicesTable = () => {
               .map((row) => (
                 <StyledTableRow key={row.name}>
                   <StyledTableCell align="center">
-                    <Link component={RouterLink} to={`/devices/${row.id}`}>{row.name}</Link>
+                    <Link component={RouterLink} to={`/devices/${row.id}`}>
+                      {row.name}
+                    </Link>
                   </StyledTableCell>
                   <StyledTableCell align="center">{row.status}</StyledTableCell>
                   <StyledTableCell align="center">
@@ -217,9 +209,13 @@ const DevicesTable = () => {
           <Typography>{capitalize(t("main.unavailable"))}</Typography>
         </DialogContent>
         <Divider />
-        <DialogYesNo onYes={() => { return }} onNo={handleClose} />
+        <DialogYesNo
+          onYes={() => {
+            return;
+          }}
+          onNo={handleClose}
+        />
       </Dialog>
-
     </Stack>
   ) : (
     <Alert severity="warning">
