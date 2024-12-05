@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import internal from "stream";
 
 export type DeploymentForProjectSheet = {
     name: string;

@@ -141,7 +141,6 @@ const DeviceSheet = () => {
               </TableHead>
               <TableBody>
                 {historyDeployment.map((item) => {
-                  // console.log(item); // Déplacez cette ligne en dehors du contexte du rendu JSX si nécessaire
                   return (
                     <TableRow key={item.id}>
                       <TableCell>{item.project_name}</TableCell>
