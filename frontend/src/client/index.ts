@@ -13,6 +13,7 @@ export type { Body_upload_files_files_upload_files__deployment_id__post } from '
 export type { Body_upload_zip_files_upload_zip__deployment_id__post } from './models/Body_upload_zip_files_upload_zip__deployment_id__post';
 export type { DataProject } from './models/DataProject';
 export type { DeploymentForProjectSheet } from './models/DeploymentForProjectSheet';
+export type { DeploymentForDeviceSheet } from './models/DeploymentForDeviceSheet';
 export type { Deployments } from './models/Deployments';
 export type { DeploymentWithFile } from './models/DeploymentWithFile';
 export type { DeploymentWithTemplateSequence } from './models/DeploymentWithTemplateSequence';

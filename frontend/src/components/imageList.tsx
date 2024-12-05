@@ -14,10 +14,10 @@ import ButtonsYesNo from "./common/buttonsYesNo";
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation()
   const [files, setFiles] = useState<any[]>([]);
-  const { projects, updateListFile, setCurrentDeployment, currentDeployment, deploymentData } =
+  const { projects, updateListFile, setCurrentDeployment, deploymentData, } =
     useMainContext();
   let params = useParams();
-
+  
   useEffect(() => {
     (async () => {
       setCurrentDeployment(Number(params.deploymentId));
@@ -30,6 +30,7 @@ const ImageList: FC<{}> = () => {
       .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
       .then((res) => {
         updateListFile();
+       
       });
     }
     clear();

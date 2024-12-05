@@ -220,4 +220,19 @@ export class FilesService {
         });
     }
 
+    public static readLengthDeploymentsFilesById(
+        deploymentId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/files/{deployment_id}/length',
+            path: {
+                'deployment_id': deploymentId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`
+            }
+        })
+    }
 }
