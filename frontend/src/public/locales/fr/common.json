@@ -99,7 +99,9 @@
     "unavailable": "désolé, cette fonctionnalité n'est pas encore disponible !",
     "warning": "attention",
     "yes": "oui",
-    "zero": "aucun"
+    "zero": "aucun",
+    "project_name": "nom du projet",
+    "deployment_name":"nom du déploiement"
   },
   "observations": {
     "new": "nouvelle observation",

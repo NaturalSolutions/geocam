@@ -6,22 +6,41 @@ import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import { Alert, Stack, Typography, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Grid } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  tableCellClasses,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import DeviceForm from "./deviceForm";
 import DeviceModal from "../deviceMenu/deviceModal";
 import DeviceData from "./deviceData";
 import { useTranslation } from "react-i18next";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import { DeploymentForDeviceSheet, DeploymentsService } from "../../client";
 import { FilesService } from "../../client";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const DeviceSheet = () => {
   const { device, setCurrentDevice, projects, sites } = useMainContext();
@@ -29,7 +48,6 @@ const DeviceSheet = () => {
   const [historyDeployment, setHistoryDeployment] = useState<
     DeploymentForDeviceSheet[]
   >([]);
-
   let params = useParams();
   useEffect(() => {
     (async () => {
@@ -68,7 +86,7 @@ const DeviceSheet = () => {
                     };
 
                     finalRes.push(tempRes);
-
+                    console.log(tempRes);
                     setHistoryDeployment(
                       [...historyDeployment].concat(finalRes)
                     );
@@ -121,33 +139,46 @@ const DeviceSheet = () => {
             {capitalize(t("devices.historic_message"))}
           </Alert>
         ) : (
-          <TableContainer>
-            <Table>
-              <TableHead>
+          <TableContainer component={Paper}>
+            <Table
+              sx={{ minWidth: 500 }}
+              size="small"
+              aria-label="customized table"
+            >
+              <TableHead style={{ backgroundColor: "#CCDFD9" }}>
                 <TableRow>
-                  <TableCell>
-                    <b>Projet</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Site</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Déploiement</b>
-                  </TableCell>
-                  <TableCell>
-                    <b>Nb de médias</b>
-                  </TableCell>
+                  <StyledTableCell align="center">
+                    {capitalize(t("main.project_name"))}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {capitalize(t("projects.site_name"))}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {capitalize(t("main.deployment_name"))}
+                  </StyledTableCell>
+                  <StyledTableCell align="center">
+                    {capitalize(t("devices.nb_media"))}
+                  </StyledTableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {historyDeployment.map((item) => {
+                  console.log(item);
                   return (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.project_name}</TableCell>
-                      <TableCell>{item.site_name}</TableCell>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>{item.nb_images}</TableCell>
-                    </TableRow>
+                    <StyledTableRow key={item.id}>
+                      <StyledTableCell align="center">
+                        {item.project_name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {item.site_name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {item.name}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        {item.nb_images}
+                      </StyledTableCell>
+                    </StyledTableRow>
                   );
                 })}
               </TableBody>
@@ -155,7 +186,6 @@ const DeviceSheet = () => {
           </TableContainer>
         )}
       </Stack>
-      <div></div>
     </Stack>
   ) : (
     <div>{capitalize(t("devices.warning"))}</div>

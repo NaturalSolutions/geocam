@@ -99,7 +99,9 @@
     "unavailable": "sorry, this feature is not yet available!",
     "warning": "warning",
     "yes": "yes",
-    "zero": "no"
+    "zero": "no",
+    "project_name": "project name",
+    "deployment_name":"deployment name"
   },
   "observations": {
     "new": "new observation",
