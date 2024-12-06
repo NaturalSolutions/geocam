@@ -89,7 +89,8 @@ def fetch_project_thumbnail(
     current_project = project.get_project(db=db, project_id=project_id)
     res = []
     new_f = current_project.dict()
-    url = s3.get_url(current_project.image)
-    new_f["url"] = url
-    res.append(new_f)
-    return res
+    if current_project.image != None:
+        url = s3.get_url(current_project.image)
+        new_f["url"] = url
+        res.append(new_f)
+        return res
