@@ -12,7 +12,7 @@ const ProjectList = () => {
   const { t } = useTranslation();
   const [page, setPage] = useState<number>(0);
   const [projectLength, setProjectLength] = useState<number>(0);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
 
   useEffect(() => {
     const skip = page * rowsPerPage;
@@ -64,7 +64,7 @@ const ProjectList = () => {
       </Grid>
       {projectsStats && (
         <TablePagination
-          rowsPerPageOptions={[8]}
+          rowsPerPageOptions={[4]}
           component="div"
           count={projectLength}
           rowsPerPage={rowsPerPage}
