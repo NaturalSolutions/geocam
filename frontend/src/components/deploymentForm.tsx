@@ -277,21 +277,21 @@ const DeploymentForm = (props) => {
   return (
     <form>
       <Stack direction="column" spacing={5}>
-        <Grid
-          container
-          justifyContent="space-evenly"
-          alignItems="center"
-          spacing={2}
-        >
-          <ThumbnailDeploymentComponent />
-          {deploymentData && position.lng !== 0 ? (
+        {deploymentData && position.lng !== 0 ? (
+          <Grid
+            container
+            justifyContent="space-evenly"
+            alignItems="center"
+            spacing={2}
+          >
+            <ThumbnailDeploymentComponent />
             <Grid item lg={6} container width={500} height={300}>
               <Map position={position} zoom={3} />
             </Grid>
-          ) : (
-            <></>
-          )}
-        </Grid>
+          </Grid>
+        ) : (
+          <></>
+        )}
 
         <Paper elevation={0} sx={{ px: 2, py: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }}>
