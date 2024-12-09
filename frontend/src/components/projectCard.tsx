@@ -20,7 +20,7 @@ import WarningAmberRoundedIcon from "@mui/icons-material/WarningAmberRounded";
 import CollectionsIcon from "@mui/icons-material/Collections";
 import AddIcon from "@mui/icons-material/Add";
 import ImportModale from "./importModale";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GoAnnotation from "./goAnnotation";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
