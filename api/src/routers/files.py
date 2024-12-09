@@ -185,7 +185,6 @@ def upload_files(
     
     return current_project
 
-
 @router.post("/upload/site/{site_id}")
 def upload_files(
         site_id: int,
@@ -231,7 +230,6 @@ def upload_files(
     return current_deployment
 
 
-
 @router.post("/delete/deployment/{deployment_id}/{name}")
 def delete_files(
     deployment_id: int,
@@ -253,7 +251,6 @@ def delete_files(
     db: Session = Depends(get_db)
 ):
     try:
-        print(hash_name)
         s3.delete_file_obj(hash_name)
         files.delete_media_deployment(db=db, name=name)
     except Exception as e:

@@ -15,7 +15,11 @@ import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useMainContext } from "../contexts/mainContext";
 import { useParams } from "react-router-dom";
-import { DeploymentsService, DeploymentWithTemplateSequence } from "../client";
+import {
+  DeploymentsService,
+  DeploymentWithTemplateSequence,
+  ProjectWithDeployment,
+} from "../client";
 import SiteModale from "./siteMenu/siteModale";
 import Map from "./Map";
 import { useTranslation } from "react-i18next";
