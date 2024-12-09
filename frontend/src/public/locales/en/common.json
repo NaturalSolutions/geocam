@@ -10,7 +10,9 @@
     "media_not_processed": "media not processed",
     "media_processed_manually": "media processed manually",
     "metadata": "metadata",
-    "unknown_image": "unknown image"
+    "unknown_image": "unknown image",
+    "delete": "Delete a media from deployment",
+    "delete_desc": "are you sure you want to delete this media?"
   },
   "medias": {
     "media": "media file",
@@ -101,7 +103,8 @@
     "yes": "yes",
     "zero": "no",
     "project_name": "project name",
-    "deployment_name":"deployment name"
+    "deployment_name":"deployment name",
+    "account": "My account"
   },
   "observations": {
     "new": "new observation",
@@ -114,7 +117,7 @@
     "add_member": "add member",
     "administrators": "administrators",
     "alert": "warning!",
-    "alert_msg": "no deployment found for this project",
+    "alert_msg": "no deployment found for this project. Please create one to import medias.",
     "annotators": "annotators",
     "change_on_project": "confirm changes",
     "community_study": "community study",

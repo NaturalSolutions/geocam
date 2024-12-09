@@ -4,7 +4,6 @@ import Drawer from "../components/drawer";
 import NavigationPath from "../components/navigationPath";
 import DeploymentDetails from "../components/deploymentDetails";
 
-
 function DeploymentSheet(props) {
   return (
     <div className="Main">
@@ -12,7 +11,7 @@ function DeploymentSheet(props) {
         Header={<HeadBar />}
         Side={<Drawer />}
         Navigation={<NavigationPath />}
-        Main={<DeploymentDetails number={props.number}/>}
+        Main={<DeploymentDetails number={props.number} />}
       />
     </div>
   );

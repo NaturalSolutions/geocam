@@ -7,13 +7,13 @@ import {
   Typography,
   capitalize,
 } from "@mui/material";
-import Filters from "./filters";
 import DevicesTable from "./devicesTable";
 import DeviceModal from "./deviceModal";
 import { useTranslation } from "react-i18next";
 
 const DeviceMenu = () => {
   const { t } = useTranslation();
+
 
   return (
     <Stack direction="column" spacing={3}>
@@ -32,7 +32,7 @@ const DeviceMenu = () => {
       <Stack spacing={2} justifyContent="center">
         {/* <Filters /> */}
         <Typography variant="h4" color="#000000" component="div">
-          { capitalize(t("devices.stock")) }
+          {capitalize(t("devices.stock"))}
         </Typography>
         <DevicesTable />
       </Stack>

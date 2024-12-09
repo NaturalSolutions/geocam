@@ -32,6 +32,7 @@
 /* Prtie droite / panel annotations */
 .annotations {
   overflow: hidden !important;
+  padding-bottom: 16px;
 }
 
 .paperAnnotations,

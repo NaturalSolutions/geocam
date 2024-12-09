@@ -16,5 +16,6 @@ export type DeviceMenu = {
     id?: number;
     nb_images: number;
     last_image_date?: string;
+    url?: string;
 };
 

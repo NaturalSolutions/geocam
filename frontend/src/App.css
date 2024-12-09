@@ -42,6 +42,15 @@ a.MuiButton-root {
   border-radius: 25px;
 }
 
+button.MuiButton-containedError {
+  background: #FFD8D6;
+  color: #921E16;
+}
+
+button.MuiButton-containedError:hover {
+  background:  #F88078;
+}
+
 /* Filtre */
 
 .filter {

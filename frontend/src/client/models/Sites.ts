@@ -9,5 +9,6 @@ export type Sites = {
     habitat?: string;
     description?: string;
     id?: number;
+    image?: string | undefined;
 };
 
