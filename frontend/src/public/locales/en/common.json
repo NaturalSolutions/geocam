@@ -59,7 +59,8 @@
     "status": "status",
     "stock": "stock",
     "warning": "no sheet for this device",
-    "warning_msg": "no camera traps registered"
+    "warning_msg": "no camera traps registered",
+    "historic_message": "This device has no deployment."
   },
   "languageSelector": {
     "en": "English",
@@ -101,6 +102,8 @@
     "warning": "warning",
     "yes": "yes",
     "zero": "no",
+    "project_name": "project name",
+    "deployment_name":"deployment name",
     "account": "My account"
   },
   "observations": {

@@ -333,3 +333,9 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
         new_f["url"] = url
         res.append(new_f)
     return res
+
+@router.get("/{deployment_id}/length")
+def get_length_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
+    List_files = files.get_deployment_files(db=db, id=deployment_id)
+    return len(List_files)
+    

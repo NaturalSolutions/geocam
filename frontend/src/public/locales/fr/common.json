@@ -59,7 +59,8 @@
     "status": "statut",
     "stock": "stock",
     "warning": "pas de fiche pour ce dispositif",
-    "warning_msg": "vous n'avez pas de pièges photographiques enregistrés"
+    "warning_msg": "vous n'avez pas de pièges photographiques enregistrés",
+    "historic_message": "Ce dispositif n'a jamais été déployé"
   },
   "languageSelector": {
     "en": "English",
@@ -101,6 +102,8 @@
     "warning": "attention",
     "yes": "oui",
     "zero": "aucun",
+    "project_name": "nom du projet",
+    "deployment_name":"nom du déploiement",
     "account": "Mon compte"
   },
   "observations": {
