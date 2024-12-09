@@ -10,7 +10,9 @@
     "media_not_processed": "média non traité",
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
-    "unknown_image": "image inconnue"
+    "unknown_image": "image inconnue",
+    "delete": "Supprimer un média du deploiement.",
+    "delete_desc": "Etes vous sûr de vouloir supprimer ce média ?"
   },
   "medias": {
     "media": "média",
@@ -98,7 +100,8 @@
     "unavailable": "désolé, cette fonctionnalité n'est pas encore disponible !",
     "warning": "attention",
     "yes": "oui",
-    "zero": "aucun"
+    "zero": "aucun",
+    "account": "Mon compte"
   },
   "observations": {
     "new": "nouvelle observation",
@@ -111,7 +114,7 @@
     "add_member": "ajouter un membre",
     "administrators": "administrateurs",
     "alert": "attention !",
-    "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet.",
+    "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet. Veuillez en créer un pour importer des médias",
     "annotators": "annotateurs",
     "change_on_project": "modification du projet",
     "community_study": "etude de communauté",

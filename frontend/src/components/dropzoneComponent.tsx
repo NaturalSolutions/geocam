@@ -5,7 +5,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 export default function DropzoneComponent(props) {
     return (
         <Dropzone
-            // onDrop={loadFile} 
+            onDrop={props.onDrop} 
             maxFiles={1}
         // style={{"height": "100%"}}
         >
@@ -18,7 +18,7 @@ export default function DropzoneComponent(props) {
                                 <CameraAltIcon fontSize="large" />
                             </Grid>
                             <Grid item>
-                                {props.sentence}
+                                {props.sentence(props.text)}
                             </Grid>
                         </Grid>
                     </div>

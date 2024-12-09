@@ -38,6 +38,10 @@ const HeadBar = () => {
     handleClose();
   };
 
+  function toAccountKeycloack(): void {
+    window.open('/auth/realms/geonature-annotation/account/#/personal-info', '_blank');
+  }
+
   return (
     <AppBar position="static" sx={{ paddingTop: 2, paddingBottom: 1 }}>
       <Toolbar variant="dense">
@@ -106,6 +110,9 @@ const HeadBar = () => {
               "aria-labelledby": "basic-button",
             }}
           >
+            <MenuItem onClick={toAccountKeycloack}>
+              {capitalize(t("main.account"))}
+            </MenuItem>
             <MenuItem onClick={handleLogout}>
               {capitalize(t("main.logout"))}
             </MenuItem>

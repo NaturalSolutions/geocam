@@ -22,7 +22,13 @@ const NavigationPath: FC<{}> = () => {
     setCurrentSite,
     files,
     image,
+    updateProjects
   } = useMainContext();
+  useEffect(() => {
+    updateProjects()
+  }, [])
+
+
   const { t } = useTranslation();
   const location = useLocation();
 
@@ -40,8 +46,10 @@ const NavigationPath: FC<{}> = () => {
   };
 
   const projectBreadcrumb = (isActive: boolean = false) => {
+    
     return (
-      <BreadcrumbElement
+     
+    <BreadcrumbElement
         key="project"
         current_option={project().name}
         link={`/project/${project().id}`}

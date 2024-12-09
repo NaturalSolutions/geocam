@@ -35,6 +35,23 @@ export class SitesService {
         });
     }
 
+    public static getSitesNumber(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<number> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/length',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
     /**
      * Create Site
      * @param requestBody
@@ -116,6 +133,22 @@ export class SitesService {
         return __request(OpenAPI, {
             method: 'DELETE',
             url: '/sites/{site_id}',
+            path: {
+                'site_id': siteId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    public static readSiteThumbnail(
+        siteId: number | undefined,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/fetch_site_thumbnail/{site_id}',
             path: {
                 'site_id': siteId,
             },

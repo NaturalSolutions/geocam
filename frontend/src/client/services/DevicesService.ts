@@ -8,6 +8,7 @@ import type { Devices } from '../models/Devices';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
+import { Body_upload_file_files_upload__deployment_id__post } from '../models/Body_upload_file_files_upload__deployment_id__post';
 
 export class DevicesService {
 
@@ -50,6 +51,25 @@ export class DevicesService {
             url: '/devices/',
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    public static updateThumbnailDevicesPost(
+        requestBody: DeviceBase,
+        deviceId: number | undefined
+    ): CancelablePromise<Devices> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/devices/upload/{device_id}',
+            body: requestBody,
+            mediaType: 'application/json',
+            path: {
+                'device_id': deviceId
+            },
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,
@@ -144,6 +164,22 @@ export class DevicesService {
             query: {
                 'skip': skip,
                 'limit': limit,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    public static readDeviceThumbnail(
+        deviceId: number | undefined,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/devices/fetch_device_thumbnail/{device_id}',
+            path: {
+                'device_id': deviceId,
             },
             errors: {
                 404: `Not found`,

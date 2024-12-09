@@ -42,11 +42,13 @@ class Files(BaseFiles, table=True):
     treated: bool = Field(default=False)
     annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])
     deployment: "Deployments" = Relationship(back_populates="files")
-
-
+    
+    
 class CreateFiles(BaseFiles):
     deployment_id: int
 
+class CreateDeviceFile(BaseFiles):
+    device_id: int
 
 class ReadFiles(BaseFiles):
     id: uuid_pkg.UUID
