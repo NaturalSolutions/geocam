@@ -172,6 +172,20 @@ export class DevicesService {
         });
     }
 
-
+    public static readDeviceThumbnail(
+        deviceId: number | undefined,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/devices/fetch_device_thumbnail/{device_id}',
+            path: {
+                'device_id': deviceId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
 
 }

@@ -6,6 +6,7 @@ from sqlmodel import Session
 from src.connectors.database import get_db
 from src.models.site import SiteBase, Sites
 from src.services import site
+from src.connectors import s3
 
 router = APIRouter(
     prefix="/sites",
@@ -21,7 +22,7 @@ def read_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return sites
 
 @router.get("/length", response_model=int)
-def read_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def length_sites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     sites = len(site.get_sites(db, skip=skip, limit=limit))
     return sites
  
@@ -49,3 +50,19 @@ def update_site(site_id: int, data_site: SiteBase, db: Session = Depends(get_db)
 @router.delete("/{site_id}")
 def delete_site(site_id: int, db: Session = Depends(get_db)):
     return site.delete_site(db=db, id=site_id)
+
+@router.get("/fetch_site_thumbnail/{site_id}")
+def fetch_site_thumbnail(
+    site_id: int,
+    db: Session = Depends(get_db)
+):
+    print(site_id)
+    current_site = site.get_site(db=db, site_id=site_id)
+    res = []
+    print(current_site)
+    new_f = current_site.dict()
+    if(current_site.image != None):
+        url = s3.get_url(current_site.image)
+        new_f["url"] = url
+        res.append(new_f)
+        return res

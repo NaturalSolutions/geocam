@@ -15,18 +15,6 @@ from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
 from src.schemas.schemas import Annotation
 from src.utils import file_as_bytes
 
-# async def stockage_image(file):
-#     try :
-#         contents = await file.read()
-#         with open(f'{file.filename}',"wb") as f:
-#             f.write(contents)
-#     except Exception:
-#         return {"message": "There was an error uploading the file"}
-#     finally:
-#         await file.close()
-
-#     return {"message": f"Successfuly uploaded {file.filename}"}
-
 
 def get_hash(file):
     return hashlib.sha256(file_as_bytes(file)).hexdigest()
@@ -41,7 +29,7 @@ def get_file(db: Session, file_id: uuid_pkg.UUID):
 
 
 def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
-    return (
+    return (                                                                                                        
         db.query(Files)
         .filter(Files.deployment_id == id)
         .order_by(Files.name)
@@ -83,18 +71,6 @@ def update_annotations(db: Session, file_id: int, data: List[Annotation]):
     db.commit()
     db.refresh(db_file)
     return db_file
-
-
-# def get_file_by_path(db: Session, path: str):
-#     return db.query(File).filter(File.path == path).first()
-
-
-# def update_file(db: Session, file: schemas.File):
-#     db_file = db.query(File).filter(File.id == file.id).first()
-#     db_file.name = file.name
-#     db.commit()
-#     db.refresh(db_file)
-#     return db_file
 
 
 def delete_file(db: Session, id: int):

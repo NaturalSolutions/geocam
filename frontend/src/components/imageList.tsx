@@ -4,15 +4,21 @@ import "../css/first.css";
 
 import MediaGallery from "./mediaGallery";
 import Dropzone from "react-dropzone";
-import { CircularProgress, Grid, Stack, Typography, capitalize } from "@mui/material";
+import {
+  CircularProgress,
+  Grid,
+  Stack,
+  Typography,
+  capitalize,
+} from "@mui/material";
 import { useParams } from "react-router-dom";
 import { FilesService } from "../client";
-import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useTranslation } from "react-i18next";
 import ButtonsYesNo from "./common/buttonsYesNo";
 
 const ImageList: FC<{}> = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [files, setFiles] = useState<any[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
   const { projects, updateListFile, setCurrentDeployment, deploymentData } =
@@ -26,17 +32,17 @@ const ImageList: FC<{}> = () => {
   }, [projects]);
 
   const save = () => {
-    if(files.length > 0)
-    {
-      setLoader(true)
+    if (files.length > 0) {
+      setLoader(true);
     }
 
     for (const file of files) {
-      FilesService
-      .uploadFileFilesUploadDeploymentIdPost(Number(params.deploymentId), { file })
-      .then((res) => {
+      FilesService.uploadFileFilesUploadDeploymentIdPost(
+        Number(params.deploymentId),
+        { file }
+      ).then((res) => {
         updateListFile();
-        setLoader(false)
+        setLoader(false);
       });
     }
     clear();
@@ -49,14 +55,12 @@ const ImageList: FC<{}> = () => {
   const loadFile = (f: any) => {
     f.forEach((f) => files.push(f));
     setFiles(files);
-    console.log("hello")
+    console.log("hello");
   };
 
   const dropZoneDisplayText = () => {
     if (files.length === 0) {
-      return (
-        <p>{capitalize(t("deployments.drop_files"))}</p>
-      );
+      return <p>{capitalize(t("deployments.drop_files"))}</p>;
     } else {
       return <p>{files.map((f) => f.name).join(", ")}</p>;
     }
@@ -66,24 +70,21 @@ const ImageList: FC<{}> = () => {
     <>
       {deploymentData ? (
         <Stack spacing={2}>
-          <Typography variant="h6" sx={{ mb:2}}>{capitalize(t("projects.import_media"))}</Typography>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            {capitalize(t("projects.import_media"))}
+          </Typography>
           <Dropzone onDrop={loadFile} multiple maxFiles={10}>
             {({ getRootProps, getInputProps }) => (
               <section id="dropzone">
                 <div {...getRootProps()}>
                   <input {...getInputProps()} />
-                  <Grid container direction="column" alignItems='center'>
+                  <Grid container direction="column" alignItems="center">
                     <Grid item>
                       <CameraAltIcon fontSize="large" />
                     </Grid>
-                    <Grid item>
-                      {dropZoneDisplayText()}
-                    </Grid>
-                    <Grid item>
-                      {loader && <CircularProgress />}
-                    </Grid>
+                    <Grid item>{dropZoneDisplayText()}</Grid>
+                    <Grid item>{loader && <CircularProgress />}</Grid>
                   </Grid>
-
                 </div>
               </section>
             )}
@@ -94,10 +95,10 @@ const ImageList: FC<{}> = () => {
             alignItems="center"
             spacing={2}
           >
-            <ButtonsYesNo 
-              onYes={ save } 
-              onNo={ clear } 
-              yesContent={ capitalize(t("main.save"))} 
+            <ButtonsYesNo
+              onYes={save}
+              onNo={clear}
+              yesContent={capitalize(t("main.save"))}
               noContent={capitalize(t("main.cancel"))}
             />
           </Stack>

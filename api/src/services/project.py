@@ -9,6 +9,7 @@ from src.models.file import Files
 from src.models.project import ProjectBase, Projects
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
+from src.connectors import s3
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
@@ -142,7 +143,11 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         device_number = 0
         media_number = 0
         nb_treated_media = 0
-
+        if project.image != None:
+           url = s3.get_url(project.image)
+        else :
+            url = project.image
+        
         for deployment in project.deployments:
             if deployment.site_id not in unique_site:
                 unique_site.append(deployment.site_id)
@@ -179,6 +184,7 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
             device_number=device_number,
             targeted_species=targeted_species,
             annotation_percentage=annotation_percentage,
+            url=url,
         )
         result.append(stats.dict())
     return result

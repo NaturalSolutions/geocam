@@ -39,7 +39,7 @@ const DeploymentDetails = (props) => {
             <TabPanel valueTab={tabValue} index={0}>
                 <DeploymentForm setIs404={props.setIs404} />
             </TabPanel>
-
+            
             <TabPanel valueTab={tabValue} index={1}>
                 <ImageList/>
             </TabPanel>

@@ -258,4 +258,26 @@ export class ProjectsService {
         });
     }
 
+        /**
+     * Read Deployment Files
+     * @param deploymentId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+        public static readProjectThumbnail(
+            projectId: number | undefined,
+        ): CancelablePromise<any> {
+            return __request(OpenAPI, {
+                method: 'GET',
+                url: '/projects/fetch_project_thumbnail/{project_id}',
+                path: {
+                    'project_id': projectId,
+                },
+                errors: {
+                    404: `Not found`,
+                    422: `Validation Error`,
+                },
+            });
+        }
+
 }

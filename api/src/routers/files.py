@@ -79,26 +79,6 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
     return res
 
 
-@router.post("/upload/{deployment_id}")
-def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
-    hash = dependencies.generate_checksum(file)
-
-    mime = magic.from_buffer(file.file.read(), mime=True)
-    file.file.seek(0)
-
-    if not check_mime(mime):
-        raise HTTPException(status_code=400, detail="Invalid type file")
-
-    insert = files.upload_file(
-        db=db,
-        hash=hash,
-        new_file=file.file,
-        filename=file.filename,
-        ext=mime,
-        deployment_id=deployment_id,
-    )
-    return insert
-
 
 @router.post("/upload_files/{deployment_id}")
 def upload_files(
@@ -143,6 +123,11 @@ def upload_files(
 ):
     try:
         hash = dependencies.generate_checksum(file)
+        mime = magic.from_buffer(file.file.read(), mime=True)
+        file.file.seek(0)
+
+        if not check_mime(mime):
+            raise HTTPException(status_code=400, detail="Invalid type file")
         unique_id = str(uuid.uuid4())
         
         ext = file.filename.split(".")[1]
@@ -151,12 +136,32 @@ def upload_files(
         
         url = s3.get_url(unique_filename)
 
-        current_device = device.upload_image_device_id(db=db, device_hash=url, id=device_id)
+        current_device = device.upload_image_device_id(db=db, device_hash=unique_filename, id=device_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
 
     
     return current_device
+
+@router.post("/upload/{deployment_id}")
+def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
+    hash = dependencies.generate_checksum(file)
+
+    mime = magic.from_buffer(file.file.read(), mime=True)
+    file.file.seek(0)
+
+    if not check_mime(mime):
+        raise HTTPException(status_code=400, detail="Invalid type file")
+
+    insert = files.upload_file(
+        db=db,
+        hash=hash,
+        new_file=file.file,
+        filename=file.filename,
+        ext=mime,
+        deployment_id=deployment_id,
+    )
+    return insert
 
 @router.post("/upload/project/{project_id}")
 def upload_files(
@@ -174,7 +179,7 @@ def upload_files(
         
         url = s3.get_url(unique_filename)
         
-        current_project = project.update_project_image(db=db, file_name=url, project_id=project_id)
+        current_project = project.update_project_image(db=db, file_name=unique_filename, project_id=project_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
     
@@ -196,7 +201,7 @@ def upload_files(
         
         url = s3.get_url(unique_filename)
         
-        current_site = site.update_site_image(db=db, image=url, id=site_id)
+        current_site = site.update_site_image(db=db, image=unique_filename, id=site_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
     
@@ -218,7 +223,7 @@ def upload_files(
         
         url = s3.get_url(unique_filename)
         
-        current_deployment = deployment.update_image_deployment(db=db, deployment_id=deployment_id, image=url)
+        current_deployment = deployment.update_image_deployment(db=db, deployment_id=deployment_id, image=unique_filename)
     except Exception as e:
         raise HTTPException(detail=e)
     

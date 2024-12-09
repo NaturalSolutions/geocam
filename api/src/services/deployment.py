@@ -73,6 +73,20 @@ def update_deployment(db: Session, deployment: DeploymentWithTemplateSequence):
     db.refresh(db_deployment)
     return db_deployment
 
+def update_image_deployment(db: Session, deployment_id: int, image: str):
+    db_deployment = db.query(Deployments).filter(Deployments.id == deployment_id).first()
+    db_deployment.image = image
+    db.commit()
+    db.refresh(db_deployment)
+    return db_deployment
+
+def delete_image_deployment_id(db: Session, id: int):
+    db_deployment = db.query(Deployments).filter(Deployments.id == id).first()
+    db_deployment.image = ""
+    db.commit()
+    db.refresh(db_deployment)
+    return db_deployment 
+
 def delete_deployment(db: Session, id: int):
     db_files_deployment = files.deleteAllFilesDeployment(db=db, id=id)
     db_deployment = db.query(Deployments).filter(Deployments.id == id).first()

@@ -143,4 +143,20 @@ export class SitesService {
         });
     }
 
+    public static readSiteThumbnail(
+        siteId: number | undefined,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/fetch_site_thumbnail/{site_id}',
+            path: {
+                'site_id': siteId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
 }
