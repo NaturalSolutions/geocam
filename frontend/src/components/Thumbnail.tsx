@@ -1,6 +1,4 @@
 import { CSSProperties } from "react";
-import EditIcon from "@mui/icons-material/Edit";
-import { Box, IconButton } from "@mui/material";
 
 const Thumbnail = ({
   item,
@@ -13,8 +11,8 @@ const Thumbnail = ({
   const thumbnailStyle: CSSProperties = {
     borderBottomLeftRadius: 4,
     borderBottomRightRadius: 4,
-    height: 400,
-    width: 400,
+    height: 200,
+    width: 200,
     objectFit: "cover",
     marginBottom: "20px",
   };

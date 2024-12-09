@@ -109,7 +109,7 @@ const ProjectSheet = () => {
         {capitalize(t("projects.sheet"))}
       </Typography>
       <Stack direction="row" alignItems="center" spacing={2}>
-        <Grid lg={3} xs={12}>
+        <Grid lg={2} xs={12}>
           <ThumbnailProjectComponent
             modifyState={modifyState}
             setModifyState={setModifyState}
@@ -117,7 +117,7 @@ const ProjectSheet = () => {
             file={file}
           />
         </Grid>
-        <Grid lg={9} xs={12}>
+        <Grid lg={10} xs={12}>
           <ProjectForm
             setModifyState={setModifyState}
             file={file}

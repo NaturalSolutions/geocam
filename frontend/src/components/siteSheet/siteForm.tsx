@@ -78,14 +78,20 @@ const SiteForm = () => {
   };
 
   return (
-    <Grid container direction="row" spacing={2}>
+    <Grid
+      container
+      justifyContent="center"
+      alignItems="center"
+      direction="row"
+      spacing={2}
+    >
       <Grid item lg={5} md={5} sm={12} xs={12} height={300}>
         <Map position={position} zoom={3} />
       </Grid>
-      <Grid item lg={3} md={3} sm={12} xs={12}>
+      <Grid item lg={2} md={3} sm={12} xs={12}>
         <ThumbnailSitesComponent />
       </Grid>
-      <Grid item lg={4} md={4} sm={12} xs={12}>
+      <Grid item lg={5} md={4} sm={12} xs={12}>
         <Stack direction="column" spacing={2}>
           <Grid item>
             <Collapse in={success}>

@@ -76,11 +76,19 @@ const DeviceForm = () => {
   };
 
   return (
-    <Grid container spacing={2}>
-      <Grid container justifyContent="center" lg={3}>
+    <Grid container alignItems="center" spacing={2}>
+      <Grid
+        container
+        justifyContent="center"
+        alignItems="center"
+        lg={2}
+        md={6}
+        xs={12}
+        sm={12}
+      >
         <ThumbnailDeviceComponent />
       </Grid>
-      <Grid container lg={9} justifyContent="flex-end" alignItems="center">
+      <Grid lg={10} md={6} justifyContent="flex-end" alignItems="center">
         <Collapse in={success}>
           <Alert
             severity="success"
