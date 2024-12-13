@@ -17,7 +17,7 @@ const ProjectList = () => {
   useEffect(() => {
     const skip = page * rowsPerPage;
     updateProjectsStats(skip, rowsPerPage);
-    ProjectsService.getProjectsLength().then((res) => {
+    ProjectsService.lengthProjectsProjectsLengthGet().then((res) => {
       setProjectLength(res);
     });
   }, []);

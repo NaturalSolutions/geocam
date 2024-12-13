@@ -1,10 +1,9 @@
-import { Box, Button, Modal, Stack, capitalize } from "@mui/material";
+import { Stack, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
-import { useEffect, useState } from "react";
-import AlertDialog from "../common/dialogSaveOrQuit";
+import { useState } from "react";
 import { useMainContext } from "../../contexts/mainContext";
 import { FilesService } from "../../client";
 
@@ -13,7 +12,6 @@ const AnnotationButtons = () => {
   const { image, projects, project, deploymentData } = useMainContext();
   const { saveandnext, handleAddObservation } = useAnnotationContext();
   const [confirmationDelete, setConfirmationDelete] = useState<boolean>(false);
-  const [img, setImg] = useState<any>(null);
 
   const toggleModalDelete = () => {
     setConfirmationDelete(!confirmationDelete);
@@ -23,14 +21,14 @@ const AnnotationButtons = () => {
     setConfirmationDelete(false);
   };
 
-  const deleteMedia = () => {
-    FilesService.deleteDeploymentMediaFile(
-      get_file_name(image().url),
-      image().name
-    ).then((res) => {});
+  // const deleteMedia = () => {
+  //   FilesService.deleteFilesFilesDeleteMediaHashNamePost(
+  //     get_file_name(image().url),
+  //     image().name
+  //   ).then((res) => {});
 
-    setConfirmationDelete(false);
-  };
+  //   setConfirmationDelete(false);
+  // };
 
   const get_file_name = (fileName) => {
     // Cette expression régulière correspond à tous les types d'extensions d'images mentionnés

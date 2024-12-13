@@ -8,7 +8,6 @@ import type { Devices } from '../models/Devices';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
-import { Body_upload_file_files_upload__deployment_id__post } from '../models/Body_upload_file_files_upload__deployment_id__post';
 
 export class DevicesService {
 
@@ -51,25 +50,6 @@ export class DevicesService {
             url: '/devices/',
             body: requestBody,
             mediaType: 'application/json',
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    public static updateThumbnailDevicesPost(
-        requestBody: DeviceBase,
-        deviceId: number | undefined
-    ): CancelablePromise<Devices> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/devices/upload/{device_id}',
-            body: requestBody,
-            mediaType: 'application/json',
-            path: {
-                'device_id': deviceId
-            },
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,
@@ -172,8 +152,14 @@ export class DevicesService {
         });
     }
 
-    public static readDeviceThumbnail(
-        deviceId: number | undefined,
+    /**
+     * Fetch Device Thumbnail
+     * @param deviceId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
+        deviceId: number,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
