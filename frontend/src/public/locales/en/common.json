@@ -16,7 +16,8 @@
   },
   "medias": {
     "media": "media file",
-    "medias": "media files"
+    "medias": "media files",
+    "date_time_field": "File date and time"
   },
   "deployments": {
     "annotation": "annotation",
