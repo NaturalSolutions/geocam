@@ -7,7 +7,7 @@ import HelpRoundedIcon from "@mui/icons-material/HelpRounded";
 import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation } from "../../client";
-import { FC, useState, useEffect } from "react";
+import { FC } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import TextField from "@mui/material/TextField";
@@ -47,7 +47,6 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
             )}
           />
         </LocalizationProvider>
-        {/* <span className="info-annotation-ctn"> */}
         {treated ? (
           <ButtonStatus
             icon={<CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} />}
@@ -79,7 +78,6 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
           }
           label={capitalize(t("annotations.empty_media"))}
         />
-        {/* </span> */}
       </Stack>
 
       {observations?.map((observation: Annotation, index: number) => (
