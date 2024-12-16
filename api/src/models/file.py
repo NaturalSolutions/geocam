@@ -17,7 +17,8 @@ class BaseFiles(SQLModel):
     name: str
     extension: str
     bucket: str
-    date: datetime
+    import_date: datetime
+    date:datetime
 
     @property
     def minio_filename(self):
@@ -35,11 +36,12 @@ class Files(BaseFiles, table=True):
     )
     hash: str = Field(index=True)
     name: str = Field(index=True)
-    date: Optional[datetime] = Field(default_factory=datetime.utcnow)
+    import_date: Optional[datetime] = Field(default_factory=datetime.utcnow)
     megadetector_id: Optional[int] = Field(foreign_key="megadetector.id")
     deepfaune_id: Optional[int] = Field(foreign_key="deepfaune.id")
     deployment_id: int = Field(foreign_key="deployments.id")
     treated: bool = Field(default=False)
+    date: Optional[datetime]
     annotations: Optional[List[dict]] = Field(sa_column=Column(JSONB), default=[])
     deployment: "Deployments" = Relationship(back_populates="files")
     

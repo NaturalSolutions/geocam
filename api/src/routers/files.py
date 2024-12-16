@@ -7,6 +7,7 @@ from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
+from src.schemas.file import UpdateFile
 import magic
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
@@ -55,7 +56,7 @@ def get_files(db: Session = Depends(get_db)):
 
 @router.patch("/annotation/{file_id}", response_model=Files)
 def update_annotations(
-    file_id: uuid_pkg.UUID, data: List[Annotation], db: Session = Depends(get_db)
+    file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)
 ):
     return files.update_annotations(db, file_id=file_id, data=data)
 
