@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from sqlmodel import SQLModel
 from src.schemas.schemas import Annotation
 
@@ -16,5 +16,5 @@ class File(SQLModel):
     url: str
 
 class UpdateFile (SQLModel):
-    date: datetime
+    date: Optional[datetime]=None
     annotations: List[Annotation]

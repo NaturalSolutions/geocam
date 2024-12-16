@@ -18,7 +18,7 @@ class BaseFiles(SQLModel):
     extension: str
     bucket: str
     import_date: datetime
-    date:datetime
+    date:Optional[datetime]
 
     @property
     def minio_filename(self):

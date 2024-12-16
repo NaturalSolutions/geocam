@@ -104,7 +104,7 @@ def upload_file(
         name=filename,
         extension=ext,
         bucket=settings.MINIO_BUCKET_NAME,
-        date=datetime.now(),
+        import_date=datetime.now(),
         deployment_id=deployment_id,
     )
     try:

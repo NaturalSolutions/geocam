@@ -22,9 +22,8 @@ interface ObservationTabProps {
 const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
   const { t } = useTranslation();
   const { date, setDate } = useAnnotationContext();
-  const { observations, annotated, treated, checked, handleCheckChange } =
+  const { annotations, annotated, treated, checked, handleCheckChange } =
     useAnnotationContext();
-  console.log(date, typeof date);
 
   return (
     <TabPanel valueTab={valueTab} index={index}>
@@ -80,11 +79,11 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
         />
       </Stack>
 
-      {observations?.map((observation: Annotation, index: number) => (
+      {annotations?.map((annotations: Annotation, index: number) => (
         <ObservationForm
-          key={observation.id}
+          key={annotations.id}
           index={index + 1}
-          observation={observation}
+          observation={annotations}
         />
       ))}
     </TabPanel>

@@ -21,16 +21,15 @@ export function AnnotationContextProvider({ children }) {
     image,
   } = useMainContext();
 
-  const [observations, setObservations] = useState<Annotation[]>([]);
+  const [annotations, setAnnotations] = useState<Annotation[]>([]);
   const [date, setDate] = useState<Date | null>(null);
   const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);
   const [treated, setTreated] = useState<undefined | boolean>(undefined);
   const [isMinimalObservation, setIsMinimalObservation] = useState(
-    observations?.length == 0
+    annotations?.length == 0
   );
-  const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
+  const [checked, setChecked] = useState<boolean>(annotations?.length !== 0);
   const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
-
   const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
   const observationTemplate = {
     id: uuidv4(),
@@ -93,10 +92,10 @@ export function AnnotationContextProvider({ children }) {
   };
 
   const save = () => {
-    FilesService.updateAnnotationsFilesAnnotationFileIdPatch(
-      currentImage,
-      observations
-    )
+    FilesService.updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
+      date,
+      annotations,
+    })
       .then((res) => updateListFile())
       .catch((err) => {
         console.log("Error during annotation saving.");
@@ -115,7 +114,7 @@ export function AnnotationContextProvider({ children }) {
 
   const handleAddObservation = () => {
     if (isMinimalObservation) {
-      setObservations([...observations, observationTemplate]);
+      setAnnotations([...annotations, observationTemplate]);
     }
     if (checked) {
       setChecked(false);
@@ -124,27 +123,27 @@ export function AnnotationContextProvider({ children }) {
   };
 
   const handleDeleteObservation = (id: string) => {
-    let i = observations && observations.findIndex((obs) => obs.id === id);
-    let tmp_obs = [...observations];
+    let i = annotations && annotations.findIndex((obs) => obs.id === id);
+    let tmp_obs = [...annotations];
     i !== -1 && tmp_obs.splice(i, 1);
-    i !== -1 && setObservations(tmp_obs);
-    i === observations.length - 1 && setIsMinimalObservation(true);
+    i !== -1 && setAnnotations(tmp_obs);
+    i === annotations.length - 1 && setIsMinimalObservation(true);
   };
 
   const handleCheckChange = () => {
     if (!checked) {
-      setObservations([]);
+      setAnnotations([]);
       setIsMinimalObservation(true);
     }
     if (checked) {
-      setObservations([...observations, observationTemplate]);
+      setAnnotations([...annotations, observationTemplate]);
       setIsMinimalObservation(false);
     }
     setChecked(!checked);
   };
 
   const handleFormChange = (id: string, params: string, value: string) => {
-    let tmp_obs = [...observations];
+    let tmp_obs = [...annotations];
 
     tmp_obs.forEach((ob) => {
       if (ob.id === id) {
@@ -159,7 +158,7 @@ export function AnnotationContextProvider({ children }) {
         }
       }
     });
-    setObservations(tmp_obs);
+    setAnnotations(tmp_obs);
   };
 
   useEffect(() => {
@@ -172,27 +171,24 @@ export function AnnotationContextProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      image() && setObservations(image().annotations);
+      image() && setAnnotations(image().annotations);
       image() && setTreated(image().treated);
+      image() && setDate(image().date);
     })();
   }, [files, currentImage]);
 
   useEffect(() => {
     (async () => {
-      setChecked(observations?.length === 0);
+      setChecked(annotations?.length === 0);
     })();
-  }, [observations]);
-
-  useEffect(() => {
-    setDate(null);
-  }, [currentImage]);
+  }, [annotations]);
 
   useEffect(() => {
     let fieldToCheck: string[] = [];
-    for (var i = 0; i < observations?.length; i++) {
-      for (const property in observations[i]) {
+    for (var i = 0; i < annotations?.length; i++) {
+      for (const property in annotations[i]) {
         if (fieldsMandatory.includes(property)) {
-          fieldToCheck.push(observations[i][property]);
+          fieldToCheck.push(annotations[i][property]);
         }
       }
     }
@@ -209,8 +205,8 @@ export function AnnotationContextProvider({ children }) {
   return (
     <AnnotationContext.Provider
       value={{
-        observations,
-        setObservations,
+        annotations,
+        setAnnotations,
         annotated,
         setAnnotated,
         treated,
