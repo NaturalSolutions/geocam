@@ -38,6 +38,7 @@ export type { Sites } from './models/Sites';
 export type { Stats } from './models/Stats';
 export type { StatsProject } from './models/StatsProject';
 export type { TemplateSequence } from './models/TemplateSequence';
+export type { UpdateFile } from './models/UpdateFile';
 export type { User } from './models/User';
 export type { UserCreate } from './models/UserCreate';
 export type { ValidationError } from './models/ValidationError';

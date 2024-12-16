@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { Annotation } from '../models/Annotation';
 import type { Body_extract_exif_files_exif__post } from '../models/Body_extract_exif_files_exif__post';
 import type { Body_upload_file_files_upload__deployment_id__post } from '../models/Body_upload_file_files_upload__deployment_id__post';
 import type { Body_upload_files_files_upload_deployment__deployment_id__post } from '../models/Body_upload_files_files_upload_deployment__deployment_id__post';
@@ -11,6 +10,7 @@ import type { Body_upload_files_files_upload_project__project_id__post } from '.
 import type { Body_upload_files_files_upload_site__site_id__post } from '../models/Body_upload_files_files_upload_site__site_id__post';
 import type { Body_upload_zip_files_upload_zip__deployment_id__post } from '../models/Body_upload_zip_files_upload_zip__deployment_id__post';
 import type { Files } from '../models/Files';
+import type { UpdateFile } from '../models/UpdateFile';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -42,7 +42,7 @@ export class FilesService {
      */
     public static updateAnnotationsFilesAnnotationFileIdPatch(
         fileId: string,
-        requestBody: Array<Annotation>,
+        requestBody: UpdateFile,
     ): CancelablePromise<Files> {
         return __request(OpenAPI, {
             method: 'PATCH',

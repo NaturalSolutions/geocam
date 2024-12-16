@@ -5,6 +5,7 @@ coverage.xml
 .pytest_cache
 htmlcov
 .vscode-server/
+.cache
 
 # dossier d'image pour l'insertion en base de données
 img/

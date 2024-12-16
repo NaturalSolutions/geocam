@@ -16,7 +16,8 @@
   },
   "medias": {
     "media": "média",
-    "medias": "médias"
+    "medias": "médias",
+    "date_time_field": "Date et heure du média"
   },
   "deployments": {
     "annotation": "annotation",
