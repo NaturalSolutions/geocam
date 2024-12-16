@@ -14,25 +14,32 @@ const ThumbnailDeviceComponent = () => {
   useEffect(() => {
     setDeviceData(device());
     if (deviceData) {
-      DevicesService.readDeviceThumbnail(deviceData.id).then((res) => {
-        setThumbnail(res[0].url);
-        fetch(res[0].url).then((r) => {
-          if (r.status != 200) {
-            setThumbnail(null);
-          }
+      deviceData.id &&
+        DevicesService.fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
+          deviceData.id
+        ).then((res) => {
+          setThumbnail(res[0].url);
+          fetch(res[0].url).then((r) => {
+            if (r.status != 200) {
+              setThumbnail(null);
+            }
+          });
         });
-      });
     }
   }, [deviceData]);
 
   const saveThumbnail = async () => {
-    if (deviceData) {
-      FilesService.uploadDeviceFile(deviceData.id, { file }).then((res) => {
-        DevicesService.readDeviceThumbnail(deviceData.id).then((res) => {
-          setThumbnail(res[0].url);
-        });
+    deviceData.id &&
+      FilesService.uploadFilesFilesUploadDeviceDeviceIdPost(deviceData.id, {
+        file,
+      }).then((res) => {
+        deviceData.id &&
+          DevicesService.fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
+            deviceData.id
+          ).then((res) => {
+            setThumbnail(res[0].url);
+          });
       });
-    }
 
     setModifyState(false);
   };

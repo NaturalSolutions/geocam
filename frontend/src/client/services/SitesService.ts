@@ -35,23 +35,6 @@ export class SitesService {
         });
     }
 
-    public static getSitesNumber(
-        skip?: number,
-        limit: number = 100,
-    ): CancelablePromise<number> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/sites/length',
-            query: {
-                'skip': skip,
-                'limit': limit,
-            },
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
     /**
      * Create Site
      * @param requestBody
@@ -66,6 +49,31 @@ export class SitesService {
             url: '/sites/',
             body: requestBody,
             mediaType: 'application/json',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Length Sites
+     * @param skip
+     * @param limit
+     * @returns number Successful Response
+     * @throws ApiError
+     */
+    public static lengthSitesSitesLengthGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<number> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/sites/length',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
             errors: {
                 404: `Not found`,
                 422: `Validation Error`,
@@ -143,8 +151,14 @@ export class SitesService {
         });
     }
 
-    public static readSiteThumbnail(
-        siteId: number | undefined,
+    /**
+     * Fetch Site Thumbnail
+     * @param siteId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static fetchSiteThumbnailSitesFetchSiteThumbnailSiteIdGet(
+        siteId: number,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',

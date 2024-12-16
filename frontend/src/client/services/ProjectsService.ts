@@ -183,12 +183,14 @@ export class ProjectsService {
 
     /**
      * Get Stats Projects
+     * @param skip
+     * @param limit
      * @returns StatsProject Successful Response
      * @throws ApiError
      */
     public static getStatsProjectsProjectsStatsProjectsGet(
         skip?: number,
-        limit?: number | undefined
+        limit: number = 100,
     ): CancelablePromise<Array<StatsProject>> {
         return __request(OpenAPI, {
             method: 'GET',
@@ -199,16 +201,32 @@ export class ProjectsService {
             },
             errors: {
                 404: `Not found`,
+                422: `Validation Error`,
             },
         });
     }
 
-    public static getProjectsLength(): CancelablePromise<number> {
+    /**
+     * Length Projects
+     * @param skip
+     * @param limit
+     * @returns number Successful Response
+     * @throws ApiError
+     */
+    public static lengthProjectsProjectsLengthGet(
+        skip?: number,
+        limit: number = 100,
+    ): CancelablePromise<number> {
         return __request(OpenAPI, {
             method: 'GET',
             url: '/projects/length/',
+            query: {
+                'skip': skip,
+                'limit': limit,
+            },
             errors: {
                 404: `Not found`,
+                422: `Validation Error`,
             },
         });
     }
@@ -235,7 +253,6 @@ export class ProjectsService {
         });
     }
 
-
     /**
      * Get First Untreated File
      * @param projectId
@@ -258,26 +275,26 @@ export class ProjectsService {
         });
     }
 
-        /**
-     * Read Deployment Files
-     * @param deploymentId
+    /**
+     * Fetch Project Thumbnail
+     * @param projectId
      * @returns any Successful Response
      * @throws ApiError
      */
-        public static readProjectThumbnail(
-            projectId: number | undefined,
-        ): CancelablePromise<any> {
-            return __request(OpenAPI, {
-                method: 'GET',
-                url: '/projects/fetch_project_thumbnail/{project_id}',
-                path: {
-                    'project_id': projectId,
-                },
-                errors: {
-                    404: `Not found`,
-                    422: `Validation Error`,
-                },
-            });
-        }
+    public static fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
+        projectId: number,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/projects/fetch_project_thumbnail/{project_id}',
+            path: {
+                'project_id': projectId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
 
 }

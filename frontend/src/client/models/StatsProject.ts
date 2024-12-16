@@ -14,5 +14,6 @@ export type StatsProject = {
     site_number: number;
     device_number: number;
     targeted_species?: string;
+    url?: string;
 };
 
