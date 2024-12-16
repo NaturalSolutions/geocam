@@ -13,25 +13,33 @@ const ThumbnailSitesComponent = () => {
   useEffect(() => {
     setActualSite(site());
     if (actualSite) {
-      console.log(actualSite.id);
-      SitesService.readSiteThumbnail(actualSite.id).then((res) => {
-        setThumbnail(res[0].url);
-        fetch(res[0].url).then((r) => {
-          if (r.status != 200) {
-            setThumbnail(null);
-          }
+      actualSite.id &&
+        SitesService.fetchSiteThumbnailSitesFetchSiteThumbnailSiteIdGet(
+          actualSite.id
+        ).then((res) => {
+          setThumbnail(res[0].url);
+          fetch(res[0].url).then((r) => {
+            if (r.status != 200) {
+              setThumbnail(null);
+            }
+          });
         });
-      });
     }
   }, [actualSite]);
 
   const saveThumbnail = async () => {
     if (actualSite) {
-      FilesService.uploadSiteFile(actualSite.id, { file }).then((res) => {
-        SitesService.readSiteThumbnail(actualSite.id).then((res) => {
-          setThumbnail(res[0].url);
+      actualSite.id &&
+        FilesService.uploadFilesFilesUploadSiteSiteIdPost(actualSite.id, {
+          file,
+        }).then((res) => {
+          actualSite.id &&
+            SitesService.fetchSiteThumbnailSitesFetchSiteThumbnailSiteIdGet(
+              actualSite.id
+            ).then((res) => {
+              setThumbnail(res[0].url);
+            });
         });
-      });
     }
 
     setModifyState(false);
