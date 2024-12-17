@@ -7,7 +7,7 @@ import { useAnnotationContext } from "../../contexts/annotationContext";
 import { FC } from "react";
 import { Annotation } from "../../client/models/Annotation";
 import NestedList from "../common/collapsableButton";
-// import TraitInput from "./TraitInput";
+import TraitInput from "./TraitInput";
 
 interface ObservationFormProps {
     observation: Annotation;
@@ -83,31 +83,35 @@ const ObservationForm: FC<ObservationFormProps> = ({
                 </Grid>
             </Grid>
             <NestedList>
-                {/* <Grid container spacing={1}>
+                <Grid container spacing={1}>
                     <TraitInput 
-                        type="biological_state" 
+                        type="biological_state"
+                        observation={ observation }
                     />
                     <TraitInput 
                         type="sex" 
+                        observation={ observation }
                     />
                     <TraitInput 
                         type="behaviour" 
+                        observation={ observation }
                     />
                     <TraitInput 
                         type="life_stage" 
+                        observation={ observation }
                     />
-                </Grid> */}
-                <Grid item lg={12} xs={12}>
-                    <TextField
-                        id="comments"
-                        name="comments"
-                        label={ capitalize(t("main.comments")) }
-                        size="small"
-                        variant="filled"
-                        value={ observation.comments}
-                        onChange={ (e) => handleFormChange(observation.id, "comments", e.target.value) }
-                        fullWidth
-                    />
+                    <Grid item lg={12} xs={12}>
+                        <TextField
+                            id="comments"
+                            name="comments"
+                            label={ capitalize(t("main.comments")) }
+                            size="small"
+                            variant="filled"
+                            value={ observation.comments}
+                            onChange={ (e) => handleFormChange(observation.id, "comments", e.target.value) }
+                            fullWidth
+                        />
+                    </Grid>
                 </Grid>
             </NestedList>
         </form>

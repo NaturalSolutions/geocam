@@ -26,6 +26,10 @@ services:
     ports:
       - "5666:5666"
 
+  nomenclapi:
+    ports:
+      - "5777:5777"
+
   frontend:
     build:
       context: ../frontend
