@@ -32,7 +32,7 @@ def download_and_parse_data():
                     if ncol == 4:
                         df.columns = ["TYPE", "LABEL", "CODE", "PRECISION"]
                         df["TYPE"] = df["TYPE"].fillna(method="ffill")
-                        df["LABEL"] = df["TYPE"] + df["LABEL"].fillna("").astype(
+                        df["LABEL"] = df["TYPE"].str.capitalize() + df["LABEL"].fillna("").astype(
                             str
                         ).apply(lambda x: f" - {x.capitalize()}" if x != "" else "")
                     df = df.where(pd.notnull(df), None)
