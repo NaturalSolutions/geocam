@@ -56,10 +56,7 @@ services:
 
   deepfaune:
     <<: *project_defaults
-    build:
-      context: ../deepfaune
-      dockerfile: Dockerfile
-      target: development
+    image: registry.gitlab.com/natural-solutions/deepfaune-ns:latest
     depends_on:
       broker:
         condition: service_healthy
