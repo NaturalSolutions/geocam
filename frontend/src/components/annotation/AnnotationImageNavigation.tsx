@@ -24,16 +24,6 @@ const AnnotationImageNavigation = () => {
                 justifyContent="center"
                 alignItems="center"
             >
-                {/* <IconButton>
-                    <PhotoIcon />
-                </IconButton>
-
-                <Switch />
-                
-                <IconButton>
-                    <GridViewIcon fontSize="large" />
-                </IconButton> */}
-
                 <IconButton onClick={() => lastOrFirstImage("first")}>
                     <FastRewindIcon fontSize="large" />
                 </IconButton>
