@@ -10,7 +10,9 @@
     "media_not_processed": "média non traité",
     "media_processed_manually": "média traité manuellement",
     "metadata": "métadonnées",
-    "unknown_image": "image inconnue"
+    "unknown_image": "image inconnue",
+    "delete": "Supprimer un média du deploiement.",
+    "delete_desc": "Etes vous sûr de vouloir supprimer ce média ?"
   },
   "medias": {
     "media": "média",
@@ -57,7 +59,8 @@
     "status": "statut",
     "stock": "stock",
     "warning": "pas de fiche pour ce dispositif",
-    "warning_msg": "vous n'avez pas de pièges photographiques enregistrés"
+    "warning_msg": "vous n'avez pas de pièges photographiques enregistrés",
+    "historic_message": "Ce dispositif n'a jamais été déployé"
   },
   "languageSelector": {
     "en": "English",
@@ -98,7 +101,10 @@
     "unavailable": "désolé, cette fonctionnalité n'est pas encore disponible !",
     "warning": "attention",
     "yes": "oui",
-    "zero": "aucun"
+    "zero": "aucun",
+    "project_name": "nom du projet",
+    "deployment_name":"nom du déploiement",
+    "account": "Mon compte"
   },
   "observations": {
     "new": "nouvelle observation",
@@ -111,7 +117,7 @@
     "add_member": "ajouter un membre",
     "administrators": "administrateurs",
     "alert": "attention !",
-    "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet.",
+    "alert_msg": "vous n'avez pas de déploiements déclarés pour ce projet. Veuillez en créer un pour importer des médias",
     "annotators": "annotateurs",
     "change_on_project": "modification du projet",
     "community_study": "etude de communauté",

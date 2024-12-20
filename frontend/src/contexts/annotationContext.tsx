@@ -28,6 +28,7 @@ export function AnnotationContextProvider({ children }) {
     const [isMinimalObservation, setIsMinimalObservation] = useState(observations?.length == 0);
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
     const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
+    const [annotationView, setAnnotationView] = useState(0); // 0: unique media, 1: grid
 
     const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
     const observationTemplate = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
@@ -193,6 +194,7 @@ export function AnnotationContextProvider({ children }) {
                 isMinimalObservation, setIsMinimalObservation,
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
+                annotationView, setAnnotationView,
 
                 handleCloseSaveErrorDialog,
                 updateUrl,

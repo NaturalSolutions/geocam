@@ -12,6 +12,7 @@ from src.models.deployment import (
     ReadDeployment,
 )
 from src.services import deployment
+from src.connectors import s3
 
 router = APIRouter(
     prefix="/deployments",
@@ -82,3 +83,17 @@ def read_device_deployments(
     device_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)
 ):
     return deployment.get_device_deployments(db=db, device_id=device_id, skip=skip, limit=limit)
+
+@router.get("/fetch_deployment_thumbnail/{deployment_id}")
+def fetch_deployment_thumbnail(
+    deployment_id: int,
+    db: Session = Depends(get_db)
+):
+    current_deployment = deployment.get_deployment(db=db, deployment_id=deployment_id)
+    res = []
+    new_f = current_deployment.dict()
+    if(current_deployment.image != None):
+        url = s3.get_url(current_deployment.image)
+        new_f["url"] = url
+        res.append(new_f)
+        return res

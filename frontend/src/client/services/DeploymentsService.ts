@@ -226,4 +226,20 @@ export class DeploymentsService {
         });
     }
 
+    public static readDeploymentThumbnail(
+        deploymentId: number | undefined,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/deployments/fetch_deployment_thumbnail/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
 }

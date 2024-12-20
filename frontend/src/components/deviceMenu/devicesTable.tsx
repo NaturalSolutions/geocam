@@ -21,13 +21,16 @@ import {
   TableRow,
   Typography,
   capitalize,
+  Grid,
+  TableSortLabel,
 } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
 import ClearTwoToneIcon from "@mui/icons-material/ClearTwoTone";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import DialogYesNo from "../common/dialogYesNo";
+import Map from "../Map";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -46,9 +49,48 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DevicesTable = () => {
-  const { deviceMenu } = useMainContext();
-  const [open, setOpen] = useState(false);
+  const {
+    deviceMenu,
+    projects,
+    sites,
+    updateDeviceMenu,
+    updateSites,
+    devices,
+    updateDevices,
+  } = useMainContext();
+  const [position, setPosition] = useState<any>([]);
+  const [page, setPage] = useState<number>(0);
 
+  const updateProjectSheetDataFromDevice = () => {
+    if (deviceMenu && deviceMenu.length > 0) {
+      deviceMenu.map((element) => {
+        projects.forEach((project) => {
+          project.deployments.map((elem) => {
+            if (element.id == elem.device_id && element.status === "Déployé") {
+              let pos = sites.find((site) => site.id == elem.site_id);
+
+              setPosition((position) => [
+                ...position,
+                { lat: pos.latitude, lng: pos.longitude, name: pos.name },
+              ]);
+            }
+          });
+        });
+      });
+    }
+  };
+  useEffect(() => {
+    const skip = Math.abs(page * rowsPerPage);
+    updateSites();
+    updateDeviceMenu(skip, rowsPerPage);
+  }, []);
+
+  useEffect(() => {
+    updateProjectSheetDataFromDevice();
+    console.log(deviceMenu);
+  }, [deviceMenu, sites]);
+
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
   const handleClickOpen = () => {
@@ -58,22 +100,38 @@ const DevicesTable = () => {
   const handleClose = () => {
     setOpen(false);
   };
-  const [page, setPage] = useState(0);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
+    const skip = Math.abs(newPage * rowsPerPage);
+    updateDeviceMenu(skip, rowsPerPage);
   };
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    setRowsPerPage(+event.target.value);
     setPage(0);
+
+    updateDeviceMenu(page, event.target.value);
   };
 
   return deviceMenu.length !== 0 ? (
     <Stack spacing={2} justifyContent="center">
+      <Grid container justifyContent="center" alignItems="center">
+        <Grid
+          container
+          item
+          justifyContent="center"
+          height={400}
+          width={1000}
+          spacing={1}
+          style={{ backgroundColor: "#D9D9D9" }}
+        >
+          {<Map position={position} zoom={2} />}
+        </Grid>
+      </Grid>
       <TableContainer component={Paper}>
         <Table
           sx={{ minWidth: 500 }}
@@ -98,11 +156,13 @@ const DevicesTable = () => {
           </TableHead>
           <TableBody>
             {deviceMenu
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              // .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => (
                 <StyledTableRow key={row.name}>
                   <StyledTableCell align="center">
-                    <Link component={RouterLink} to={`/devices/${row.id}`}>{row.name}</Link>
+                    <Link component={RouterLink} to={`/devices/${row.id}`}>
+                      {row.name}
+                    </Link>
                   </StyledTableCell>
                   <StyledTableCell align="center">{row.status}</StyledTableCell>
                   <StyledTableCell align="center">
@@ -118,10 +178,11 @@ const DevicesTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={deviceMenu.length}
+        count={devices.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -148,7 +209,12 @@ const DevicesTable = () => {
           <Typography>{capitalize(t("main.unavailable"))}</Typography>
         </DialogContent>
         <Divider />
-        <DialogYesNo onYes={ () => { return } } onNo={ handleClose } />
+        <DialogYesNo
+          onYes={() => {
+            return;
+          }}
+          onNo={handleClose}
+        />
       </Dialog>
     </Stack>
   ) : (

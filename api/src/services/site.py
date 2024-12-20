@@ -34,7 +34,14 @@ def update_site(db: Session, site: SiteBase, id: int):
     db.refresh(db_site)
     return db_site
 
-
+def update_site_image(db: Session, id: int, image: str):
+    db_site = db.query(Sites).filter(Sites.id == id).first()
+    db_site.image = image
+    db.commit()
+    db.refresh(db_site)
+    return db_site
+    
+       
 def delete_site(db: Session, id: int):
     db_site = db.query(Sites).filter(Sites.id == id).first()
     db.delete(db_site)

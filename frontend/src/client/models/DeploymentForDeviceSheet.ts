@@ -2,8 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-
-export type DeploymentForProjectSheet = {
+export type DeploymentForDeviceSheet = {
     name: string;
     start_date: string;
     end_date?: string;
@@ -11,6 +10,7 @@ export type DeploymentForProjectSheet = {
     device_id: number;
     id: number;
     site_name?: string;
-    device_name?: string;
+    project_name?: string;
+    nb_images?: number;
 };
 
