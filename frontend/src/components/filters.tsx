@@ -48,6 +48,16 @@ const MediaFilters = (props) => {
     },
   ];
 
+  const updateParentFilters = () => {
+    props.onFilterChange({
+      date: date,
+    });
+  };
+
+  useEffect(() => {
+    updateParentFilters();
+  }, [date]);
+
   return (
     <Box
       component="form"
