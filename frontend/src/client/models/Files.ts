@@ -7,6 +7,7 @@ export type Files = {
     name: string;
     extension: string;
     bucket: string;
+    import_date?: string;
     date?: string;
     id?: string;
     megadetector_id?: number;

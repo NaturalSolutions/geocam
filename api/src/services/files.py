@@ -7,6 +7,7 @@ from typing import List
 from fastapi import HTTPException
 from sqlmodel import Session
 
+from src.schemas.file import UpdateFile
 from src.config import settings
 from src.connectors import s3
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
@@ -57,7 +58,7 @@ def create_file_device(db: Session, file: CreateDeviceFile):
     db.refresh(db_file)
     return db_file
 
-def update_annotations(db: Session, file_id: int, data: List[Annotation]):
+def update_annotations(db: Session, file_id: int, data: UpdateFile):
     db_file = get_file(db=db, file_id=file_id)
     if db_file is None:
         raise HTTPException(
@@ -65,13 +66,13 @@ def update_annotations(db: Session, file_id: int, data: List[Annotation]):
             detail="No file found",
         )
     # update des annotations
-    db_file.annotations = [d.dict() for d in data]
+    db_file.annotations = [d.dict() for d in data.annotations]
+    db_file.date = data.date
     # update du statut de traitement du média
     db_file.treated = True
     db.commit()
     db.refresh(db_file)
     return db_file
-
 
 def delete_file(db: Session, id: int):
     db_file = db.query(Files).filter(Files.id == id).first()
@@ -103,7 +104,7 @@ def upload_file(
         name=filename,
         extension=ext,
         bucket=settings.MINIO_BUCKET_NAME,
-        date=datetime.now(),
+        import_date=datetime.now(),
         deployment_id=deployment_id,
     )
     try:
