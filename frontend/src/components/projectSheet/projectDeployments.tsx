@@ -20,6 +20,8 @@ import { useEffect, useState } from "react";
 import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
+import Filters from "../deviceMenu/filters";
+import { Sites } from "../../client/models/Sites";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -40,7 +42,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const ProjectDeployments = () => {
   const { t } = useTranslation();
   const { projectSheetData, sites, devices } = useMainContext();
-
+  const [siteList, setSiteList] = useState<Sites[]>([]);
+  const [deployments, setDeployments] = useState(projectSheetData.deployments);
   const [sortType, setSortType] = useState<"asc" | "desc" | undefined>("asc"); // État pour suivre le type de tri (ascendant ou descendant)
   const [sortBy, setSortBy] = useState("name"); // État pour suivre la colonne par laquelle trier
 
@@ -157,8 +160,67 @@ const ProjectDeployments = () => {
     );
   };
 
+  useEffect(() => {
+    if (sortBy === "name") {
+      sortByName(projectSheetData.deployments, sortType);
+    } else {
+      sortByDate(projectSheetData.deployments, sortType);
+    }
+  });
+
+  const [filterValues, setFilterValues] = useState({
+    name: null,
+    start_date: null,
+    end_date: null,
+    site: null,
+    device: null,
+  });
+
+  // Fonction de rappel pour recevoir les valeurs des filtres
+  const handleFilterChange = (filters) => {
+    setFilterValues(filters);
+  };
+  console.log("Valeurs des filtres mises à jour :", filterValues);
+
+  const filterData = (data, filters) => {
+    return data.filter((item) => {
+      const itemStartDate = new Date(item.start_date);
+      const filterStartDate = filters.start_date
+        ? new Date(filters.start_date)
+        : null;
+      const filterEndDate = filters.end_date
+        ? new Date(filters.end_date)
+        : null;
+
+      // Vérifiez les dates
+      const isWithinDateRange =
+        (!filterStartDate || itemStartDate >= filterStartDate) &&
+        (!filterEndDate || itemStartDate <= filterEndDate);
+
+      // Vérifiez le site et le device
+      const isSiteMatch = !filters.site_id || item.site_id === filters.site_id;
+      const isDeviceMatch =
+        !filters.device_id || item.device_id === filters.device_id;
+
+      // Vérifiez l'ID correspondant à name
+      const isNameMatch = !filters.name || item.id === filters.name;
+
+      return isWithinDateRange && isSiteMatch && isDeviceMatch && isNameMatch;
+    }); // Retournez uniquement les `id`
+  };
+
+  useEffect(() => {
+    const data = filterData(projectSheetData.deployments, filterValues);
+    console.log("My data filtered", data);
+    setDeployments(data);
+  }, [filterValues]);
+
   return projectSheetData.deployments.length !== 0 ? (
-    <Stack spacing={2} justifyContent="center">
+    <Stack spacing={0} justifyContent="center">
+      <Filters
+        list={projectSheetData.deployments}
+        onFilterChange={handleFilterChange}
+      />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ backgroundColor: "#CCDFD9" }}>
@@ -211,7 +273,7 @@ const ProjectDeployments = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {projectSheetData.deployments.map((row, k) => (
+            {deployments.map((row, k) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell align="center">
                   {
