@@ -40,7 +40,15 @@ const Filters = (props) => {
   const getLists = () => {
     props.list.forEach((item) => {
       const itemSite = site(item.site_id);
-      setSiteList([...siteList, itemSite]);
+      console.log("item", item);
+      console.log("site trouvé", itemSite);
+      setSiteList((prevSiteList) => {
+        // Vérifie si l'élément existe déjà
+        if (!prevSiteList.some((site) => site.id === itemSite.id)) {
+          return [...prevSiteList, itemSite];
+        }
+        return prevSiteList; // Ne modifie pas si le site est déjà présent
+      });
     });
   };
 
@@ -51,14 +59,14 @@ const Filters = (props) => {
     });
   };
 
-  // const optionsSite = getLists();
+  console.log("siteList", siteList);
 
   useEffect(() => {
-    setSiteList([]);
     getLists();
     setDeviceList([]);
     getDevices();
-  }, [currentProject, deployments]);
+    console.log("hello");
+  }, [currentProject, deployments, sites, devices]);
 
   // Mettez à jour le parent lorsque les filtres changent
   const updateParentFilters = () => {
@@ -74,6 +82,8 @@ const Filters = (props) => {
   useEffect(() => {
     updateParentFilters();
   }, [start_date, end_date, name, dName, sNname]); // Mettre à jour à chaque changement
+
+  console.log(sNname);
 
   return (
     <Box

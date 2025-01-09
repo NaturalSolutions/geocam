@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
-import Filters from "../deviceMenu/filters";
+import Filters from "./filters";
 import { Sites } from "../../client/models/Sites";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -211,7 +211,6 @@ const ProjectDeployments = () => {
 
   useEffect(() => {
     const data = filterData(projectSheetData.deployments, filterValues);
-    console.log("My data filtered", data);
     setDeployments(data);
   }, [filterValues]);
 
