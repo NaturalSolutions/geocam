@@ -29,7 +29,7 @@ const LayoutAnnotationForm = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     gridColumn: "1/13",
     gridRow: "5/9",
-  },²²
+  },
   overflowY: "scroll",
 }));
 
