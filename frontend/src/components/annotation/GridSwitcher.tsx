@@ -7,15 +7,15 @@ import { useMainContext } from "../../contexts/mainContext";
 
 const GridSwitcher = () => {
     const { image } = useMainContext();
-    const { annotationView, setAnnotationView, setObservations } = useAnnotationContext(); 
+    const { gridView, setGridView, setObservations } = useAnnotationContext(); 
 
     const handleAnnotationSwitcher = () => {
-        if(annotationView) {
-            setAnnotationView(0);
+        if(gridView) {
+            setGridView(0);
             setObservations(image().annotations)
         };
-        if(!annotationView) {
-            setAnnotationView(1)
+        if(!gridView) {
+            setGridView(1)
             setObservations([]);
         };
     }; 
