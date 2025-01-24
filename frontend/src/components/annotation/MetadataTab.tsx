@@ -1,28 +1,37 @@
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import { Alert, capitalize } from "@mui/material";
 import TabPanel from "../tabPanel";
+import { useAnnotationContext } from "../../contexts/annotationContext";
+import NestedList from "../common/collapsableButton";
+import AlertUnavailable from "../common/AlertUnavailable";
 
 interface MetadataTabProps {
     valueTab: number;
     index: number;
 };
 
-
 const MetadataTab: FC<MetadataTabProps> = ({
     valueTab,
     index
 }) => {
-    const { t } = useTranslation();
+    const { selectedMedias } = useAnnotationContext();
+    const { gridView } = useAnnotationContext();
 
     return(
+        
         <TabPanel 
             valueTab={ valueTab } 
             index={ index }
         >
-            <Alert severity="info">
-                { capitalize(t("main.unavailable")) }
-            </Alert>
+            { gridView ? 
+                (selectedMedias.map((item) => (
+                    <NestedList 
+                        text={ item.name }
+                    >
+                        <AlertUnavailable/>
+                    </NestedList>
+            ))) :
+                <AlertUnavailable/>
+            }
         </TabPanel >
     )
 };

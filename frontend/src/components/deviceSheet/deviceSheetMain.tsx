@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
-import { Alert, Stack, Typography, capitalize } from "@mui/material";
+import { Stack, Typography, capitalize } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -25,6 +25,7 @@ import DeviceData from "./deviceData";
 import { useTranslation } from "react-i18next";
 import { DeploymentForDeviceSheet, DeploymentsService } from "../../client";
 import { FilesService } from "../../client";
+import AlertUnavailable from "../common/AlertUnavailable";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -135,9 +136,7 @@ const DeviceSheet = () => {
           {capitalize(t("devices.history"))}
         </Typography>
         {historyDeployment.length === 0 ? (
-          <Alert severity="info">
-            {capitalize(t("devices.historic_message"))}
-          </Alert>
+          <AlertUnavailable />
         ) : (
           <TableContainer component={Paper}>
             <Table
