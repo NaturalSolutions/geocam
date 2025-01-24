@@ -1,19 +1,18 @@
-import { Box, Button, Modal, Stack, capitalize } from "@mui/material";
+import { Button, Stack, capitalize } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import ButtonModify from "../common/buttonModify";
 import ButtonValidate from "../common/buttonValidate";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AlertDialog from "../common/dialogSaveOrQuit";
 import { useMainContext } from "../../contexts/mainContext";
 import { FilesService } from "../../client";
 
 const AnnotationButtons = () => {
   const { t } = useTranslation();
-  const { image, projects, project, deploymentData } = useMainContext();
-  const { saveandnext, handleAddObservation } = useAnnotationContext();
+  const { image } = useMainContext();
+  const { saveandnext, handleAddObservation, annotationButtonDisabled } = useAnnotationContext();
   const [confirmationDelete, setConfirmationDelete] = useState<boolean>(false);
-  const [img, setImg] = useState<any>(null);
 
   const toggleModalDelete = () => {
     setConfirmationDelete(!confirmationDelete);
@@ -41,6 +40,7 @@ const AnnotationButtons = () => {
     <Stack direction="row" justifyContent="space-between" height="auto">
       <Stack direction="row" justifyContent="flex-start" spacing={2}>
         <ButtonModify
+          disabled={ annotationButtonDisabled }
           content={capitalize(t("observations.new"))}
           edit={() => handleAddObservation()}
           startIcon="add"
@@ -61,6 +61,7 @@ const AnnotationButtons = () => {
       </Stack> */}
       <Stack justifyContent="flex-end">
         <ButtonValidate
+          disabled={ annotationButtonDisabled }
           content={capitalize(t("main.save_and_continue"))}
           validate={() => saveandnext()}
         />

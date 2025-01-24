@@ -30,6 +30,7 @@ export function AnnotationContextProvider({ children }) {
     const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
     const [gridView, setGridView] = useState(0); // 0: unique media, 1: grid
     const [selectedMedias, setSelectedMedias] = useState<any[]>([]);
+    const [annotationButtonDisabled, setAnnotationButtonDisabled] = useState(false);
 
     const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
     const observationTemplate = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
@@ -203,6 +204,7 @@ export function AnnotationContextProvider({ children }) {
                 openSaveErrorDialog, setOpenSaveErrorDialog,
                 gridView, setGridView,
                 selectedMedias, setSelectedMedias,
+                annotationButtonDisabled, setAnnotationButtonDisabled,
 
                 handleCloseSaveErrorDialog,
                 updateUrl,
