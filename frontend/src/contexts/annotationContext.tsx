@@ -1,3 +1,5 @@
+import { capitalize } from "@mui/material";
+import { t } from "i18next";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
@@ -27,7 +29,7 @@ export function AnnotationContextProvider({ children }) {
     const [treated, setTreated] = useState<undefined | boolean>(undefined);
     const [isMinimalObservation, setIsMinimalObservation] = useState(observations?.length == 0);
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
-    const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
+    const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState({state: false, text: ""});
     const [gridView, setGridView] = useState(0); // 0: unique media, 1: grid
     const [selectedMedias, setSelectedMedias] = useState<any[]>([]);
     const [annotationButtonDisabled, setAnnotationButtonDisabled] = useState(false);
@@ -36,7 +38,7 @@ export function AnnotationContextProvider({ children }) {
     const observationTemplate = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
 
     const handleCloseSaveErrorDialog = () => {
-        setOpenSaveErrorDialog(false);
+        setOpenSaveErrorDialog({state: false, text: ""});
     };
 
     const updateUrl = (id) => {
@@ -78,6 +80,18 @@ export function AnnotationContextProvider({ children }) {
     };
 
     const save = () => {
+        let toSave = false;
+
+        if (!gridView) {
+            toSave = true;
+        };
+        if (gridView && selectedMedias.length > 0) {
+            toSave = true;
+        };
+
+        if (!toSave) {
+            setOpenSaveErrorDialog({state: true, text: capitalize(t("annotations.cannot_save_no_media_selected"))});
+        }
         FilesService
             .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
             .then(res =>
@@ -95,7 +109,7 @@ export function AnnotationContextProvider({ children }) {
             next();
         }
         else {
-            setOpenSaveErrorDialog(true);
+            setOpenSaveErrorDialog({state: true, text: capitalize(t("annotations.cannot_save_species"))});
         }
     };
 
