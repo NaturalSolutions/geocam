@@ -9,7 +9,7 @@ import { useAnnotationContext } from "../../contexts/annotationContext";
 export default function AnnotationImage() {
   const { t } = useTranslation();
   const { image } = useMainContext();
-  const { annotationView } = useAnnotationContext();
+  const { gridView } = useAnnotationContext();
 
   return (
     <>
@@ -20,7 +20,7 @@ export default function AnnotationImage() {
           className="pageContainer"
           sx={{ overflow: "auto" }}
         >
-          { annotationView ? (
+          { gridView ? (
             <AnnotationGalleryDisplay />
           ) : (
             <Grid>

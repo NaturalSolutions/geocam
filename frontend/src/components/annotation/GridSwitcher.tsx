@@ -28,7 +28,7 @@ const GridSwitcher = () => {
             alignItems="center"
         >
             <PhotoIcon />
-            <Switch onClick={ handleAnnotationSwitcher } />
+            <Switch checked={ gridView } onClick={ handleAnnotationSwitcher } />
             <GridViewIcon fontSize="large" />
         </Grid>
     )
