@@ -29,6 +29,7 @@ export function AnnotationContextProvider({ children }) {
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
     const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
     const [gridView, setGridView] = useState(0); // 0: unique media, 1: grid
+    const [selectedMedias, setSelectedMedias] = useState<any[]>([]);
 
     const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
     const observationTemplate = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
@@ -185,6 +186,12 @@ export function AnnotationContextProvider({ children }) {
         setAnnotated(result)
     }, [handleCheckChange]);
     
+    useEffect(() => {
+        if (!gridView) {
+          setSelectedMedias([]);
+        }
+    }, [gridView]);
+
     return(
         <AnnotationContext.Provider 
             value={{
@@ -195,6 +202,7 @@ export function AnnotationContextProvider({ children }) {
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
                 gridView, setGridView,
+                selectedMedias, setSelectedMedias,
 
                 handleCloseSaveErrorDialog,
                 updateUrl,
