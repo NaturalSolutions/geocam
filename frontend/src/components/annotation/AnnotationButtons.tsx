@@ -22,14 +22,14 @@ const AnnotationButtons = () => {
     setConfirmationDelete(false);
   };
 
-  const deleteMedia = () => {
-    FilesService.deleteDeploymentMediaFile(
-      get_file_name(image().url),
-      image().name
-    ).then((res) => {});
+  // const deleteMedia = () => {
+  //   FilesService.deleteDeploymentMediaFile(
+  //     get_file_name(image().url),
+  //     image().name
+  //   ).then((res) => {});
 
-    setConfirmationDelete(false);
-  };
+  //   setConfirmationDelete(false);
+  // };
 
   const get_file_name = (fileName) => {
     // Cette expression régulière correspond à tous les types d'extensions d'images mentionnés
