@@ -7,6 +7,7 @@ from sqlmodel import Field
 class Annotation(BaseModel):
     id: str
     id_annotation: str
+    id_group: str
     classe: str
     family: str
     genus: str
