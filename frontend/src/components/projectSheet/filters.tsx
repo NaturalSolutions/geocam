@@ -55,11 +55,14 @@ const Filters = (props) => {
   const getDevices = () => {
     props.list.forEach((item) => {
       const itemDevice = device(item.device_id);
-      setDeviceList([...deviceList, itemDevice]);
+      setDeviceList((prevSiteList) => {
+        if (!prevSiteList.some((device) => device.id === itemDevice.id)) {
+          return [...prevSiteList, itemDevice];
+        }
+        return prevSiteList; // Ne modifie pas si le site est déjà présent
+      });
     });
   };
-
-  console.log("siteList", siteList);
 
   useEffect(() => {
     getLists();
@@ -102,7 +105,7 @@ const Filters = (props) => {
           value={name} // Valeur sélectionnée
           onChange={(event, newValue) => setName(newValue!)} // Mise à jour de la valeur
           renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth />
+            <TextField {...params} variant="outlined" fullWidth label="Nom" />
           )}
           isOptionEqualToValue={(option, value) => option.id === value?.id} // Comparaison pour éviter des avertissements
         />
@@ -135,7 +138,7 @@ const Filters = (props) => {
           value={sNname} // Valeur sélectionnée
           onChange={(event, newValue) => setSName(newValue!)} // Mise à jour de la valeur
           renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth />
+            <TextField {...params} variant="outlined" fullWidth label="Site" />
           )}
           isOptionEqualToValue={(option, value) => option.id === value?.id} // Comparaison pour éviter des avertissements
         />
@@ -145,7 +148,12 @@ const Filters = (props) => {
           value={dName} // Valeur sélectionnée
           onChange={(event, newValue) => setDName(newValue!)} // Mise à jour de la valeur
           renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth />
+            <TextField
+              {...params}
+              variant="outlined"
+              fullWidth
+              label="Dispositif"
+            />
           )}
           isOptionEqualToValue={(option, value) => option.id === value?.id} // Comparaison pour éviter des avertissements
         />
