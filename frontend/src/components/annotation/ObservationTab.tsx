@@ -1,4 +1,4 @@
-import { capitalize, FormControlLabel, Switch } from "@mui/material";
+import { capitalize, Checkbox, FormControlLabel, Switch } from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
@@ -27,6 +27,7 @@ const ObservationTab: FC<ObservationTabProps> = ({
         treated,
         checked,
         handleCheckChange,
+        gridView,
     } = useAnnotationContext();
 
     return(
@@ -35,32 +36,32 @@ const ObservationTab: FC<ObservationTabProps> = ({
             index={ index }
         >
             <span className="info-annotation-ctn">
-            { treated ?
-                <ButtonStatus 
-                    icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 
-                    title={ capitalize(t("annotations.media_processed_manually")) } 
-                    stylClassButton="valid" 
-                /> : (
-                annotated ?
-                <ButtonStatus 
-                    icon={ <HelpRoundedIcon sx={{ color: "#FF9800" }} /> } 
-                    title={ capitalize(t("observations.not_saved")) } 
-                    stylClassButton="info" 
-                /> :
-                <ButtonStatus 
-                    icon={ <HelpRoundedIcon sx={{ color: "#F44336" }} /> } 
-                    title={ capitalize(t("annotations.media_not_processed")) } 
-                    stylClassButton="warning" 
-                />
-            )}
+                { !gridView && ( treated ?
+                    <ButtonStatus 
+                        icon={ <CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} /> } 
+                        title={ capitalize(t("annotations.media_processed_manually")) } 
+                        stylClassButton="valid" 
+                    /> : (
+                    annotated ?
+                    <ButtonStatus 
+                        icon={ <HelpRoundedIcon sx={{ color: "#FF9800" }} /> } 
+                        title={ capitalize(t("observations.not_saved")) } 
+                        stylClassButton="info" 
+                    /> :
+                    <ButtonStatus 
+                        icon={ <HelpRoundedIcon sx={{ color: "#F44336" }} /> } 
+                        title={ capitalize(t("annotations.media_not_processed")) } 
+                        stylClassButton="warning" 
+                    />
+                ))}
             <FormControlLabel
-                id="switch-empty-control"
+                id="checkbox-empty-control"
                 control={
-                <Switch
-                    id="switch-empty"
-                    checked={ checked }
-                    onChange={ handleCheckChange }
-                />
+                    <Checkbox
+                        id="checkbox-empty"
+                        checked={ checked }
+                        onChange={ handleCheckChange }
+                    />
                 }
                 label={ capitalize(t("annotations.empty_media")) }
             />
