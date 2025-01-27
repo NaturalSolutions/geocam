@@ -34,17 +34,18 @@ const ThumbnailProjectComponent = ({
 
   const saveThumbnail = async () => {
     if (projectSheetData) {
-      FilesService.uploadFilesFilesUploadProjectProjectIdPost(
-        projectSheetData?.id,
-        { file }
-      ).then((res) => {
-        updateProjectSheetData();
-        ProjectsService.fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
-          projectSheetData?.id
-        ).then((res) => {
-          setThumbnail(res[0].url);
-        });
-      });
+      // FilesService.uploadFilesFilesUploadProjectProjectIdPost(
+      //   projectSheetData?.id,
+      //   { file }
+      // ).then((res) => {
+      //   updateProjectSheetData();
+      //   ProjectsService.fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
+      //     projectSheetData?.id
+      //   ).then((res) => {
+      //     setThumbnail(res[0].url);
+      //   });
+      // });
+    console.log("save thumbnail - project");
     }
   };
 
