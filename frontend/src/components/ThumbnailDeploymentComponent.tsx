@@ -14,30 +14,32 @@ const ThumbnailDeploymentComponent = () => {
   useEffect(() => {
     console.log(deploymentData);
     if (deploymentData) {
-      DeploymentsService.readDeploymentThumbnail(deploymentData.id).then(
-        (res) => {
-          setThumbnail(res[0].url);
-          fetch(res[0].url).then((r) => {
-            if (r.status != 200) {
-              setThumbnail(null);
-            }
-          });
-        }
-      );
+      DeploymentsService.fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
+        deploymentData.id
+      ).then((res) => {
+        setThumbnail(res[0].url);
+        fetch(res[0].url).then((r) => {
+          if (r.status != 200) {
+            setThumbnail(null);
+          }
+        });
+      });
     }
   }, [deploymentData]);
 
   const saveThumbnail = async () => {
     if (deploymentData) {
-      FilesService.uploadDeploymentFile(deploymentData?.id, { file }).then(
-        (res) => {
-          DeploymentsService.readDeploymentThumbnail(deploymentData?.id).then(
-            (res) => {
-              setThumbnail(res[0].url);
-            }
-          );
-        }
-      );
+      // FilesService.uploadFilesFilesUploadDeploymentDeploymentIdPost(
+      //   deploymentData?.id,
+      //   { file }
+      // ).then((res) => {
+      //   DeploymentsService.fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
+      //     deploymentData?.id
+      //   ).then((res) => {
+      //     setThumbnail(res[0].url);
+      //   });
+      // });
+      console.log("save thumbnails - deployment")
     }
 
     setModifyState(false);

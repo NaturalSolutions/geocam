@@ -226,8 +226,14 @@ export class DeploymentsService {
         });
     }
 
-    public static readDeploymentThumbnail(
-        deploymentId: number | undefined,
+    /**
+     * Fetch Deployment Thumbnail
+     * @param deploymentId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
+        deploymentId: number,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',

@@ -2,7 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 
-
 export type DeploymentForProjectSheet = {
     name: string;
     start_date: string;

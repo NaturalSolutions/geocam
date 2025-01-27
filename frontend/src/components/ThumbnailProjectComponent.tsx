@@ -18,9 +18,10 @@ const ThumbnailProjectComponent = ({
   const [thumbnail, setThumbnail] = useState(null);
 
   useEffect(() => {
-    console.log(projectSheetData);
     if (projectSheetData) {
-      ProjectsService.readProjectThumbnail(projectSheetData?.id).then((res) => {
+      ProjectsService.fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
+        projectSheetData?.id
+      ).then((res) => {
         setThumbnail(res[0].url);
         fetch(res[0].url).then((r) => {
           if (r.status != 200) {
@@ -33,17 +34,18 @@ const ThumbnailProjectComponent = ({
 
   const saveThumbnail = async () => {
     if (projectSheetData) {
-      console.log(file);
-      FilesService.uploadProjectFile(projectSheetData?.id, { file }).then(
-        (res) => {
-          updateProjectSheetData();
-          ProjectsService.readProjectThumbnail(projectSheetData?.id).then(
-            (res) => {
-              setThumbnail(res[0].url);
-            }
-          );
-        }
-      );
+      // FilesService.uploadFilesFilesUploadProjectProjectIdPost(
+      //   projectSheetData?.id,
+      //   { file }
+      // ).then((res) => {
+      //   updateProjectSheetData();
+      //   ProjectsService.fetchProjectThumbnailProjectsFetchProjectThumbnailProjectIdGet(
+      //     projectSheetData?.id
+      //   ).then((res) => {
+      //     setThumbnail(res[0].url);
+      //   });
+      // });
+    console.log("save thumbnail - project");
     }
   };
 
