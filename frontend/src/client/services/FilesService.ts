@@ -4,7 +4,11 @@
 import type { Annotation } from '../models/Annotation';
 import type { Body_extract_exif_files_exif__post } from '../models/Body_extract_exif_files_exif__post';
 import type { Body_upload_file_files_upload__deployment_id__post } from '../models/Body_upload_file_files_upload__deployment_id__post';
+import type { Body_upload_files_files_upload_deployment__deployment_id__post } from '../models/Body_upload_files_files_upload_deployment__deployment_id__post';
+import type { Body_upload_files_files_upload_device__device_id__post } from '../models/Body_upload_files_files_upload_device__device_id__post';
 import type { Body_upload_files_files_upload_files__deployment_id__post } from '../models/Body_upload_files_files_upload_files__deployment_id__post';
+import type { Body_upload_files_files_upload_project__project_id__post } from '../models/Body_upload_files_files_upload_project__project_id__post';
+import type { Body_upload_files_files_upload_site__site_id__post } from '../models/Body_upload_files_files_upload_site__site_id__post';
 import type { Body_upload_zip_files_upload_zip__deployment_id__post } from '../models/Body_upload_zip_files_upload_zip__deployment_id__post';
 import type { Files } from '../models/Files';
 
@@ -99,6 +103,58 @@ export class FilesService {
     }
 
     /**
+     * Upload Files
+     * @param deploymentId
+     * @param formData
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static uploadFilesFilesUploadFilesDeploymentIdPost(
+        deploymentId: number,
+        formData: Body_upload_files_files_upload_files__deployment_id__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload_files/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Upload Files
+     * @param deviceId
+     * @param formData
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static uploadFilesFilesUploadDeviceDeviceIdPost(
+        deviceId: number,
+        formData: Body_upload_files_files_upload_device__device_id__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload/device/{device_id}',
+            path: {
+                'device_id': deviceId,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Upload File
      * @param deploymentId
      * @param formData
@@ -126,72 +182,14 @@ export class FilesService {
 
     /**
      * Upload Files
-     * @param deploymentId
+     * @param projectId
      * @param formData
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static uploadFilesFilesUploadFilesDeploymentIdPost(
-        deploymentId: number,
-        formData: Body_upload_files_files_upload_files__deployment_id__post,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/upload_files/{deployment_id}',
-            path: {
-                'deployment_id': deploymentId,
-            },
-            formData: formData,
-
-            mediaType: 'multipart/form-data',
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    public static uploadDeviceFile(
-        deviceId: number | undefined,
-        formData: Body_upload_file_files_upload__deployment_id__post,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/upload/device/{device_id}',
-            path: {
-                'device_id': deviceId,
-            },
-            formData: formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    public static uploadSiteFile(
-        siteId: number | undefined,
-        formData: Body_upload_file_files_upload__deployment_id__post,
-    ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/files/upload/site/{site_id}',
-            path: {
-                'site_id': siteId,
-            },
-            formData: formData,
-            mediaType: 'multipart/form-data',
-            errors: {
-                404: `Not found`,
-                422: `Validation Error`,
-            },
-        });
-    }
-
-    public static uploadProjectFile(
+    public static uploadFilesFilesUploadProjectProjectIdPost(
         projectId: number,
-        formData: Body_upload_file_files_upload__deployment_id__post,
+        formData: Body_upload_files_files_upload_project__project_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -208,9 +206,42 @@ export class FilesService {
         });
     }
 
-    public static uploadDeploymentFile(
+    /**
+     * Upload Files
+     * @param siteId
+     * @param formData
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static uploadFilesFilesUploadSiteSiteIdPost(
+        siteId: number,
+        formData: Body_upload_files_files_upload_site__site_id__post,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/upload/site/{site_id}',
+            path: {
+                'site_id': siteId,
+            },
+            formData: formData,
+            mediaType: 'multipart/form-data',
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Upload Files
+     * @param deploymentId
+     * @param formData
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static uploadFilesFilesUploadDeploymentDeploymentIdPost(
         deploymentId: number,
-        formData: Body_upload_file_files_upload__deployment_id__post,
+        formData: Body_upload_files_files_upload_deployment__deployment_id__post,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
@@ -227,18 +258,23 @@ export class FilesService {
         });
     }
 
-    public static deleteDeploymentMediaFile(
-        hash_name: string,
+    /**
+     * Delete Files
+     * @param deploymentId
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteFilesFilesDeleteDeploymentDeploymentIdNamePost(
+        deploymentId: number,
         name: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'POST',
-            url: '/files/delete/media/{hash_name}',
+            url: '/files/delete/deployment/{deployment_id}/{name}',
             path: {
-                'hash_name': hash_name
-            },
-            query: {
-                "name": name
+                'deployment_id': deploymentId,
+                'name': name,
             },
             errors: {
                 404: `Not found`,
@@ -246,7 +282,84 @@ export class FilesService {
             },
         });
     }
-    
+
+    /**
+     * Delete Files
+     * @param hashName
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteFilesFilesDeleteMediaHashNamePost(
+        hashName: string,
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/delete/media/{hash_name}',
+            path: {
+                'hash_name': hashName,
+            },
+            query: {
+                'name': name,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Delete Files
+     * @param projectId
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteFilesFilesDeleteProjectProjectIdNamePost(
+        projectId: number,
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/delete/project/{project_id}/{name}',
+            path: {
+                'project_id': projectId,
+                'name': name,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
+     * Delete Files
+     * @param deviceId
+     * @param name
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static deleteFilesFilesDeleteDeviceDeviceIdNamePost(
+        deviceId: number,
+        name: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/files/delete/device/{device_id}/{name}',
+            path: {
+                'device_id': deviceId,
+                'name': name,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
     /**
      * Download File
      * @param id
@@ -317,7 +430,13 @@ export class FilesService {
         });
     }
 
-    public static readLengthDeploymentsFilesById(
+    /**
+     * Get Length Deployment Files
+     * @param deploymentId
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getLengthDeploymentFilesFilesDeploymentIdLengthGet(
         deploymentId: number,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
@@ -328,8 +447,9 @@ export class FilesService {
             },
             errors: {
                 404: `Not found`,
-                422: `Validation Error`
-            }
-        })
+                422: `Validation Error`,
+            },
+        });
     }
+
 }

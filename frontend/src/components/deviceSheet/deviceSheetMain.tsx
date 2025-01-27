@@ -23,9 +23,10 @@ import DeviceForm from "./deviceForm";
 import DeviceModal from "../deviceMenu/deviceModal";
 import DeviceData from "./deviceData";
 import { useTranslation } from "react-i18next";
-import { DeploymentForDeviceSheet, DeploymentsService } from "../../client";
+import { DeploymentsService } from "../../client";
 import { FilesService } from "../../client";
 import AlertUnavailable from "../common/AlertUnavailable";
+import { DeploymentForDeviceSheet } from "../../types/Deployments";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -57,7 +58,7 @@ const DeviceSheet = () => {
         DeploymentsService.readDeviceDeploymentsDeploymentsDeviceDeviceIdGet(
           parseInt(params.deviceId)
         ).then((response) => {
-          // liste des déploiement pour un certains dispositif
+          // liste des déploiements pour un certain dispositif
 
           let finalRes: DeploymentForDeviceSheet[] = [];
 
@@ -67,7 +68,11 @@ const DeviceSheet = () => {
                 if (res.project_id === deployment.project_id) {
                   // on cherche le deploiement du dispositif dans la liste de tous les deploiements
                   const nb_medias =
-                    await FilesService.readLengthDeploymentsFilesById(res.id);
+                  await FilesService.getLengthDeploymentFilesFilesDeploymentIdLengthGet(
+                    res.id
+                  );
+                  // const nb_medias =
+                  //   await FilesService.readLengthDeploymentsFilesById(res.id);
                   let proj_name = project.name;
                   let siteName = sites.find(
                     (site) => site.id === res.site_id
@@ -136,6 +141,9 @@ const DeviceSheet = () => {
           {capitalize(t("devices.history"))}
         </Typography>
         {historyDeployment.length === 0 ? (
+          // <Alert severity="info">
+          //   {capitalize(t("devices.historic_message"))}
+          // </Alert>
           <AlertUnavailable />
         ) : (
           <TableContainer component={Paper}>

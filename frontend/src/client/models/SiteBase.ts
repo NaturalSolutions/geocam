@@ -8,5 +8,6 @@ export type SiteBase = {
     longitude: number;
     habitat?: string;
     description?: string;
+    image?: string;
 };
 
