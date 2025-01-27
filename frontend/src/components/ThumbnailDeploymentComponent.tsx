@@ -29,17 +29,16 @@ const ThumbnailDeploymentComponent = () => {
 
   const saveThumbnail = async () => {
     if (deploymentData) {
-      // FilesService.uploadFilesFilesUploadDeploymentDeploymentIdPost(
-      //   deploymentData?.id,
-      //   { file }
-      // ).then((res) => {
-      //   DeploymentsService.fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
-      //     deploymentData?.id
-      //   ).then((res) => {
-      //     setThumbnail(res[0].url);
-      //   });
-      // });
-      console.log("save thumbnails - deployment")
+      FilesService.uploadFilesFilesUploadDeploymentDeploymentIdPost(
+        deploymentData?.id,
+        { file }
+      ).then((res) => {
+        DeploymentsService.fetchDeploymentThumbnailDeploymentsFetchDeploymentThumbnailDeploymentIdGet(
+          deploymentData?.id
+        ).then((res) => {
+          setThumbnail(res[0].url);
+        });
+      });
     }
 
     setModifyState(false);

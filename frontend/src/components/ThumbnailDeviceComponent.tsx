@@ -15,35 +15,33 @@ const ThumbnailDeviceComponent = () => {
     setDeviceData(device());
     if (deviceData) {
       deviceData.id &&
-        // DevicesService.fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
-        //   deviceData.id
-        // ).then((res) => {
-        //   setThumbnail(res[0].url);
-        //   fetch(res[0].url).then((r) => {
-        //     if (r.status != 200) {
-        //       setThumbnail(null);
-        //     }
-        //   });
-        // });
-        console.log("device data");
+        DevicesService.fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
+          deviceData.id
+        ).then((res) => {
+          setThumbnail(res[0].url);
+          fetch(res[0].url).then((r) => {
+            if (r.status != 200) {
+              setThumbnail(null);
+            }
+          });
+        });
     }
   }, [deviceData]);
 
   const saveThumbnail = async () => {
-    // deviceData.id &&
-    //   FilesService.uploadFilesFilesUploadDeviceDeviceIdPost(deviceData.id, {
-    //     file,
-    //   }).then((res) => {
-    //     deviceData.id &&
-    //       DevicesService.fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
-    //         deviceData.id
-    //       ).then((res) => {
-    //         setThumbnail(res[0].url);
-    //       });
-    //   });
+    deviceData.id &&
+      FilesService.uploadFilesFilesUploadDeviceDeviceIdPost(deviceData.id, {
+        file,
+      }).then((res) => {
+        deviceData.id &&
+          DevicesService.fetchDeviceThumbnailDevicesFetchDeviceThumbnailDeviceIdGet(
+            deviceData.id
+          ).then((res) => {
+            setThumbnail(res[0].url);
+          });
+      });
 
-    // setModifyState(false);
-    console.log("save thumbnail - device");
+    setModifyState(false);
   };
 
   return (

@@ -30,17 +30,16 @@ const ThumbnailSitesComponent = () => {
   const saveThumbnail = async () => {
     if (actualSite) {
       actualSite.id &&
-        // FilesService.uploadFilesFilesUploadSiteSiteIdPost(actualSite.id, {
-        //   file,
-        // }).then((res) => {
-        //   actualSite.id &&
-        //     SitesService.fetchSiteThumbnailSitesFetchSiteThumbnailSiteIdGet(
-        //       actualSite.id
-        //     ).then((res) => {
-        //       setThumbnail(res[0].url);
-        //     });
-        // });
-    console.log("save thumbnail - site");
+        FilesService.uploadFilesFilesUploadSiteSiteIdPost(actualSite.id, {
+          file,
+        }).then((res) => {
+          actualSite.id &&
+            SitesService.fetchSiteThumbnailSitesFetchSiteThumbnailSiteIdGet(
+              actualSite.id
+            ).then((res) => {
+              setThumbnail(res[0].url);
+            });
+        });
     }
 
     setModifyState(false);
