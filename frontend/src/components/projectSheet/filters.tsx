@@ -19,8 +19,14 @@ import { Devices } from "../../client/models/Devices";
 
 const Filters = (props) => {
   const { t } = useTranslation();
-  const { project, sites, currentProject, deployments, devices } =
-    useMainContext();
+  const {
+    project,
+    sites,
+    currentProject,
+    deployments,
+    devices,
+    projectSheetData,
+  } = useMainContext();
   const [start_date, setStartDate] = useState<Date | null>(null);
   const [end_date, setEndDate] = useState<Date | null>(null);
   const [name, setName] = useState<Deployments | undefined>();
@@ -69,7 +75,7 @@ const Filters = (props) => {
     setDeviceList([]);
     getDevices();
     console.log("hello");
-  }, [currentProject, deployments, sites, devices]);
+  }, [currentProject, deployments, sites, devices, projectSheetData]);
 
   // Mettez à jour le parent lorsque les filtres changent
   const updateParentFilters = () => {

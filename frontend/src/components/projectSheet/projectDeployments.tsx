@@ -198,9 +198,9 @@ const ProjectDeployments = () => {
         (!filterEndDate || itemStartDate <= filterEndDate);
 
       // Vérifiez le site et le device
-      const isSiteMatch = !filters.site_id || item.site_id === filters.site_id;
+      const isSiteMatch = !filters.site || item.site_id === filters.site;
       const isDeviceMatch =
-        !filters.device_id || item.device_id === filters.device_id;
+        !filters.device || item.device_id === filters.device;
 
       // Vérifiez l'ID correspondant à name
       const isNameMatch = !filters.name || item.id === filters.name;
@@ -212,7 +212,7 @@ const ProjectDeployments = () => {
   useEffect(() => {
     const data = filterData(projectSheetData.deployments, filterValues);
     setDeployments(data);
-  }, [filterValues]);
+  }, [filterValues, projectSheetData]);
 
   return projectSheetData.deployments.length !== 0 ? (
     <Stack spacing={0} justifyContent="center">
