@@ -64,7 +64,6 @@ def update_annotations(
 
 @router.get("/{deployment_id}/filters")
 def get_filter_files(deployment_id: int, species: str =None, family: str =None, genus: str=None, classe: str =None, order: str =None, db: Session = Depends(get_db)):
-# Filtre sur la clé `genus` dans la colonne `annotations`
     
     criteria = {key: value for key, value in {
         "species": species,
@@ -76,6 +75,7 @@ def get_filter_files(deployment_id: int, species: str =None, family: str =None, 
     print(criteria)
     files=db.query(Files).filter(Files.annotations.contains([criteria]), Files.deployment_id == deployment_id).all()
     
+    ### AUTRE METHODE : UTILISER UNE CTE
     # cte_name = (
     #     select(
     #         Files,
@@ -83,14 +83,12 @@ def get_filter_files(deployment_id: int, species: str =None, family: str =None, 
     #     )
     #     .cte("cte_name")
     # )
-
     # statement = (
     #     select(Files)  # Sélectionne toutes les colonnes de File
     #     .join(cte_name, Files.id == cte_name.c.id)  # Jointure sur l'id
     #     .distinct()  # Garantir l'unicité des résultats
     #     .where(cte_name.c.annotation.op("->>")(taxo).ilike(search))  # Filtre sur le champ genus
     # )
-
     # files = db.exec(statement).all()
     res = []
     for f in files:

@@ -46,8 +46,6 @@ const Filters = (props) => {
   const getLists = () => {
     props.list.forEach((item) => {
       const itemSite = site(item.site_id);
-      console.log("item", item);
-      console.log("site trouvé", itemSite);
       setSiteList((prevSiteList) => {
         // Vérifie si l'élément existe déjà
         if (!prevSiteList.some((site) => site.id === itemSite.id)) {
@@ -74,7 +72,6 @@ const Filters = (props) => {
     getLists();
     setDeviceList([]);
     getDevices();
-    console.log("hello");
   }, [currentProject, deployments, sites, devices, projectSheetData]);
 
   // Mettez à jour le parent lorsque les filtres changent
@@ -91,8 +88,6 @@ const Filters = (props) => {
   useEffect(() => {
     updateParentFilters();
   }, [start_date, end_date, name, dName, sNname]); // Mettre à jour à chaque changement
-
-  console.log(sNname);
 
   return (
     <Box
@@ -123,7 +118,7 @@ const Filters = (props) => {
             value={start_date}
             onChange={(newValue) => setStartDate(newValue)}
             renderInput={(params) => (
-              <TextField {...params} fullWidth variant="outlined" />
+              <TextField {...params} variant="outlined" />
             )}
           />
         </LocalizationProvider>
@@ -134,7 +129,7 @@ const Filters = (props) => {
             value={end_date}
             onChange={(newValue) => setEndDate(newValue)}
             renderInput={(params) => (
-              <TextField {...params} fullWidth variant="outlined" />
+              <TextField {...params} variant="outlined" />
             )}
           />
         </LocalizationProvider>

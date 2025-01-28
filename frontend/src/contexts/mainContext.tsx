@@ -50,6 +50,13 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [autoTemplates, setAutoTemplates] = useState<TemplateSequence[]>();
   const [triggerTemplates, setTriggerTemplates] =
     useState<TemplateSequence[]>();
+  const [filters, setFilters] = useState({
+    species: "",
+    family: "",
+    genus: "",
+    classe: "",
+    order: "",
+  });
 
   const changeThumbnailProject = (file) => {
     setThumbnailProject(file);
@@ -77,7 +84,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const updateProjects = () => {
     ProjectsService.readProjectsWithDeploymentsProjectsDeploymentsGet()
       .then((projects) => {
-
         setProjects(projects);
       })
       .catch((err) => {
@@ -108,18 +114,34 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       });
   };
 
+  // const updateFullListFile = () => {
+  //   currentDeployment &&
+  //     FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
+  //       .then((files) => {
+  //         setFiles(files);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  // };
+
   const updateListFile = () => {
     currentDeployment &&
-      FilesService.readDeploymentFilesFilesDeploymentIdGet(currentDeployment)
+      FilesService.getFilterFilesFilesDeploymentIdFiltersGet(
+        currentDeployment,
+        filters?.species,
+        filters?.family,
+        filters?.genus,
+        filters?.classe,
+        filters?.order
+      )
         .then((files) => {
-
           setFiles(files);
         })
         .catch((err) => {
           console.log(err);
         });
   };
-
   const updateGlobalStats = () => {
     HomeService.getUserStatsHomeStatsGet()
       .then((globalStats) => {
@@ -217,7 +239,6 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
       updateSites();
       updateAutoTemplates();
       updateTriggerTemplates();
-
     })();
   }, []);
 
@@ -237,9 +258,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
     (async () => {
       updateListFile();
       updateDeploymentData();
-     
     })();
-  }, [currentDeployment]);
+  }, [currentDeployment, filters]);
 
   useEffect(() => {
     (async () => {
@@ -292,6 +312,8 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
         setCurrentSite,
         image,
         changeThumbnailProject,
+        filters,
+        setFilters,
       }}
     >
       {children}
