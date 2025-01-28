@@ -7,11 +7,13 @@ from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
+from sqlalchemy import func
+
 from src.schemas.file import UpdateFile
 import magic
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
-from fastapi.responses import StreamingResponse
-from sqlmodel import Session
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
+from fastapi.responses import JSONResponse, StreamingResponse
+from sqlmodel import Session, select
 import uuid
 from src.config import settings
 from src.connectors import s3
@@ -60,6 +62,43 @@ def update_annotations(
 ):
     return files.update_annotations(db, file_id=file_id, data=data)
 
+@router.get("/{deployment_id}/filters")
+def get_filter_files(deployment_id: int, species: str =None, family: str =None, genus: str=None, classe: str =None, order: str =None, db: Session = Depends(get_db)):
+# Filtre sur la clé `genus` dans la colonne `annotations`
+    
+    criteria = {key: value for key, value in {
+        "species": species,
+        "family": family,
+        "classe": classe,
+        "genus": genus,
+        "order": order
+    }.items() if value is not ''}
+    print(criteria)
+    files=db.query(Files).filter(Files.annotations.contains([criteria]), Files.deployment_id == deployment_id).all()
+    
+    # cte_name = (
+    #     select(
+    #         Files,
+    #         func.jsonb_array_elements(Files.annotations).label('annotation')
+    #     )
+    #     .cte("cte_name")
+    # )
+
+    # statement = (
+    #     select(Files)  # Sélectionne toutes les colonnes de File
+    #     .join(cte_name, Files.id == cte_name.c.id)  # Jointure sur l'id
+    #     .distinct()  # Garantir l'unicité des résultats
+    #     .where(cte_name.c.annotation.op("->>")(taxo).ilike(search))  # Filtre sur le champ genus
+    # )
+
+    # files = db.exec(statement).all()
+    res = []
+    for f in files:
+        new_f = f.dict()
+        url = s3.get_url(f"{f.hash}.{f.extension}")
+        new_f["url"] = url
+        res.append(new_f)
+    return res
 
 @router.get("/urls/")
 def display_file(name: str):
