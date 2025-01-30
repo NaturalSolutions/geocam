@@ -16,8 +16,8 @@ interface ObservationTabProps {
 
 const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
   const { t } = useTranslation();
-  const { date, setDate } = useAnnotationContext();
-  const { annotations, annotated, treated, checked, handleCheckChange } =
+
+  const { observations, annotated, treated, checked, handleCheckChange } =
     useAnnotationContext();
 
   return (
@@ -42,7 +42,6 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
             stylClassButton="warning"
           />
         )}
-
         <FormControlLabel
           id="switch-empty-control"
           control={
@@ -56,11 +55,11 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
         />
       </span>
 
-      {annotations?.map((annotations: Annotation, index: number) => (
+      {observations?.map((observation: Annotation, index: number) => (
         <ObservationForm
-          key={annotations.id}
+          key={observation.id}
           index={index + 1}
-          observation={annotations}
+          observation={observation}
         />
       ))}
     </TabPanel>

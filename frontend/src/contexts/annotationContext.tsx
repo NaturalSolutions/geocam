@@ -21,15 +21,16 @@ export function AnnotationContextProvider({ children }) {
     image,
   } = useMainContext();
 
-  const [annotations, setAnnotations] = useState<Annotation[]>([]);
+  const [observations, setObservations] = useState<Annotation[]>([]);
   const [date, setDate] = useState<Date | null>(null);
   const [annotated, setAnnotated] = useState<undefined | boolean>(undefined);
   const [treated, setTreated] = useState<undefined | boolean>(undefined);
   const [isMinimalObservation, setIsMinimalObservation] = useState(
-    annotations?.length == 0
+    observations?.length == 0
   );
-  const [checked, setChecked] = useState<boolean>(annotations?.length !== 0);
+  const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
   const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
+
   const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
   const observationTemplate = {
     id: uuidv4(),
@@ -93,8 +94,8 @@ export function AnnotationContextProvider({ children }) {
 
   const save = () => {
     FilesService.updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
-      date,
-      annotations,
+      date: date,
+      annotations: observations,
     })
       .then((res) => updateListFile())
       .catch((err) => {
@@ -114,7 +115,7 @@ export function AnnotationContextProvider({ children }) {
 
   const handleAddObservation = () => {
     if (isMinimalObservation) {
-      setAnnotations([...annotations, observationTemplate]);
+      setObservations([...observations, observationTemplate]);
     }
     if (checked) {
       setChecked(false);
@@ -123,27 +124,27 @@ export function AnnotationContextProvider({ children }) {
   };
 
   const handleDeleteObservation = (id: string) => {
-    let i = annotations && annotations.findIndex((obs) => obs.id === id);
-    let tmp_obs = [...annotations];
+    let i = observations && observations.findIndex((obs) => obs.id === id);
+    let tmp_obs = [...observations];
     i !== -1 && tmp_obs.splice(i, 1);
-    i !== -1 && setAnnotations(tmp_obs);
-    i === annotations.length - 1 && setIsMinimalObservation(true);
+    i !== -1 && setObservations(tmp_obs);
+    i === observations.length - 1 && setIsMinimalObservation(true);
   };
 
   const handleCheckChange = () => {
     if (!checked) {
-      setAnnotations([]);
+      setObservations([]);
       setIsMinimalObservation(true);
     }
     if (checked) {
-      setAnnotations([...annotations, observationTemplate]);
+      setObservations([...observations, observationTemplate]);
       setIsMinimalObservation(false);
     }
     setChecked(!checked);
   };
 
   const handleFormChange = (id: string, params: string, value: string) => {
-    let tmp_obs = [...annotations];
+    let tmp_obs = [...observations];
 
     tmp_obs.forEach((ob) => {
       if (ob.id === id) {
@@ -158,7 +159,7 @@ export function AnnotationContextProvider({ children }) {
         }
       }
     });
-    setAnnotations(tmp_obs);
+    setObservations(tmp_obs);
   };
 
   useEffect(() => {
@@ -171,7 +172,7 @@ export function AnnotationContextProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      image() && setAnnotations(image().annotations);
+      image() && setObservations(image().annotations);
       image() && setTreated(image().treated);
       image() && setDate(image().date);
     })();
@@ -179,16 +180,16 @@ export function AnnotationContextProvider({ children }) {
 
   useEffect(() => {
     (async () => {
-      setChecked(annotations?.length === 0);
+      setChecked(observations?.length === 0);
     })();
-  }, [annotations]);
+  }, [observations]);
 
   useEffect(() => {
     let fieldToCheck: string[] = [];
-    for (var i = 0; i < annotations?.length; i++) {
-      for (const property in annotations[i]) {
+    for (var i = 0; i < observations?.length; i++) {
+      for (const property in observations[i]) {
         if (fieldsMandatory.includes(property)) {
-          fieldToCheck.push(annotations[i][property]);
+          fieldToCheck.push(observations[i][property]);
         }
       }
     }
@@ -205,8 +206,8 @@ export function AnnotationContextProvider({ children }) {
   return (
     <AnnotationContext.Provider
       value={{
-        annotations,
-        setAnnotations,
+        observations,
+        setObservations,
         annotated,
         setAnnotated,
         treated,
