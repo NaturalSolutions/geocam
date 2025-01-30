@@ -1,4 +1,4 @@
-import { capitalize, FormControlLabel, Switch, Stack } from "@mui/material";
+import { capitalize, FormControlLabel, Switch } from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
@@ -8,11 +8,6 @@ import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation } from "../../client";
 import { FC } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import TextField from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import frLocale from "date-fns/locale/fr";
 
 interface ObservationTabProps {
   valueTab: number;
