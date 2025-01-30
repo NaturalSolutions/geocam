@@ -27,25 +27,7 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
 
   return (
     <TabPanel valueTab={valueTab} index={index}>
-      <Stack
-        direction="row"
-        spacing={2}
-        alignItems="center"
-        justifyContent="space-between"
-        style={{ marginBottom: "16px" }}
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
-          <DateTimePicker
-            label={capitalize(t("medias.date_time_field"))}
-            value={date}
-            onChange={(newValue) => setDate(newValue)}
-            ampm={false}
-            inputFormat="yyyy/MM/dd HH:mm:ss" // Ajout de l'affichage des secondes
-            renderInput={(params) => (
-              <TextField {...params} sx={{ width: "220px" }} />
-            )}
-          />
-        </LocalizationProvider>
+      <span className="info-annotation-ctn">
         {treated ? (
           <ButtonStatus
             icon={<CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} />}
@@ -77,7 +59,7 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
           }
           label={capitalize(t("annotations.empty_media"))}
         />
-      </Stack>
+      </span>
 
       {annotations?.map((annotations: Annotation, index: number) => (
         <ObservationForm
