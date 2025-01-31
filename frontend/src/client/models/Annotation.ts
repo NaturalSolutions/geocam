@@ -5,6 +5,7 @@
 export type Annotation = {
     id: string;
     id_annotation: string;
+    id_group: string;
     classe: string;
     family: string;
     genus: string;

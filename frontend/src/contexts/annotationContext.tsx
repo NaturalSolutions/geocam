@@ -1,3 +1,5 @@
+import { capitalize } from "@mui/material";
+import { t } from "i18next";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from 'uuid';
@@ -27,13 +29,17 @@ export function AnnotationContextProvider({ children }) {
     const [treated, setTreated] = useState<undefined | boolean>(undefined);
     const [isMinimalObservation, setIsMinimalObservation] = useState(observations?.length == 0);
     const [checked, setChecked] = useState<boolean>(observations?.length !== 0);
-    const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState(false);
+    const [openSaveErrorDialog, setOpenSaveErrorDialog] = useState({state: false, text: ""});
+    const [gridView, setGridView] = useState(0); // 0: unique media, 1: grid
+    const [selectedMedias, setSelectedMedias] = useState<any[]>([]);
+    const [annotationButtonDisabled, setAnnotationButtonDisabled] = useState(false);
 
     const fieldsMandatory = ["species", "genus", "family", "order", "classe"];
-    const observationTemplate = { id: uuidv4(), id_annotation: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
+    const [idGroup, setIdGroup] = useState<string>();
+    const observationTemplate = { id: uuidv4(), id_annotation: "", id_group: "", classe: "", order: "", family: "", genus: "", species: "", life_stage: "", biological_state: "", comments: "", behaviour: "", sex: "", number: 0 };
 
     const handleCloseSaveErrorDialog = () => {
-        setOpenSaveErrorDialog(false);
+        setOpenSaveErrorDialog({state: false, text: ""});
     };
 
     const updateUrl = (id) => {
@@ -75,15 +81,53 @@ export function AnnotationContextProvider({ children }) {
     };
 
     const save = () => {
-        FilesService
-            .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
-            .then(res =>
-                updateListFile()
-            )
-            .catch((err) => {
-                console.log("Error during annotation saving.");
-                console.log(err);
-            });
+        let toSave = false;
+        // let updateGroup = false;
+
+        if (!gridView) {
+            toSave = true;
+
+            // Attention cette image à une observation qui a été faite via un groupe
+            // Changer les informations de tout le groupe ?
+            // updateGroup = true / false
+        };
+        if (gridView && selectedMedias.length > 0) {
+            toSave = true;
+        };
+
+        if (!toSave) {
+            setOpenSaveErrorDialog({state: true, text: capitalize(t("annotations.cannot_save_no_media_selected"))});
+        };
+
+
+        if(toSave) {
+            if(!gridView) {
+                // si pas en gridView
+                // /!\ besoin d'adapter la méthode : condition + argiment updateGroup en plus
+                FilesService
+                    .updateAnnotationsFilesAnnotationFileIdPatch(currentImage, observations)
+                    .then(res =>
+                        updateListFile()
+                    )
+                    .catch((err) => {
+                        console.log("Error during annotation saving.");
+                        console.log(err);
+                    });
+            };
+            if(gridView) {
+                selectedMedias.map((item) => {
+                    console.log("idGroup:", idGroup);
+                    console.log("item:", item);
+                    console.log("observation:", observations);
+                })
+            };
+        };
+        // si on est en gridView
+        // save(selectedMedias, observations)
+                        // setIdGroup(uuidv4());
+                        // setSelectedMedias([]);
+
+
     };
 
     const saveandnext = () => {
@@ -92,7 +136,7 @@ export function AnnotationContextProvider({ children }) {
             next();
         }
         else {
-            setOpenSaveErrorDialog(true);
+            setOpenSaveErrorDialog({state: true, text: capitalize(t("annotations.cannot_save_species"))});
         }
     };
 
@@ -184,6 +228,15 @@ export function AnnotationContextProvider({ children }) {
         setAnnotated(result)
     }, [handleCheckChange]);
     
+    useEffect(() => {
+        if (gridView) {
+            setIdGroup(uuidv4());
+        };
+        if (!gridView) {
+          setSelectedMedias([]);
+        };
+    }, [gridView]);
+
     return(
         <AnnotationContext.Provider 
             value={{
@@ -193,6 +246,9 @@ export function AnnotationContextProvider({ children }) {
                 isMinimalObservation, setIsMinimalObservation,
                 checked, setChecked,
                 openSaveErrorDialog, setOpenSaveErrorDialog,
+                gridView, setGridView,
+                selectedMedias, setSelectedMedias,
+                annotationButtonDisabled, setAnnotationButtonDisabled,
 
                 handleCloseSaveErrorDialog,
                 updateUrl,

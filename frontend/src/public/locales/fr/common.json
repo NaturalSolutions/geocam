@@ -1,8 +1,9 @@
 {
   "annotations": {
     "annotation": "annotation",
-    "cannot_save": "enregistrement des annotations impossibles pour cette image",
-    "cannot_save_species": "vous ne pouvez pas sauvegarder : toutes les observations doivent à minima renseigner une espèce et le nombre d'individus associé. S'il vous plaît, corrigez les informations.",
+    "cannot_save": "enregistrement impossible",
+    "cannot_save_species": "toutes les observations doivent obligatoirement comporter au moins un taxon ainsi que le nombre d'individus associé. Merci de bien vouloir corriger les informations.",
+    "cannot_save_no_media_selected": "aucun média n'a été sélectionné pour l'enregistrement des observations.",
     "continue": "continuer l'annotation",
     "empty_media": "média vide",
     "fix_my_data": "je corrige mes données",

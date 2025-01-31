@@ -1,17 +1,20 @@
-import { Divider, Stack, Tab, Tabs, Typography, capitalize } from "@mui/material";
+import { Divider, Stack, Tab, Tabs, Typography, capitalize, Checkbox } from "@mui/material";
 import AnnotationButtons from "./AnnotationButtons";
 import MetadataTab from "./MetadataTab";
 import { SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import ObservationTab from "./ObservationTab";
+import { useAnnotationContext } from "../../contexts/annotationContext";
 
 
 export default function AnnotationForm() {
     const { t } = useTranslation();
+    const { setAnnotationButtonDisabled } = useAnnotationContext();
 
     const [tabValue, setTabValue] = useState(0);
     const handleTabChange = (event: SyntheticEvent, newValue: number) => {
         setTabValue(newValue);
+        setAnnotationButtonDisabled(newValue);
     };
     
     return(
@@ -22,12 +25,12 @@ export default function AnnotationForm() {
             spacing={2}
             className="stackAnnotations"
         >
-            <Typography 
+            {/* <Typography 
                 component="span" 
                 variant="h3"
             >
                 { capitalize(t("annotations.annotation")) }
-            </Typography>
+            </Typography> */}
 
             <Tabs
                 value={ tabValue }
@@ -44,7 +47,10 @@ export default function AnnotationForm() {
                 index={ 0 }
             />
 
-            <MetadataTab valueTab={ tabValue } index={ 1 } /> 
+            <MetadataTab 
+                valueTab={ tabValue } 
+                index={ 1 } 
+            /> 
             
             <Divider />
             

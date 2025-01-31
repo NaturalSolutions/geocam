@@ -25,6 +25,7 @@ def test_update_annotations(client, file_object, db, admin_headers):
         {
             "id": "string",
             "id_annotation": "string",
+            "id_group": "string",
             "classe": "string",
             "family": "string",
             "genus": "string",

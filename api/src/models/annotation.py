@@ -9,6 +9,7 @@ if TYPE_CHECKING:  # pragma: no cover
 class Annotations(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, index=True)
     id_annotation: str
+    id_group: str
     classe: str
     family: str
     genus: str

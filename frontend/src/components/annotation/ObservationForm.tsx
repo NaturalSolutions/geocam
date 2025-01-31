@@ -82,7 +82,9 @@ const ObservationForm: FC<ObservationFormProps> = ({
                     />
                 </Grid>
             </Grid>
-            <NestedList>
+            <NestedList 
+                text={ capitalize(t("annotations.further_information")) }
+            >
                 {/* <Grid container spacing={1}>
                     <TraitInput 
                         type="biological_state" 

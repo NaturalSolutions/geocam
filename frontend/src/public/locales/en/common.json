@@ -1,8 +1,9 @@
 {
   "annotations": {
     "annotation": "annotation",
-    "cannot_save": "",
-    "cannot_save_species": "",
+    "cannot_save": "annotation recording impossible for this image",
+    "cannot_save_species": "all observations must include at least one species and the associated number of individuals. Please kindly correct the information.",
+    "cannot_save_no_media_selected": "no media has been selected to record the observations.",
     "continue": "continue annotation",
     "empty_media": "empty media",
     "fix_my_data": "fix data",

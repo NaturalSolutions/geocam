@@ -10,7 +10,7 @@ import {
 
 const LanguageSelector: FC = () => {
   const { i18n, t } = useTranslation();
-  const [language, setLanguage] = useState(i18n.language);
+  const [language, setLanguage] = useState(i18n.language.split('-')[0]);
 
   useEffect(() => {
     i18n.changeLanguage(language);
@@ -42,10 +42,6 @@ const LanguageSelector: FC = () => {
           </Typography>
         )}
       >
-        {/* {
-            languages.map((lang, k) => (<MenuItem key={k} value={lang}>{t(`lang_list.${lang}`)}</MenuItem>))
-        } */}
-
         <MenuItem value="en">{t("languageSelector.en")}</MenuItem>
         <MenuItem value="fr">{t("languageSelector.fr")}</MenuItem>
       </Select>

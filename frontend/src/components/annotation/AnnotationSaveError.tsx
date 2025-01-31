@@ -9,14 +9,14 @@ const AnnotationSaveError = () => {
 
 
     return (
-        <Dialog open={openSaveErrorDialog}>
+        <Dialog open={openSaveErrorDialog.state}>
             <DialogTitle>
                 { capitalize(t("annotations.cannot_save")) }
             </DialogTitle>
 
             <DialogContent>
                 <Typography component={"span"} >
-                    { capitalize(t("annotations.cannot_save_species")) }
+                    { openSaveErrorDialog.text }
                 </Typography>
             </DialogContent>
 
