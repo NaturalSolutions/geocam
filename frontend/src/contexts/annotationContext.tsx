@@ -94,7 +94,7 @@ export function AnnotationContextProvider({ children }) {
 
   const save = () => {
     FilesService.updateAnnotationsFilesAnnotationFileIdPatch(currentImage, {
-      date: date,
+      date: date?.toISOString().slice(0, -1),
       annotations: observations,
     })
       .then((res) => updateListFile())
