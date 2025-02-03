@@ -58,7 +58,6 @@ def get_files(db: Session = Depends(get_db)):
 def update_annotations(
     file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)
 ):
-    data.date = datetime.fromisoformat(data.date)
     return files.update_annotations(db, file_id=file_id, data=data)
 
 

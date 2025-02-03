@@ -59,6 +59,7 @@ def create_file_device(db: Session, file: CreateDeviceFile):
     return db_file
 
 def update_annotations(db: Session, file_id: int, data: UpdateFile):
+    data.date = datetime.fromisoformat(data.date)
     db_file = get_file(db=db, file_id=file_id)
     if db_file is None:
         raise HTTPException(
