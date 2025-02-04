@@ -95,7 +95,6 @@ def create_file_device(db: Session, file: CreateDeviceFile):
 
 
 def update_annotations(db: Session, file_id: int, data: UpdateFile):
-    data.date = datetime.fromisoformat(data.date)
     db_file = get_file(db=db, file_id=file_id)
     if db_file is None:
         raise HTTPException(
@@ -104,7 +103,9 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
         )
     # update des annotations
     db_file.annotations = [d.dict() for d in data.annotations]
-    db_file.date = data.date
+    if data.date :
+        data.date = datetime.fromisoformat(data.date)
+        db_file.date = data.date
     # update du statut de traitement du média
     db_file.treated = True
     db.commit()
