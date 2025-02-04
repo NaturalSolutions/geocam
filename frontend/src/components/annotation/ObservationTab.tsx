@@ -1,4 +1,4 @@
-import { capitalize, FormControlLabel, Switch, Stack } from "@mui/material";
+import { capitalize, FormControlLabel, Switch } from "@mui/material";
 import ObservationForm from "./ObservationForm";
 import TabPanel from "../tabPanel";
 import ButtonStatus from "../common/buttonStatus";
@@ -8,11 +8,6 @@ import { useTranslation } from "react-i18next";
 import { useAnnotationContext } from "../../contexts/annotationContext";
 import { Annotation } from "../../client";
 import { FC } from "react";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import TextField from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import frLocale from "date-fns/locale/fr";
 
 interface ObservationTabProps {
   valueTab: number;
@@ -21,31 +16,13 @@ interface ObservationTabProps {
 
 const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
   const { t } = useTranslation();
-  const { date, setDate } = useAnnotationContext();
-  const { annotations, annotated, treated, checked, handleCheckChange } =
+
+  const { observations, annotated, treated, checked, handleCheckChange } =
     useAnnotationContext();
 
   return (
     <TabPanel valueTab={valueTab} index={index}>
-      <Stack
-        direction="row"
-        spacing={2}
-        alignItems="center"
-        justifyContent="space-between"
-        style={{ marginBottom: "16px" }}
-      >
-        <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
-          <DateTimePicker
-            label={capitalize(t("medias.date_time_field"))}
-            value={date}
-            onChange={(newValue) => setDate(newValue)}
-            ampm={false}
-            inputFormat="yyyy/MM/dd HH:mm:ss" // Ajout de l'affichage des secondes
-            renderInput={(params) => (
-              <TextField {...params} sx={{ width: "220px" }} />
-            )}
-          />
-        </LocalizationProvider>
+      <span className="info-annotation-ctn">
         {treated ? (
           <ButtonStatus
             icon={<CheckCircleRoundedIcon sx={{ color: "#4CAF50" }} />}
@@ -65,7 +42,6 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
             stylClassButton="warning"
           />
         )}
-
         <FormControlLabel
           id="switch-empty-control"
           control={
@@ -77,13 +53,13 @@ const ObservationTab: FC<ObservationTabProps> = ({ valueTab, index }) => {
           }
           label={capitalize(t("annotations.empty_media"))}
         />
-      </Stack>
+      </span>
 
-      {annotations?.map((annotations: Annotation, index: number) => (
+      {observations?.map((observation: Annotation, index: number) => (
         <ObservationForm
-          key={annotations.id}
+          key={observation.id}
           index={index + 1}
-          observation={annotations}
+          observation={observation}
         />
       ))}
     </TabPanel>
