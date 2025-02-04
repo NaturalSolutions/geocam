@@ -44,6 +44,12 @@ services:
       - traefik.http.routers.taxapi.tls=true
       - traefik.http.routers.taxapi.tls.certresolver=le
 
+  nomenclapi:
+    labels:
+      - traefik.http.routers.nomenclapi.entrypoints=websecure
+      - traefik.http.routers.nomenclapi.tls=true
+      - traefik.http.routers.nomenclapi.tls.certresolver=le
+
   keycloak:
     labels:
       - traefik.http.routers.keycloak.entrypoints=websecure
