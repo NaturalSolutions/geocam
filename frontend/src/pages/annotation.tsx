@@ -3,6 +3,7 @@ import HeadBar from "../components/HeadBar";
 import NavigationPath from "../components/navigationPath";
 import AnnotationContextProvider from "../contexts/annotationContext";
 import AnnotationMain from "../components/annotation/AnnotationMain";
+import MediaFilters from "../components/Filters";
 
 function Annotation() {
   return (
@@ -12,6 +13,7 @@ function Annotation() {
         Navigation={<NavigationPath />}
         Main={
           <AnnotationContextProvider>
+            <MediaFilters />
             <AnnotationMain />
           </AnnotationContextProvider>
         }
