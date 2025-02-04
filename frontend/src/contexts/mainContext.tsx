@@ -23,6 +23,17 @@ export interface MainContextProps {
   name?: string;
   children?: any;
 }
+
+interface Filters {
+  species: string;
+  family: string;
+  genus: string;
+  classe: string;
+  order: string;
+  start_date: Date | null;
+  end_date: Date | null;
+}
+
 export const MainContext = createContext({} as any);
 
 export const useMainContext = () => useContext(MainContext);
@@ -50,12 +61,14 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
   const [autoTemplates, setAutoTemplates] = useState<TemplateSequence[]>();
   const [triggerTemplates, setTriggerTemplates] =
     useState<TemplateSequence[]>();
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Filters>({
     species: "",
     family: "",
     genus: "",
     classe: "",
     order: "",
+    start_date: null,
+    end_date: null,
   });
 
   const changeThumbnailProject = (file) => {
@@ -127,13 +140,15 @@ const MainContextProvider: FC<MainContextProps> = ({ children }) => {
 
   const updateListFile = () => {
     currentDeployment &&
-      FilesService.getFilterFilesFilesDeploymentIdFiltersGet(
+      FilesService.getFilesWithFiltersFilesFiltersDeploymentIdGet(
         currentDeployment,
         filters?.species,
         filters?.family,
         filters?.genus,
         filters?.classe,
-        filters?.order
+        filters?.order,
+        filters?.start_date?.toISOString().slice(0, -1),
+        filters?.end_date?.toISOString().slice(0, -1)
       )
         .then((files) => {
           setFiles(files);

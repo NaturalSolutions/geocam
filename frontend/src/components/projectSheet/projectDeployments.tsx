@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
-import Filters from "./filters";
+import Filters from "./Filters";
 import { Sites } from "../../client/models/Sites";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

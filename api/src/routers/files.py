@@ -7,9 +7,7 @@ from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
-from sqlalchemy import func
-
-from src.schemas.file import UpdateFile
+from src.schemas.file import FilterParams, UpdateFile
 import magic
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import JSONResponse, StreamingResponse
@@ -18,8 +16,7 @@ import uuid
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
-from src.schemas.schemas import Annotation
+from src.models.file import CreateFiles, Files
 from src.services import dependencies, files, device, project, deployment, site
 from src.utils import check_mime, file_as_bytes
 
@@ -57,46 +54,18 @@ def get_files(db: Session = Depends(get_db)):
 
 
 @router.patch("/annotation/{file_id}", response_model=Files)
-def update_annotations(
-    file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)
-):
+def update_annotations(file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)):
     return files.update_annotations(db, file_id=file_id, data=data)
 
-@router.get("/{deployment_id}/filters")
-def get_filter_files(deployment_id: int, species: str =None, family: str =None, genus: str=None, classe: str =None, order: str =None, db: Session = Depends(get_db)):
-    
-    criteria = {key: value for key, value in {
-        "species": species,
-        "family": family,
-        "classe": classe,
-        "genus": genus,
-        "order": order
-    }.items() if value is not ''}
-    print(criteria)
-    files=db.query(Files).filter(Files.annotations.contains([criteria]), Files.deployment_id == deployment_id).all()
-    
-    ### AUTRE METHODE : UTILISER UNE CTE
-    # cte_name = (
-    #     select(
-    #         Files,
-    #         func.jsonb_array_elements(Files.annotations).label('annotation')
-    #     )
-    #     .cte("cte_name")
-    # )
-    # statement = (
-    #     select(Files)  # Sélectionne toutes les colonnes de File
-    #     .join(cte_name, Files.id == cte_name.c.id)  # Jointure sur l'id
-    #     .distinct()  # Garantir l'unicité des résultats
-    #     .where(cte_name.c.annotation.op("->>")(taxo).ilike(search))  # Filtre sur le champ genus
-    # )
-    # files = db.exec(statement).all()
-    res = []
-    for f in files:
-        new_f = f.dict()
-        url = s3.get_url(f"{f.hash}.{f.extension}")
-        new_f["url"] = url
-        res.append(new_f)
-    return res
+
+@router.get("/filters/{deployment_id}")
+def get_files_with_filters(
+    deployment_id: int, filters_params: FilterParams = Depends(), db: Session = Depends(get_db)
+):
+    return files.get_deployment_files_with_filters(
+        db=db, deployment_id=deployment_id, filters_params=filters_params
+    )
+
 
 @router.get("/urls/")
 def display_file(name: str):
@@ -115,7 +84,6 @@ def extract_exif(file: UploadFile = File(...), db: Session = Depends(get_db)):
         except Exception as e:
             res[key] = "Erreur inconnue pour le moment"
     return res
-
 
 
 @router.post("/upload_files/{deployment_id}")
@@ -152,12 +120,12 @@ def upload_files(
     else:
         return "Erreur: le nombre de fichiers à importer est limité à 20"
 
+
 @router.post("/upload/device/{device_id}")
 def upload_files(
     device_id: int,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
-    
 ):
     try:
         hash = dependencies.generate_checksum(file)
@@ -167,19 +135,21 @@ def upload_files(
         if not check_mime(mime):
             raise HTTPException(status_code=400, detail="Invalid type file")
         unique_id = str(uuid.uuid4())
-        
+
         ext = file.filename.split(".")[1]
         unique_filename = f"{hash}_{unique_id}.{ext}"
         s3.upload_file_obj(file.file, unique_filename)
-        
+
         url = s3.get_url(unique_filename)
 
-        current_device = device.upload_image_device_id(db=db, device_hash=unique_filename, id=device_id)
+        current_device = device.upload_image_device_id(
+            db=db, device_hash=unique_filename, id=device_id
+        )
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in minio")
 
-    
     return current_device
+
 
 @router.post("/upload/{deployment_id}")
 def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
@@ -201,129 +171,110 @@ def upload_file(deployment_id: int, file: UploadFile = File(...), db: Session = 
     )
     return insert
 
+
 @router.post("/upload/project/{project_id}")
-def upload_files(
-        project_id: int,
-        file: UploadFile = File(...),
-        db: Session = Depends(get_db)
-):
+def upload_files(project_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         hash = dependencies.generate_checksum(file)
         unique_id = str(uuid.uuid4())
-        
+
         ext = file.filename.split(".")[1]
         unique_filename = f"{hash}_{unique_id}.{ext}"
         s3.upload_file_obj(file.file, unique_filename)
-        
+
         url = s3.get_url(unique_filename)
-        
-        current_project = project.update_project_image(db=db, file_name=unique_filename, project_id=project_id)
+
+        current_project = project.update_project_image(
+            db=db, file_name=unique_filename, project_id=project_id
+        )
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
-    
+
     return current_project
 
+
 @router.post("/upload/site/{site_id}")
-def upload_files(
-        site_id: int,
-        file: UploadFile = File(...),
-        db: Session = Depends(get_db)
-):
+def upload_files(site_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         hash = dependencies.generate_checksum(file)
         unique_id = str(uuid.uuid4())
-        
+
         ext = file.filename.split(".")[1]
         unique_filename = f"{hash}_{unique_id}.{ext}"
         s3.upload_file_obj(file.file, unique_filename)
-        
+
         url = s3.get_url(unique_filename)
-        
+
         current_site = site.update_site_image(db=db, image=unique_filename, id=site_id)
     except Exception as e:
         raise HTTPException(status_code=404, detail=e)
-    
+
     return current_site
 
+
 @router.post("/upload/deployment/{deployment_id}")
-def upload_files(
-        deployment_id: int,
-        file: UploadFile = File(...),
-        db: Session = Depends(get_db)
-):
+def upload_files(deployment_id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         hash = dependencies.generate_checksum(file)
         unique_id = str(uuid.uuid4())
-        
+
         ext = file.filename.split(".")[1]
         unique_filename = f"{hash}_{unique_id}.{ext}"
         s3.upload_file_obj(file.file, unique_filename)
-        
+
         url = s3.get_url(unique_filename)
-        
-        current_deployment = deployment.update_image_deployment(db=db, deployment_id=deployment_id, image=unique_filename)
+
+        current_deployment = deployment.update_image_deployment(
+            db=db, deployment_id=deployment_id, image=unique_filename
+        )
     except Exception as e:
         raise HTTPException(detail=e)
-    
+
     return current_deployment
 
 
 @router.post("/delete/deployment/{deployment_id}/{name}")
-def delete_files(
-    deployment_id: int,
-    name: str,
-    db: Session = Depends(get_db)
-):
+def delete_files(deployment_id: int, name: str, db: Session = Depends(get_db)):
     try:
         s3.delete_file_obj(name)
         current_deployment = deployment.delete_image_deployment_id(db=db, id=deployment_id)
     except Exception as e:
         raise HTTPException(status_code=422, detail=e)
-    
+
     return current_deployment
 
+
 @router.post("/delete/media/{hash_name}")
-def delete_files(
-    name:str,
-    hash_name:str,
-    db: Session = Depends(get_db)
-):
+def delete_files(name: str, hash_name: str, db: Session = Depends(get_db)):
     try:
         s3.delete_file_obj(hash_name)
         files.delete_media_deployment(db=db, name=name)
     except Exception as e:
         raise HTTPException(status_code=422, detail=e)
-    
+
     return "Image supprimée"
-        
+
+
 @router.post("/delete/project/{project_id}/{name}")
-def delete_files(
-    project_id: int,
-    name: str,
-    db: Session = Depends(get_db)
-):
+def delete_files(project_id: int, name: str, db: Session = Depends(get_db)):
     try:
         s3.delete_file_obj(name)
         current_project = project.delete_image_project_id(db=db, id=project_id)
     except Exception as e:
         raise HTTPException(status_code=422, detail=e)
-    
+
     return current_project
 
+
 @router.post("/delete/device/{device_id}/{name}")
-def delete_files(
-    device_id:int,
-    name: str,
-    db: Session = Depends(get_db)
-):
+def delete_files(device_id: int, name: str, db: Session = Depends(get_db)):
     try:
         s3.delete_file_obj(name)
         current_device = device.delete_image_device_id(db=db, id=device_id)
     except Exception as e:
         raise HTTPException(status_code=422, detail=e)
-    
+
     return current_device
-        
 
 
 @router.get("/download/{id}")
@@ -372,8 +323,8 @@ def read_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
         res.append(new_f)
     return res
 
+
 @router.get("/{deployment_id}/length")
 def get_length_deployment_files(deployment_id: int, db: Session = Depends(get_db)):
     List_files = files.get_deployment_files(db=db, id=deployment_id)
     return len(List_files)
-    

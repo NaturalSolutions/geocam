@@ -5,7 +5,7 @@
 import type { Annotation } from './Annotation';
 
 export type UpdateFile = {
-    date: Date | null;
+    date?: string;
     annotations: Array<Annotation>;
 };
 

@@ -47,11 +47,10 @@ const Filters = (props) => {
     props.list.forEach((item) => {
       const itemSite = site(item.site_id);
       setSiteList((prevSiteList) => {
-        // Vérifie si l'élément existe déjà
         if (!prevSiteList.some((site) => site.id === itemSite.id)) {
           return [...prevSiteList, itemSite];
         }
-        return prevSiteList; // Ne modifie pas si le site est déjà présent
+        return prevSiteList;
       });
     });
   };
@@ -63,7 +62,7 @@ const Filters = (props) => {
         if (!prevSiteList.some((device) => device.id === itemDevice.id)) {
           return [...prevSiteList, itemDevice];
         }
-        return prevSiteList; // Ne modifie pas si le site est déjà présent
+        return prevSiteList;
       });
     });
   };
@@ -74,7 +73,7 @@ const Filters = (props) => {
     getDevices();
   }, [currentProject, deployments, sites, devices, projectSheetData]);
 
-  // Mettez à jour le parent lorsque les filtres changent
+  // MAJ du parent lorsque les filtres changent
   const updateParentFilters = () => {
     props.onFilterChange({
       name: name?.id,
@@ -87,7 +86,7 @@ const Filters = (props) => {
 
   useEffect(() => {
     updateParentFilters();
-  }, [start_date, end_date, name, dName, sNname]); // Mettre à jour à chaque changement
+  }, [start_date, end_date, name, dName, sNname]);
 
   return (
     <Box
@@ -101,14 +100,14 @@ const Filters = (props) => {
     >
       <div className="filter">
         <Autocomplete
-          options={options} // Options à afficher dans la liste déroulante
-          getOptionLabel={(option) => option.name} // Label à afficher dans la liste
-          value={name} // Valeur sélectionnée
-          onChange={(event, newValue) => setName(newValue!)} // Mise à jour de la valeur
+          options={options}
+          getOptionLabel={(option) => option.name}
+          value={name}
+          onChange={(event, newValue) => setName(newValue!)}
           renderInput={(params) => (
             <TextField {...params} variant="outlined" fullWidth label="Nom" />
           )}
-          isOptionEqualToValue={(option, value) => option.id === value?.id} // Comparaison pour éviter des avertissements
+          isOptionEqualToValue={(option, value) => option.id === value?.id}
         />
 
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -134,20 +133,20 @@ const Filters = (props) => {
           />
         </LocalizationProvider>
         <Autocomplete
-          options={siteList} // Options à afficher dans la liste déroulante
-          getOptionLabel={(option) => option.name} // Label à afficher dans la liste
-          value={sNname} // Valeur sélectionnée
-          onChange={(event, newValue) => setSName(newValue!)} // Mise à jour de la valeur
+          options={siteList}
+          getOptionLabel={(option) => option.name}
+          value={sNname}
+          onChange={(event, newValue) => setSName(newValue!)}
           renderInput={(params) => (
             <TextField {...params} variant="outlined" fullWidth label="Site" />
           )}
-          isOptionEqualToValue={(option, value) => option.id === value?.id} // Comparaison pour éviter des avertissements
+          isOptionEqualToValue={(option, value) => option.id === value?.id}
         />
         <Autocomplete
-          options={deviceList} // Options à afficher dans la liste déroulante
-          getOptionLabel={(option) => option.name} // Label à afficher dans la liste
-          value={dName} // Valeur sélectionnée
-          onChange={(event, newValue) => setDName(newValue!)} // Mise à jour de la valeur
+          options={deviceList}
+          getOptionLabel={(option) => option.name}
+          value={dName}
+          onChange={(event, newValue) => setDName(newValue!)}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -156,7 +155,7 @@ const Filters = (props) => {
               label="Dispositif"
             />
           )}
-          isOptionEqualToValue={(option, value) => option.id === value?.id} // Comparaison pour éviter des avertissements
+          isOptionEqualToValue={(option, value) => option.id === value?.id}
         />
       </div>
     </Box>

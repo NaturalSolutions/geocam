@@ -60,27 +60,31 @@ export class FilesService {
     }
 
     /**
-     * Get Filter Files
+     * Get Files With Filters
      * @param deploymentId
      * @param species
      * @param family
      * @param genus
      * @param classe
      * @param order
+     * @param startDate
+     * @param endDate
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static getFilterFilesFilesDeploymentIdFiltersGet(
+    public static getFilesWithFiltersFilesFiltersDeploymentIdGet(
         deploymentId: number,
         species?: string,
         family?: string,
         genus?: string,
         classe?: string,
         order?: string,
+        startDate?: string,
+        endDate?: string,
     ): CancelablePromise<any> {
         return __request(OpenAPI, {
             method: 'GET',
-            url: '/files/{deployment_id}/filters',
+            url: '/files/filters/{deployment_id}',
             path: {
                 'deployment_id': deploymentId,
             },
@@ -90,6 +94,8 @@ export class FilesService {
                 'genus': genus,
                 'classe': classe,
                 'order': order,
+                'start_date': startDate,
+                'end_date': endDate,
             },
             errors: {
                 404: `Not found`,
