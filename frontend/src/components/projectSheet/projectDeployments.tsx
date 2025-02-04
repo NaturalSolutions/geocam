@@ -180,7 +180,6 @@ const ProjectDeployments = () => {
   const handleFilterChange = (filters) => {
     setFilterValues(filters);
   };
-  console.log("Valeurs des filtres mises à jour :", filterValues);
 
   const filterData = (data, filters) => {
     return data.filter((item) => {

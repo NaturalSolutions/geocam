@@ -44,8 +44,6 @@ class FilterParams(BaseModel):
         for key, value in self.dict(exclude_none=True).items():
             if value not in [None, ""]:
                 if key in ["start_date", "end_date"] and value:
-                    print("VALUE", value)
-                    print("KEY", key)
                     try:
                         date_ranges[key] = datetime.fromisoformat(value)  # Nettoyage des guillemets
                     except ValueError:
@@ -54,6 +52,4 @@ class FilterParams(BaseModel):
                         )
                 else:
                     taxonomy_filters[key] = value
-            print(taxonomy_filters)
-            print(date_ranges)
         return FilterResult(taxonomy_filters=taxonomy_filters, date_ranges=date_ranges)
