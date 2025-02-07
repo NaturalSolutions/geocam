@@ -18,11 +18,13 @@ def test_upload_files(client, deployment, pillow_image, admin_headers):
 
     assert response.status_code == status.HTTP_200_OK
 
+
 def test_get_deployment_files(client, deployment, admin_headers):
     url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
     response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
+
 
 def test_get_deployment_files_with_filters(client, deployment, admin_headers):
     url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
@@ -85,11 +87,13 @@ def test_get_files(client, file_object, admin_headers):
 
     # assert file_object.json() in content
 
+
 def test_get_length_deployment_files(client, deployment, admin_headers):
     url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
     response = client.get(url, headers=admin_headers)
 
     assert response.status_code == status.HTTP_200_OK
+
 
 def test_display_file(client, db, file_object, admin_headers):
     url = app.url_path_for("display_file")
