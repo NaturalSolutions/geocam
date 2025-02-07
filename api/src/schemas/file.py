@@ -1,9 +1,10 @@
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
+
 from pydantic import BaseModel
 from sqlmodel import SQLModel
+
 from src.schemas.schemas import Annotation
-from pydantic import BaseModel
 
 
 class FileInfo(SQLModel):

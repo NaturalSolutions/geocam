@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING, List, Optional
 from pydantic import validator
 from sqlmodel import Field, Relationship, SQLModel
 
-from src.models.deployment import DeploymentForProjectSheet, Deployments, DeploymentWithFile
+from src.models.deployment import (DeploymentForProjectSheet, Deployments,
+                                   DeploymentWithFile)
 from src.schemas.schemas import DataProject
 
 if TYPE_CHECKING:  # pragma: no cover

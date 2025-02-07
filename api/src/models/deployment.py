@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING, List, Optional
 from sqlmodel import Field, Relationship, SQLModel
 
 from src.models.file import Files
-from src.models.models import DeploymentTemplateSequenceCorrespondance, TemplateSequence
+from src.models.models import (DeploymentTemplateSequenceCorrespondance,
+                               TemplateSequence)
 
 if TYPE_CHECKING:  # pragma: no cover
     from .project import Projects

@@ -7,11 +7,10 @@ from typing import List
 from fastapi import HTTPException
 from sqlmodel import Session
 
-from src.schemas.file import FilterParams, UpdateFile
 from src.config import settings
 from src.connectors import s3
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
-
+from src.schemas.file import FilterParams, UpdateFile
 # import schemas.schemas
 from src.schemas.schemas import Annotation
 from src.utils import file_as_bytes

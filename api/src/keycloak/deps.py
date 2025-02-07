@@ -1,7 +1,6 @@
 from typing import List
 
 from fastapi_keycloak import KeycloakUser, OIDCUser
-
 from src.keycloak.idp import idp
 
 

@@ -1,6 +1,7 @@
 import functools
 
 from fastapi.security import OAuth2PasswordBearer
+
 from fastapi_keycloak import FastAPIKeycloak
 
 

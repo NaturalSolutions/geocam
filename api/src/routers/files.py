@@ -7,17 +7,18 @@ from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
-from src.schemas.file import FilterParams, UpdateFile
-import magic
-from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
+from fastapi import (APIRouter, Depends, File, Form, HTTPException, Query,
+                     UploadFile)
 from fastapi.responses import JSONResponse, StreamingResponse
 from sqlmodel import Session, select
-import uuid
+
+import magic
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.file import CreateFiles, Files
-from src.services import dependencies, files, device, project, deployment, site
+from src.schemas.file import FilterParams, UpdateFile
+from src.services import dependencies, deployment, device, files, project, site
 from src.utils import check_mime, file_as_bytes
 
 router = APIRouter(

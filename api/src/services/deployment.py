@@ -2,11 +2,8 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
-from src.models.deployment import (
-    Deployments,
-    DeploymentWithTemplateSequence,
-    NewDeploymentWithTemplateSequence,
-)
+from src.models.deployment import (Deployments, DeploymentWithTemplateSequence,
+                                   NewDeploymentWithTemplateSequence)
 from src.models.models import TemplateSequence
 from src.services import files
 

@@ -3,10 +3,10 @@ import os
 from datetime import datetime as dt
 from pathlib import Path
 
-import magic
 from dateutil.relativedelta import relativedelta
 from sqlmodel import Session, create_engine
 
+import magic
 from src.config import settings
 from src.models.deployment import NewDeploymentWithTemplateSequence
 from src.models.device import DeviceBase
