@@ -47,7 +47,7 @@ class FilterParams(BaseModel):
             if value not in [None, ""]:
                 if key in ["start_date", "end_date"] and value:
                     try:
-                        date_ranges[key] = datetime.fromisoformat(value)  # Nettoyage des guillemets
+                        date_ranges[key] = datetime.fromisoformat(value)
                     except ValueError:
                         raise ValueError(
                             f"Invalid date format for {key}. Expected ISO 8601 (YYYY-MM-DDTHH:MM:SS)"
