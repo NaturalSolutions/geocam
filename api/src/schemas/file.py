@@ -19,8 +19,8 @@ class File(SQLModel):
     url: str
 
 
-class UpdateFile (BaseModel):
-    date: Optional[str]=None
+class UpdateFile(BaseModel):
+    date: Optional[str] = None
     annotations: List[Annotation]
 
 

@@ -103,7 +103,7 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
         )
     # update des annotations
     db_file.annotations = [d.dict() for d in data.annotations]
-    if data.date :
+    if data.date:
         data.date = datetime.fromisoformat(data.date)
         db_file.date = data.date
     # update du statut de traitement du média
