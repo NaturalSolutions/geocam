@@ -70,3 +70,11 @@ def test_delete_site(client, site, db, admin_headers):
     assert content["id"] == site.id
 
     assert get_site(db, site_id=site.id) == None
+
+
+def test_fetch_site_thumbnail(client, site, admin_headers):
+    url = app.url_path_for("fetch_site_thumbnail", site_id=site.id)
+
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK

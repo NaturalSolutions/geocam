@@ -15,6 +15,14 @@ def test_read_devices(client, device, admin_headers):
     # assert device.dict() in content
 
 
+def test_read_device(client, device, admin_headers):
+    url = app.url_path_for("read_device", device_id=device.id)
+
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
 def test_create_device(client, admin_headers):
     url = app.url_path_for("create_device")
     device = {
@@ -67,3 +75,19 @@ def test_delete_device(client, device, db, admin_headers):
     assert content["id"] == device.id
 
     assert get_device(db, device_id=device.id) == None
+
+
+def test_read_menu_devices(client, admin_headers):
+    url = app.url_path_for("read_menu_devices")
+
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+def test_fetch_device_thumbnail(client, device, admin_headers):
+    url = app.url_path_for("fetch_device_thumbnail", device_id=device.id)
+
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK

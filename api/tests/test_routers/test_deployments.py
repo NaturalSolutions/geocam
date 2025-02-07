@@ -102,6 +102,14 @@ def test_read_deployments_with_files(client, admin_headers):
     assert response.status_code == status.HTTP_200_OK
 
 
+def test_read_deployments_with_template_sequence(client, admin_headers):
+    url = app.url_path_for("read_deployments_with_template_sequence")
+
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
 def test_read_device_deployments(client, device, admin_headers):
     url = app.url_path_for("read_device_deployments", device_id=device.id)
 
