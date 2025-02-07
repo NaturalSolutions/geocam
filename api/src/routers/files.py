@@ -7,12 +7,11 @@ from datetime import datetime
 from typing import List
 from zipfile import ZipFile
 
-from fastapi import (APIRouter, Depends, File, Form, HTTPException, Query,
-                     UploadFile)
+import magic
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import JSONResponse, StreamingResponse
 from sqlmodel import Session, select
 
-import magic
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db

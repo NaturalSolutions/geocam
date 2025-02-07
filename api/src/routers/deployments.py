@@ -5,10 +5,13 @@ from sqlmodel import Session
 
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.deployment import (Deployments, DeploymentWithFile,
-                                   DeploymentWithTemplateSequence,
-                                   NewDeploymentWithTemplateSequence,
-                                   ReadDeployment)
+from src.models.deployment import (
+    Deployments,
+    DeploymentWithFile,
+    DeploymentWithTemplateSequence,
+    NewDeploymentWithTemplateSequence,
+    ReadDeployment,
+)
 from src.services import deployment
 
 router = APIRouter(

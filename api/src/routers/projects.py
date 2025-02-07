@@ -5,9 +5,13 @@ from sqlmodel import Session
 
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.project import (ProjectBase, ProjectSheet,
-                                ProjectWithDeployment,
-                                ProjectWithDeploymentAndFiles, ReadProject)
+from src.models.project import (
+    ProjectBase,
+    ProjectSheet,
+    ProjectWithDeployment,
+    ProjectWithDeploymentAndFiles,
+    ReadProject,
+)
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import project
 
