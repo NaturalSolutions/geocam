@@ -51,7 +51,7 @@ def file_object(deployment, pillow_image, db):
         name=upload_file.filename,
         extension="jpg",
         bucket=settings.MINIO_BUCKET_NAME,
-        date=datetime.fromisoformat("2022-01-22"),
+        import_date=datetime.fromisoformat("2022-01-22"),
         deployment_id=deployment.id,
     )
     return create_file(db=db, file=metadata)

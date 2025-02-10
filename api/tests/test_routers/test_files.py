@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 from fastapi import status
@@ -21,23 +22,26 @@ def test_upload_files(client, deployment, pillow_image, admin_headers):
 def test_update_annotations(client, file_object, db, admin_headers):
     url = app.url_path_for("update_annotations", file_id=file_object.id)
 
-    annotations = [
-        {
-            "id": "string",
-            "id_annotation": "string",
-            "classe": "string",
-            "family": "string",
-            "genus": "string",
-            "order": "string",
-            "species": "string",
-            "number": 1,
-            "biological_state": "string",
-            "life_stage": "string",
-            "sex": "string",
-            "behaviour": "string",
-            "comments": "string",
-        }
-    ]
+    annotations = {
+        "date": "2025-02-20T05:00:42.000",
+        "annotations": [
+            {
+                "id": "38271843-b18e-4c46-817f-cb6fa8f5f5b6",
+                "id_annotation": "581831",
+                "classe": "Elasmobranchii",
+                "order": "Lamniformes",
+                "family": "Alopiidae",
+                "genus": "Alopias",
+                "species": "Alopias superciliousus",
+                "life_stage": "",
+                "biological_state": "",
+                "comments": "",
+                "behaviour": "",
+                "sex": "",
+                "number": 1,
+            }
+        ],
+    }
 
     response = client.patch(url, json=annotations, headers=admin_headers)
 
@@ -48,7 +52,8 @@ def test_update_annotations(client, file_object, db, admin_headers):
     db.expire_all()  ## Prevent SQLAlchemy from caching
 
     current_file = get_file(db=db, file_id=file_object.id)
-    assert current_file.annotations == annotations
+    assert current_file.annotations == annotations["annotations"]
+    assert current_file.date == datetime.fromisoformat(annotations["date"])
 
 
 def test_get_files(client, file_object, admin_headers):
