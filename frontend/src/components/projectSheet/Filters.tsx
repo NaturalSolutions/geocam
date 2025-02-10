@@ -1,12 +1,4 @@
-import {
-  Box,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-  capitalize,
-  Autocomplete,
-} from "@mui/material";
+import { Box, TextField, capitalize, Autocomplete } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useTranslation } from "react-i18next";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -34,7 +26,9 @@ const Filters = (props) => {
   const [siteList, setSiteList] = useState<Sites[]>([]);
   const [deviceList, setDeviceList] = useState<Devices[]>([]);
   const [dName, setDName] = useState<Devices | undefined>();
-  const options = project().deployments;
+  const [deploymentList, setdeploymentList] = useState<[]>(
+    project().deployments
+  );
 
   const site = (item_site): Sites => {
     return sites.find((s) => s.id === item_site);
@@ -71,6 +65,7 @@ const Filters = (props) => {
     getLists();
     setDeviceList([]);
     getDevices();
+    setdeploymentList(projectSheetData.deployments);
   }, [currentProject, deployments, sites, devices, projectSheetData]);
 
   // MAJ du parent lorsque les filtres changent
@@ -100,7 +95,7 @@ const Filters = (props) => {
     >
       <div className="filter">
         <Autocomplete
-          options={options}
+          options={deploymentList}
           getOptionLabel={(option) => option.name}
           value={name}
           onChange={(event, newValue) => setName(newValue!)}

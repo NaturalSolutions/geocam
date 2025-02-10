@@ -21,7 +21,6 @@ import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
 import Filters from "./Filters";
-import { Sites } from "../../client/models/Sites";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -42,29 +41,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const ProjectDeployments = () => {
   const { t } = useTranslation();
   const { projectSheetData, sites, devices } = useMainContext();
-  const [siteList, setSiteList] = useState<Sites[]>([]);
   const [deployments, setDeployments] = useState(projectSheetData.deployments);
   const [sortType, setSortType] = useState<"asc" | "desc" | undefined>("asc"); // État pour suivre le type de tri (ascendant ou descendant)
   const [sortBy, setSortBy] = useState("name"); // État pour suivre la colonne par laquelle trier
 
   useEffect(() => {
     if (sortBy === "name") {
-      sortByName(projectSheetData.deployments, sortType);
+      sortByName(deployments, sortType);
     } else {
-      sortByDate(projectSheetData.deployments, sortType);
+      sortByDate(deployments, sortType);
     }
   });
 
   const allSorts = (property, data, sortType) => {
     if (property === "name") {
-      sortByName(projectSheetData.deployments, sortType);
+      sortByName(deployments, sortType);
     } else if (property === "start_date") {
       console.log(property);
-      sortByDate(projectSheetData.deployments, sortType);
+      sortByDate(deployments, sortType);
     } else if (property === "end_date") {
-      sortByEndDate(projectSheetData.deployments, sortType);
+      sortByEndDate(deployments, sortType);
     } else if (property === "sites") {
-      sortBySites(projectSheetData.deployments, sortType);
+      sortBySites(deployments, sortType);
     }
   };
 
@@ -72,11 +70,11 @@ const ProjectDeployments = () => {
     if (sortBy === property) {
       const newSortType = sortType === "asc" ? "desc" : "asc";
       setSortType(newSortType);
-      allSorts(property, projectSheetData.deployments, newSortType);
+      allSorts(property, deployments, newSortType);
     } else {
       const newSortType = "asc";
       setSortType(newSortType);
-      allSorts(property, projectSheetData.deployments, newSortType);
+      allSorts(property, deployments, newSortType);
     }
 
     setSortBy(property);
@@ -162,9 +160,9 @@ const ProjectDeployments = () => {
 
   useEffect(() => {
     if (sortBy === "name") {
-      sortByName(projectSheetData.deployments, sortType);
+      sortByName(deployments, sortType);
     } else {
-      sortByDate(projectSheetData.deployments, sortType);
+      sortByDate(deployments, sortType);
     }
   });
 
