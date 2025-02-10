@@ -7,10 +7,10 @@ from typing import List
 from fastapi import HTTPException
 from sqlmodel import Session
 
-from src.schemas.file import UpdateFile
 from src.config import settings
 from src.connectors import s3
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
+from src.schemas.file import UpdateFile
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
@@ -30,7 +30,7 @@ def get_file(db: Session, file_id: uuid_pkg.UUID):
 
 
 def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
-    return (                                                                                                        
+    return (
         db.query(Files)
         .filter(Files.deployment_id == id)
         .order_by(Files.name)
@@ -39,11 +39,13 @@ def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
         .all()
     )
 
-def delete_media_deployment(db: Session, name:str):
+
+def delete_media_deployment(db: Session, name: str):
     db_files = db.query(Files).filter(Files.name == name).first()
     db.delete(db_files)
     db.commit()
-    
+
+
 def create_file(db: Session, file: CreateFiles):
     db_file = Files(**file.dict(), annotations=[])
     db.add(db_file)
@@ -51,12 +53,14 @@ def create_file(db: Session, file: CreateFiles):
     db.refresh(db_file)
     return db_file
 
+
 def create_file_device(db: Session, file: CreateDeviceFile):
     db_file = CreateDeviceFile(**file.dict(), annotations=[])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)
     return db_file
+
 
 def update_annotations(db: Session, file_id: int, data: UpdateFile):
     db_file = get_file(db=db, file_id=file_id)
@@ -68,7 +72,7 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
     # update des annotations
     db_file.annotations = [d.dict() for d in data.annotations]
     # update de la date
-    if data.date :
+    if data.date:
         data.date = datetime.fromisoformat(data.date)
         db_file.date = data.date
     # update du statut de traitement du média
@@ -77,18 +81,21 @@ def update_annotations(db: Session, file_id: int, data: UpdateFile):
     db.refresh(db_file)
     return db_file
 
+
 def delete_file(db: Session, id: int):
     db_file = db.query(Files).filter(Files.id == id).first()
     db.delete(db_file)
     db.commit()
     return db_file
 
-def deleteAllFilesDeployment(db: Session, id:int):
+
+def deleteAllFilesDeployment(db: Session, id: int):
     db_files = db.query(Files).filter(Files.deployment_id == id).all()
     for f in db_files:
         db.delete(f)
     db.commit()
-    
+
+
 def upload_file(
     db: Session,
     hash: str,
@@ -114,4 +121,3 @@ def upload_file(
         return create_file(db=db, file=metadata)
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
-
