@@ -70,6 +70,22 @@ services:
       retries: 5
       start_period: 10s
 
+  nomenclapi:
+    <<: *project_defaults
+    image: nomenclapi:dev
+    container_name: nomenclapi
+    build:
+      context: ../nomenclapi
+      dockerfile: Dockerfile
+    volumes:
+      - ../nomenclapi:/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.nomenclapi.rule=${TRAEFIK_ROUTER_RULE_NOMENCLAPI:-PathPrefix(`/nomenclapi`)}
+      - traefik.http.routers.nomenclapi.entrypoints=web
+      - traefik.http.routers.nomenclapi.middlewares=api-stripprefix
+      - traefik.http.middlewares.nomenclapi-stripprefix.stripprefix.prefixes=${NOMENCLAPI_ROOT_PATH:-/nomenclapi}
+  
   frontend:
     <<: *project_defaults
     image: ${FRONTEND_IMAGE:-registry.gitlab.com/natural-solutions/geonature/annotation:frontend-dev}
