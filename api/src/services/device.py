@@ -45,6 +45,7 @@ def update_device(db: Session, device: DeviceBase, id: int):
     db.refresh(db_device)
     return db_device
 
+
 def upload_image_device_id(db: Session, device_hash: str, id: int):
     db_device = db.query(Devices).filter(Devices.id == id).first()
     db_device.image = device_hash
@@ -52,12 +53,14 @@ def upload_image_device_id(db: Session, device_hash: str, id: int):
     db.refresh(db_device)
     return db_device
 
+
 def delete_image_device_id(db: Session, id: int):
     db_device = db.query(Devices).filter(Devices.id == id).first()
     db_device.image = ""
     db.commit()
     db.refresh(db_device)
     return db_device
+
 
 def delete_device(db: Session, id: int):
     db_device = db.query(Devices).filter(Devices.id == id).first()

@@ -84,15 +84,13 @@ def read_device_deployments(
 ):
     return deployment.get_device_deployments(db=db, device_id=device_id, skip=skip, limit=limit)
 
+
 @router.get("/fetch_deployment_thumbnail/{deployment_id}")
-def fetch_deployment_thumbnail(
-    deployment_id: int,
-    db: Session = Depends(get_db)
-):
+def fetch_deployment_thumbnail(deployment_id: int, db: Session = Depends(get_db)):
     current_deployment = deployment.get_deployment(db=db, deployment_id=deployment_id)
     res = []
     new_f = current_deployment.dict()
-    if(current_deployment.image != None):
+    if current_deployment.image != None:
         url = s3.get_url(current_deployment.image)
         new_f["url"] = url
         res.append(new_f)
