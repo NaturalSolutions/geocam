@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import io
 import tempfile
+import uuid
 import uuid as uuid_pkg
 from datetime import datetime
 from typing import List
@@ -9,7 +10,7 @@ from zipfile import ZipFile
 
 import magic
 from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import StreamingResponse
 from sqlmodel import Session, select
 
 from src.config import settings
