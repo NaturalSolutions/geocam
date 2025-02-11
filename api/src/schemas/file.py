@@ -1,6 +1,10 @@
 from datetime import datetime
+from typing import List, Optional
 
+from pydantic import BaseModel
 from sqlmodel import SQLModel
+
+from src.schemas.schemas import Annotation
 
 
 class FileInfo(SQLModel):
@@ -14,3 +18,8 @@ class File(SQLModel):
     bucket: str
     date: datetime
     url: str
+
+
+class UpdateFile(BaseModel):
+    date: Optional[str] = None
+    annotations: List[Annotation]

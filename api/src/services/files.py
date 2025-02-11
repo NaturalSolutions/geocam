@@ -10,6 +10,7 @@ from sqlmodel import Session
 from src.config import settings
 from src.connectors import s3
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
+from src.schemas.file import UpdateFile
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
@@ -29,7 +30,7 @@ def get_file(db: Session, file_id: uuid_pkg.UUID):
 
 
 def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
-    return (                                                                                                        
+    return (
         db.query(Files)
         .filter(Files.deployment_id == id)
         .order_by(Files.name)
@@ -38,17 +39,20 @@ def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
         .all()
     )
 
-def delete_media_deployment(db: Session, name:str):
+
+def delete_media_deployment(db: Session, name: str):
     db_files = db.query(Files).filter(Files.name == name).first()
     db.delete(db_files)
     db.commit()
-    
+
+
 def create_file(db: Session, file: CreateFiles):
     db_file = Files(**file.dict(), annotations=[])
     db.add(db_file)
     db.commit()
     db.refresh(db_file)
     return db_file
+
 
 def create_file_device(db: Session, file: CreateDeviceFile):
     db_file = CreateDeviceFile(**file.dict(), annotations=[])
@@ -57,7 +61,8 @@ def create_file_device(db: Session, file: CreateDeviceFile):
     db.refresh(db_file)
     return db_file
 
-def update_annotations(db: Session, file_id: int, data: List[Annotation]):
+
+def update_annotations(db: Session, file_id: int, data: UpdateFile):
     db_file = get_file(db=db, file_id=file_id)
     if db_file is None:
         raise HTTPException(
@@ -65,7 +70,11 @@ def update_annotations(db: Session, file_id: int, data: List[Annotation]):
             detail="No file found",
         )
     # update des annotations
-    db_file.annotations = [d.dict() for d in data]
+    db_file.annotations = [d.dict() for d in data.annotations]
+    # update de la date
+    if data.date:
+        data.date = datetime.fromisoformat(data.date)
+        db_file.date = data.date
     # update du statut de traitement du média
     db_file.treated = True
     db.commit()
@@ -79,12 +88,14 @@ def delete_file(db: Session, id: int):
     db.commit()
     return db_file
 
-def deleteAllFilesDeployment(db: Session, id:int):
+
+def deleteAllFilesDeployment(db: Session, id: int):
     db_files = db.query(Files).filter(Files.deployment_id == id).all()
     for f in db_files:
         db.delete(f)
     db.commit()
-    
+
+
 def upload_file(
     db: Session,
     hash: str,
@@ -103,11 +114,10 @@ def upload_file(
         name=filename,
         extension=ext,
         bucket=settings.MINIO_BUCKET_NAME,
-        date=datetime.now(),
+        import_date=datetime.now(),
         deployment_id=deployment_id,
     )
     try:
         return create_file(db=db, file=metadata)
     except Exception as e:
         raise HTTPException(status_code=404, detail="Impossible to save the file in bdd")
-
