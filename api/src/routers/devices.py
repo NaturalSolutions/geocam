@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.device import DeviceBase, DeviceMenu, Devices
 from src.services import device
-from src.connectors import s3
 
 router = APIRouter(
     prefix="/devices",
@@ -52,17 +52,14 @@ def delete_device(device_id: int, db: Session = Depends(get_db)):
 def read_menu_devices(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     return device.get_menu_devices(db, skip=skip, limit=limit)
 
+
 @router.get("/fetch_device_thumbnail/{device_id}")
-def fetch_device_thumbnail(
-    device_id: int,
-    db: Session = Depends(get_db)
-):
+def fetch_device_thumbnail(device_id: int, db: Session = Depends(get_db)):
     current_device = device.get_device(db=db, device_id=device_id)
     res = []
     new_f = current_device.dict()
-    if(current_device.image != None):
+    if current_device.image != None:
         url = s3.get_url(current_device.image)
         new_f["url"] = url
         res.append(new_f)
         return res
-

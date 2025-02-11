@@ -5,11 +5,11 @@ from typing import List
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
-from src.connectors import s3
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):
@@ -22,14 +22,11 @@ def get_projects(db: Session, skip: int = 0, limit: int = 100):
         .all()
     )
 
+
 def get_projects_length(db: Session, skip: int = 0, limit: int = 100):
-    return len(
-        db.query(Projects)
-        .offset(skip)
-        .limit(limit)
-        .all()
-    )
-    
+    return len(db.query(Projects).offset(skip).limit(limit).all())
+
+
 def get_project(db: Session, project_id: int):
     return db.query(Projects).filter(Projects.id == project_id).first()
 
@@ -64,6 +61,7 @@ def update_project(db: Session, project: ProjectBase, id: int):
     db.refresh(db_project)
     return db_project
 
+
 def update_project_image(db: Session, file_name: str, project_id: int):
     db_project = db.query(Projects).filter(Projects.id == project_id).first()
     db_project.image = file_name
@@ -71,12 +69,14 @@ def update_project_image(db: Session, file_name: str, project_id: int):
     db.refresh(db_project)
     return db_project
 
+
 def delete_image_project_id(db: Session, id: int):
     db_project = db.query(Projects).filter(Projects.id == id).first()
     db_project.image = ""
     db.commit()
     db.refresh(db_project)
     return db_project
+
 
 def delete_project(db: Session, id: int):
     db_project = db.query(Projects).filter(Projects.id == id).first()
@@ -144,10 +144,10 @@ def get_projects_stats(db: Session, skip: int = 0, limit: int = 100):
         media_number = 0
         nb_treated_media = 0
         if project.image != None:
-           url = s3.get_url(project.image)
-        else :
+            url = s3.get_url(project.image)
+        else:
             url = project.image
-        
+
         for deployment in project.deployments:
             if deployment.site_id not in unique_site:
                 unique_site.append(deployment.site_id)

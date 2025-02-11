@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.project import (
     ProjectBase,
@@ -13,7 +14,6 @@ from src.models.project import (
 )
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import project
-from src.connectors import s3
 
 router = APIRouter(
     prefix="/projects",
@@ -68,9 +68,11 @@ def read_projects_with_deployments(skip: int = 0, limit: int = 100, db: Session 
 def get_stats_projects(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return project.get_projects_stats(db, skip=skip, limit=limit)
 
+
 @router.get("/length/", response_model=int)
 def length_projects(db: Session = Depends(get_db), skip: int = 0, limit: int = 100):
     return project.get_projects_length(db, skip=skip, limit=limit)
+
 
 @router.get("/project_informations/{project_id}", response_model=ProjectSheet)
 def get_informations_project(project_id: int, db: Session = Depends(get_db)):
@@ -81,11 +83,9 @@ def get_informations_project(project_id: int, db: Session = Depends(get_db)):
 def get_first_untreated_file(project_id: int, db: Session = Depends(get_db)):
     return project.first_untreated_file(db=db, project_id=project_id)
 
+
 @router.get("/fetch_project_thumbnail/{project_id}")
-def fetch_project_thumbnail(
-    project_id: int,
-    db: Session = Depends(get_db)
-):
+def fetch_project_thumbnail(project_id: int, db: Session = Depends(get_db)):
     current_project = project.get_project(db=db, project_id=project_id)
     res = []
     new_f = current_project.dict()
