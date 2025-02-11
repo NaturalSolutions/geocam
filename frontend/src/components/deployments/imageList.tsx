@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { useMainContext } from "../../contexts/mainContext";
-import "../css/first.css";
+import "../../css/first.css";
 
 import MediaGallery from "./mediaGallery";
 import Dropzone from "react-dropzone";
