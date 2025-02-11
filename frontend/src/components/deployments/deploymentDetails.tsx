@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 import { Box, capitalize, Tab, Tabs } from "@mui/material";
-import DeploymentForm from "./deploymentForm";
+import DeploymentForm from "../deploymentForm";
 import ImageList from "./imageList";
-import TabPanel from "./tabPanel";
-import PageHeadBar from "./common/PageHeadBar";
+import TabPanel from "../tabPanel";
+import PageHeadBar from "../common/PageHeadBar";
 
 const DeploymentDetails = (props) => {
   const { t } = useTranslation();

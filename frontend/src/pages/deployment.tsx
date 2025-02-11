@@ -1,4 +1,4 @@
-import ImageList from "../components/imageList";
+import ImageList from "../components/deployments/imageList";
 import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";

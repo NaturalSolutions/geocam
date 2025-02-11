@@ -1,8 +1,8 @@
 import { Box } from "@mui/material";
 
 import InputTaxo from "./TaxonomicInputs";
-import DateFilter from "./common/DateRangePicker";
-import { useMainContext } from "../contexts/mainContext";
+import DateFilter from "../common/DateRangePicker";
+import { useMainContext } from "../../contexts/mainContext";
 
 const MediaFilters = () => {
   const { setFilters } = useMainContext();

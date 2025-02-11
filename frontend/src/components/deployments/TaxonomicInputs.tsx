@@ -9,7 +9,7 @@ import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 
 interface InputTaxoProps {
   rank: string;

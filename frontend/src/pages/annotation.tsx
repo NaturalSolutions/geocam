@@ -3,7 +3,7 @@ import HeadBar from "../components/HeadBar";
 import NavigationPath from "../components/navigationPath";
 import AnnotationContextProvider from "../contexts/annotationContext";
 import AnnotationMain from "../components/annotation/AnnotationMain";
-import MediaFilters from "../components/Filters";
+import MediaFilters from "../components/deployments/Filters";
 
 function Annotation() {
   return (

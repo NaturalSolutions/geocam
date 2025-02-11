@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 import "../css/first.css";
 
 import MediaGallery from "./mediaGallery";
@@ -12,10 +12,10 @@ import {
   capitalize,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { FilesService } from "../client";
+import { FilesService } from "../../client";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import { useTranslation } from "react-i18next";
-import ButtonsYesNo from "./common/buttonsYesNo";
+import ButtonsYesNo from "../common/buttonsYesNo";
 
 const ImageList: FC<{}> = () => {
   const { t } = useTranslation();

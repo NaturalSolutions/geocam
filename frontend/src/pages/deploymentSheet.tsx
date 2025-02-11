@@ -2,7 +2,7 @@ import MainLayout from "../layouts/mainLayout";
 import HeadBar from "../components/HeadBar";
 import Drawer from "../components/drawer";
 import NavigationPath from "../components/navigationPath";
-import DeploymentDetails from "../components/deploymentDetails";
+import DeploymentDetails from "../components/deployments/deploymentDetails";
 
 function DeploymentSheet(props) {
   return (

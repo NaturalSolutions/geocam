@@ -1,8 +1,8 @@
 import Masonry from "@mui/lab/Masonry";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 import { Box, capitalize, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import GalleryItem from "./GalleryItem";
+import GalleryItem from "../GalleryItem";
 import MediaFilters from "./Filters";
 
 export default function MediaGallery() {
