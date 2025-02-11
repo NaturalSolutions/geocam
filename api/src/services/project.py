@@ -5,11 +5,11 @@ from typing import List
 from sqlalchemy.orm import joinedload
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.models.file import Files
 from src.models.project import ProjectBase, Projects
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import deployment
-from src.connectors import s3
 
 
 def get_projects(db: Session, skip: int = 0, limit: int = 100):

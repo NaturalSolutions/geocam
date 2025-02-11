@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.project import (
     ProjectBase,
@@ -13,7 +14,6 @@ from src.models.project import (
 )
 from src.schemas.schemas import FirstUntreated, StatsProject
 from src.services import project
-from src.connectors import s3
 
 router = APIRouter(
     prefix="/projects",

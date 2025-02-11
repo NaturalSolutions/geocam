@@ -3,10 +3,10 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.device import DeviceBase, DeviceMenu, Devices
 from src.services import device
-from src.connectors import s3
 
 router = APIRouter(
     prefix="/devices",

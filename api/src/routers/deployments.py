@@ -3,6 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
+from src.connectors import s3
 from src.connectors.database import get_db
 from src.models.deployment import (
     Deployments,
@@ -12,7 +13,6 @@ from src.models.deployment import (
     ReadDeployment,
 )
 from src.services import deployment
-from src.connectors import s3
 
 router = APIRouter(
     prefix="/deployments",
