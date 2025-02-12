@@ -9,16 +9,15 @@ from typing import List
 from zipfile import ZipFile
 
 import magic
-from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, UploadFile
 from fastapi.responses import StreamingResponse
-from sqlmodel import Session
+from sqlmodel import Session, select
 
 from src.config import settings
 from src.connectors import s3
 from src.connectors.database import get_db
-from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
-from src.schemas.file import UpdateFile
-from src.schemas.schemas import Annotation
+from src.models.file import CreateFiles, Files
+from src.schemas.file import FilterParams, UpdateFile
 from src.services import dependencies, deployment, device, files, project, site
 from src.utils import check_mime, file_as_bytes
 
@@ -58,6 +57,15 @@ def get_files(db: Session = Depends(get_db)):
 @router.patch("/annotation/{file_id}", response_model=Files)
 def update_annotations(file_id: uuid_pkg.UUID, data: UpdateFile, db: Session = Depends(get_db)):
     return files.update_annotations(db, file_id=file_id, data=data)
+
+
+@router.get("/filters/{deployment_id}")
+def get_files_with_filters(
+    deployment_id: int, filters_params: FilterParams = Depends(), db: Session = Depends(get_db)
+):
+    return files.get_deployment_files_with_filters(
+        db=db, deployment_id=deployment_id, filters_params=filters_params
+    )
 
 
 @router.get("/urls/")

@@ -13,20 +13,19 @@ import { useEffect, useState } from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { useMainContext } from "../contexts/mainContext";
+import { useMainContext } from "../../contexts/mainContext";
 import { useParams } from "react-router-dom";
 import {
   DeploymentsService,
   DeploymentWithTemplateSequence,
-  ProjectWithDeployment,
-} from "../client";
-import SiteModale from "./siteMenu/siteModale";
-import Map from "./Map";
+} from "../../client";
+import SiteModale from "../siteMenu/siteModale";
+import Map from "../Map";
 import { useTranslation } from "react-i18next";
 import { capitalize } from "@mui/material";
-import ButtonModify from "./common/buttonModify";
-import ButtonValidate from "./common/buttonValidate";
-import ThumbnailDeploymentComponent from "./ThumbnailDeploymentComponent";
+import ButtonModify from "../common/buttonModify";
+import ButtonValidate from "../common/buttonValidate";
+import ThumbnailDeploymentComponent from "../ThumbnailDeploymentComponent";
 
 const DeploymentForm = (props) => {
   const {

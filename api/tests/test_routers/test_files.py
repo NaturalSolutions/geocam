@@ -19,9 +19,29 @@ def test_upload_files(client, deployment, pillow_image, admin_headers):
     assert response.status_code == status.HTTP_200_OK
 
 
+def test_get_deployment_files(client, deployment, admin_headers):
+    url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
+def test_get_deployment_files_with_filters(client, deployment, admin_headers):
+    url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
+    filters = {
+        "taxonomy_filters": {},
+        "date_ranges": {
+            "start_date": datetime(2024, 1, 1, 0, 0, 0),
+            "end_date": datetime(2024, 2, 1, 0, 0, 0),
+        },
+    }
+    response = client.get(url, params=filters, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
+
+
 def test_update_annotations(client, file_object, db, admin_headers):
     url = app.url_path_for("update_annotations", file_id=file_object.id)
-
     annotations = {
         "date": "2025-02-20T05:00:42.000",
         "annotations": [
@@ -66,6 +86,13 @@ def test_get_files(client, file_object, admin_headers):
     content = response.json()
 
     # assert file_object.json() in content
+
+
+def test_get_length_deployment_files(client, deployment, admin_headers):
+    url = app.url_path_for("get_files_with_filters", deployment_id=deployment.id)
+    response = client.get(url, headers=admin_headers)
+
+    assert response.status_code == status.HTTP_200_OK
 
 
 def test_display_file(client, db, file_object, admin_headers):

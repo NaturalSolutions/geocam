@@ -114,9 +114,9 @@ def get_informations(db: Session, id: int):
         media_number += len(d.files)
         deploys.append(d.dict())
         nb_treated_media += number_treated_media(d.files)
+
     project_data = project.dict()
     project_data["deployments"] = deploys
-
     annotation_percentage = annotation_percentage_project(media_number, nb_treated_media)
     project_data["stats"] = {
         "media_number": media_number,

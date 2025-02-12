@@ -60,6 +60,51 @@ export class FilesService {
     }
 
     /**
+     * Get Files With Filters
+     * @param deploymentId
+     * @param species
+     * @param family
+     * @param genus
+     * @param classe
+     * @param order
+     * @param startDate
+     * @param endDate
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static getFilesWithFiltersFilesFiltersDeploymentIdGet(
+        deploymentId: number,
+        species?: string,
+        family?: string,
+        genus?: string,
+        classe?: string,
+        order?: string,
+        startDate?: string,
+        endDate?: string,
+    ): CancelablePromise<any> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/files/filters/{deployment_id}',
+            path: {
+                'deployment_id': deploymentId,
+            },
+            query: {
+                'species': species,
+                'family': family,
+                'genus': genus,
+                'classe': classe,
+                'order': order,
+                'start_date': startDate,
+                'end_date': endDate,
+            },
+            errors: {
+                404: `Not found`,
+                422: `Validation Error`,
+            },
+        });
+    }
+
+    /**
      * Display File
      * @param name
      * @returns any Successful Response

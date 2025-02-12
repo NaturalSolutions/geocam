@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { useMainContext } from "../../contexts/mainContext";
-import DeploymentNewModale from "../DeploymentNewModale";
+import DeploymentNewModale from "../deployments/DeploymentNewModale";
 import ImportModale from "../importModale";
 import ProjectModal from "../projectModale";
 import Map from "../Map";

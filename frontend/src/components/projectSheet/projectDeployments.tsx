@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import {
   Alert,
   AlertTitle,
+  Box,
   Paper,
   Stack,
   Link,
@@ -20,6 +21,7 @@ import { useEffect, useState } from "react";
 import ProjectDeploymentDeleteModale from "./projectDeploymentsDeleteModale";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import { useTranslation } from "react-i18next";
+import Filters from "./Filters";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.body}`]: {
@@ -40,28 +42,28 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const ProjectDeployments = () => {
   const { t } = useTranslation();
   const { projectSheetData, sites, devices } = useMainContext();
-
+  const [deployments, setDeployments] = useState(projectSheetData.deployments);
   const [sortType, setSortType] = useState<"asc" | "desc" | undefined>("asc"); // État pour suivre le type de tri (ascendant ou descendant)
   const [sortBy, setSortBy] = useState("name"); // État pour suivre la colonne par laquelle trier
 
   useEffect(() => {
     if (sortBy === "name") {
-      sortByName(projectSheetData.deployments, sortType);
+      sortByName(deployments, sortType);
     } else {
-      sortByDate(projectSheetData.deployments, sortType);
+      sortByDate(deployments, sortType);
     }
   });
 
   const allSorts = (property, data, sortType) => {
     if (property === "name") {
-      sortByName(projectSheetData.deployments, sortType);
+      sortByName(deployments, sortType);
     } else if (property === "start_date") {
       console.log(property);
-      sortByDate(projectSheetData.deployments, sortType);
+      sortByDate(deployments, sortType);
     } else if (property === "end_date") {
-      sortByEndDate(projectSheetData.deployments, sortType);
+      sortByEndDate(deployments, sortType);
     } else if (property === "sites") {
-      sortBySites(projectSheetData.deployments, sortType);
+      sortBySites(deployments, sortType);
     }
   };
 
@@ -69,11 +71,11 @@ const ProjectDeployments = () => {
     if (sortBy === property) {
       const newSortType = sortType === "asc" ? "desc" : "asc";
       setSortType(newSortType);
-      allSorts(property, projectSheetData.deployments, newSortType);
+      allSorts(property, deployments, newSortType);
     } else {
       const newSortType = "asc";
       setSortType(newSortType);
-      allSorts(property, projectSheetData.deployments, newSortType);
+      allSorts(property, deployments, newSortType);
     }
 
     setSortBy(property);
@@ -157,13 +159,72 @@ const ProjectDeployments = () => {
     );
   };
 
+  useEffect(() => {
+    if (sortBy === "name") {
+      sortByName(deployments, sortType);
+    } else {
+      sortByDate(deployments, sortType);
+    }
+  });
+
+  const [filterValues, setFilterValues] = useState({
+    name: null,
+    start_date: null,
+    end_date: null,
+    site: null,
+    device: null,
+  });
+
+  // Fonction de rappel pour recevoir les valeurs des filtres
+  const handleFilterChange = (filters) => {
+    setFilterValues(filters);
+  };
+
+  const filterData = (data, filters) => {
+    return data.filter((item) => {
+      const itemStartDate = new Date(item.start_date);
+      const filterStartDate = filters.start_date
+        ? new Date(filters.start_date)
+        : null;
+      const filterEndDate = filters.end_date
+        ? new Date(filters.end_date)
+        : null;
+
+      // Vérifiez les dates
+      const isWithinDateRange =
+        (!filterStartDate || itemStartDate >= filterStartDate) &&
+        (!filterEndDate || itemStartDate <= filterEndDate);
+
+      // Vérifiez le site et le device
+      const isSiteMatch = !filters.site || item.site_id === filters.site;
+      const isDeviceMatch =
+        !filters.device || item.device_id === filters.device;
+
+      // Vérifiez l'ID correspondant à name
+      const isNameMatch = !filters.name || item.id === filters.name;
+
+      return isWithinDateRange && isSiteMatch && isDeviceMatch && isNameMatch;
+    }); // Retournez uniquement les `id`
+  };
+
+  useEffect(() => {
+    const data = filterData(projectSheetData.deployments, filterValues);
+    setDeployments(data);
+  }, [filterValues, projectSheetData]);
+
   return projectSheetData.deployments.length !== 0 ? (
-    <Stack spacing={2} justifyContent="center">
+    <Stack spacing={0} justifyContent="center">
+      <Box sx={{ display: "flex", width: "100%" }}>
+        <Filters
+          list={projectSheetData.deployments}
+          onFilterChange={handleFilterChange}
+        />
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ backgroundColor: "#CCDFD9" }}>
             <TableRow>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "name"}
                   direction={sortType}
@@ -172,7 +233,7 @@ const ProjectDeployments = () => {
                   {capitalize(t("main.name"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "start_date"}
                   direction={sortType}
@@ -181,7 +242,7 @@ const ProjectDeployments = () => {
                   {capitalize(t("projects.start_date"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "end_date"}
                   direction={sortType}
@@ -190,7 +251,7 @@ const ProjectDeployments = () => {
                   {capitalize(t("projects.end_date"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "sites"}
                   direction={sortType}
@@ -199,19 +260,19 @@ const ProjectDeployments = () => {
                   {capitalize(t("projects.site_name"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("projects.device_name"))}
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("projects.import_media"))}
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("deployments.delete"))}
               </StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {projectSheetData.deployments.map((row, k) => (
+            {deployments.map((row, k) => (
               <StyledTableRow key={row.name}>
                 <StyledTableCell align="center">
                   {

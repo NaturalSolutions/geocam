@@ -10,7 +10,7 @@ from sqlmodel import Session
 from src.config import settings
 from src.connectors import s3
 from src.models.file import BaseFiles, CreateDeviceFile, CreateFiles, Files
-from src.schemas.file import UpdateFile
+from src.schemas.file import FilterParams, UpdateFile
 
 # import schemas.schemas
 from src.schemas.schemas import Annotation
@@ -27,6 +27,38 @@ def get_files(db: Session, skip: int = 0, limit: int = 100):
 
 def get_file(db: Session, file_id: uuid_pkg.UUID):
     return db.query(Files).filter(Files.id == file_id).first()
+
+
+def get_deployment_files_with_filters(
+    db: Session, deployment_id: int, filters_params: FilterParams, skip: int = 0, limit: int = 100
+):
+    filters = filters_params.get_filters()
+    query = db.query(Files).filter(
+        Files.deployment_id == deployment_id,
+    )
+    if filters.taxonomy_filters:
+        query = query.filter(Files.annotations.contains([filters.taxonomy_filters]))
+
+    start_date = filters.date_ranges.get("start_date")
+    end_date = filters.date_ranges.get("end_date")
+
+    if start_date and end_date:
+        query = query.filter(Files.date.between(start_date, end_date))
+    elif start_date:
+        query = query.filter(Files.date >= start_date)
+    elif end_date:
+        query = query.filter(Files.date <= end_date)
+
+    query = query.order_by(Files.name).offset(skip).limit(limit)
+
+    files = query.all()
+    res = []
+    for f in files:
+        new_f = f.dict()
+        url = s3.get_url(f"{f.hash}.{f.extension}")
+        new_f["url"] = url
+        res.append(new_f)
+    return res
 
 
 def get_deployment_files(db: Session, id: int, skip: int = 0, limit: int = 100):
