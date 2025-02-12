@@ -1,5 +1,5 @@
 import React, { useState, FC } from "react";
-import { Grid, TextField, capitalize } from "@mui/material";
+import { Box, TextField, capitalize } from "@mui/material";
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import frLocale from "date-fns/locale/fr";
@@ -26,34 +26,38 @@ const DateRangeFilters: FC<DateRangeFilterProps> = ({ onFilters }) => {
   };
 
   return (
-    <Grid container spacing={2} alignItems="center">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        gap: 1,
+        width: "100%",
+      }}
+    >
       <LocalizationProvider dateAdapter={AdapterDateFns} locale={frLocale}>
-        <Grid item>
-          <DateTimePicker
-            label={capitalize(t("projects.start_date"))}
-            value={dateRange.start_date}
-            onChange={(date) => handleFilter("start_date", date)}
-            inputFormat="yyyy/MM/dd HH:mm:ss"
-            ampm={false}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ width: "220px" }} />
-            )}
-          />
-        </Grid>
-        <Grid item>
-          <DateTimePicker
-            label={capitalize(t("projects.end_date"))}
-            value={dateRange.end_date}
-            onChange={(date) => handleFilter("end_date", date)}
-            inputFormat="yyyy/MM/dd HH:mm:ss"
-            ampm={false}
-            renderInput={(params) => (
-              <TextField {...params} sx={{ width: "220px" }} />
-            )}
-          />
-        </Grid>
+        <DateTimePicker
+          label={capitalize(t("projects.start_date"))}
+          value={dateRange.start_date}
+          onChange={(date) => handleFilter("start_date", date)}
+          inputFormat="yyyy/MM/dd HH:mm:ss"
+          ampm={false}
+          renderInput={(params) => (
+            <TextField {...params} size="small" sx={{ width: "215px" }} />
+          )}
+        />
+
+        <DateTimePicker
+          label={capitalize(t("projects.end_date"))}
+          value={dateRange.end_date}
+          onChange={(date) => handleFilter("end_date", date)}
+          inputFormat="yyyy/MM/dd HH:mm:ss"
+          ampm={false}
+          renderInput={(params) => (
+            <TextField {...params} size="small" sx={{ width: "215px" }} />
+          )}
+        />
       </LocalizationProvider>
-    </Grid>
+    </Box>
   );
 };
 

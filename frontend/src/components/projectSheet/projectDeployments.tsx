@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import {
   Alert,
   AlertTitle,
+  Box,
   Paper,
   Stack,
   Link,
@@ -213,15 +214,17 @@ const ProjectDeployments = () => {
 
   return projectSheetData.deployments.length !== 0 ? (
     <Stack spacing={0} justifyContent="center">
-      <Filters
-        list={projectSheetData.deployments}
-        onFilterChange={handleFilterChange}
-      />
+      <Box sx={{ display: "flex", width: "100%" }}>
+        <Filters
+          list={projectSheetData.deployments}
+          onFilterChange={handleFilterChange}
+        />
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead style={{ backgroundColor: "#CCDFD9" }}>
             <TableRow>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "name"}
                   direction={sortType}
@@ -230,7 +233,7 @@ const ProjectDeployments = () => {
                   {capitalize(t("main.name"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "start_date"}
                   direction={sortType}
@@ -239,7 +242,7 @@ const ProjectDeployments = () => {
                   {capitalize(t("projects.start_date"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "end_date"}
                   direction={sortType}
@@ -248,7 +251,7 @@ const ProjectDeployments = () => {
                   {capitalize(t("projects.end_date"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 <TableSortLabel
                   active={sortBy === "sites"}
                   direction={sortType}
@@ -257,13 +260,13 @@ const ProjectDeployments = () => {
                   {capitalize(t("projects.site_name"))}
                 </TableSortLabel>
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("projects.device_name"))}
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("projects.import_media"))}
               </StyledTableCell>
-              <StyledTableCell align="center">
+              <StyledTableCell align="center" sx={{ flexGrow: 1 }}>
                 {capitalize(t("deployments.delete"))}
               </StyledTableCell>
             </TableRow>

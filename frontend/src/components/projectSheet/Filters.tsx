@@ -87,72 +87,70 @@ const Filters = (props) => {
     <Box
       component="form"
       sx={{
-        width: 1150,
-        "& .MuiTextField-root": { m: 3 },
+        display: "grid",
+        flexWrap: "wrap",
+        gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+        gap: 2,
+        width: "65%",
+        marginBottom: 3,
       }}
       noValidate
       autoComplete="off"
     >
-      <div className="filter">
-        <Autocomplete
-          options={deploymentList}
-          getOptionLabel={(option) => option.name}
-          value={name}
-          onChange={(event, newValue) => setName(newValue!)}
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth label="Nom" />
-          )}
-          isOptionEqualToValue={(option, value) => option.id === value?.id}
-        />
+      <Autocomplete
+        options={deploymentList}
+        getOptionLabel={(option) => option.name}
+        value={name}
+        onChange={(event, newValue) => setName(newValue!)}
+        renderInput={(params) => (
+          <TextField {...params} variant="outlined" fullWidth label="Nom" />
+        )}
+        isOptionEqualToValue={(option, value) => option.id === value?.id}
+      />
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            inputFormat="dd/MM/yyyy"
-            label={capitalize(t("projects.start_date"))}
-            value={start_date}
-            onChange={(newValue) => setStartDate(newValue)}
-            renderInput={(params) => (
-              <TextField {...params} variant="outlined" />
-            )}
-          />
-        </LocalizationProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DatePicker
-            inputFormat="dd/MM/yyyy"
-            label={capitalize(t("projects.end_date"))}
-            value={end_date}
-            onChange={(newValue) => setEndDate(newValue)}
-            renderInput={(params) => (
-              <TextField {...params} variant="outlined" />
-            )}
-          />
-        </LocalizationProvider>
-        <Autocomplete
-          options={siteList}
-          getOptionLabel={(option) => option.name}
-          value={sNname}
-          onChange={(event, newValue) => setSName(newValue!)}
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" fullWidth label="Site" />
-          )}
-          isOptionEqualToValue={(option, value) => option.id === value?.id}
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          inputFormat="dd/MM/yyyy"
+          label={capitalize(t("projects.start_date"))}
+          value={start_date}
+          onChange={(newValue) => setStartDate(newValue)}
+          renderInput={(params) => <TextField {...params} variant="outlined" />}
         />
-        <Autocomplete
-          options={deviceList}
-          getOptionLabel={(option) => option.name}
-          value={dName}
-          onChange={(event, newValue) => setDName(newValue!)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="outlined"
-              fullWidth
-              label="Dispositif"
-            />
-          )}
-          isOptionEqualToValue={(option, value) => option.id === value?.id}
+      </LocalizationProvider>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          inputFormat="dd/MM/yyyy"
+          label={capitalize(t("projects.end_date"))}
+          value={end_date}
+          onChange={(newValue) => setEndDate(newValue)}
+          renderInput={(params) => <TextField {...params} variant="outlined" />}
         />
-      </div>
+      </LocalizationProvider>
+      <Autocomplete
+        options={siteList}
+        getOptionLabel={(option) => option.name}
+        value={sNname}
+        onChange={(event, newValue) => setSName(newValue!)}
+        renderInput={(params) => (
+          <TextField {...params} variant="outlined" fullWidth label="Site" />
+        )}
+        isOptionEqualToValue={(option, value) => option.id === value?.id}
+      />
+      <Autocomplete
+        options={deviceList}
+        getOptionLabel={(option) => option.name}
+        value={dName}
+        onChange={(event, newValue) => setDName(newValue!)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            variant="outlined"
+            fullWidth
+            label="Dispositif"
+          />
+        )}
+        isOptionEqualToValue={(option, value) => option.id === value?.id}
+      />
     </Box>
   );
 };

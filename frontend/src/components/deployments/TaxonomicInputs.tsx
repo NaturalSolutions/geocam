@@ -170,7 +170,7 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
   }
 
   return (
-    <Grid item lg={6} xs={12}>
+    <Grid item xs={12} sm={6} md={2} lg={1.8}>
       <Autocomplete
         id={rank}
         freeSolo
@@ -198,7 +198,7 @@ const InputTaxo: FC<InputTaxoProps> = (props) => {
             {...params}
             label={capitalize(t(`taxon.${rank}`))}
             size="small"
-            variant="filled"
+            variant="outlined"
             InputProps={{
               ...params.InputProps,
               endAdornment: filters[rank] && (

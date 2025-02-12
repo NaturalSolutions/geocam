@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 import InputTaxo from "./TaxonomicInputs";
 import DateFilter from "../common/DateRangePicker";
@@ -22,17 +22,26 @@ const MediaFilters = () => {
       sx={{
         width: "100%",
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "center",
         alignItems: "center",
         marginBottom: 3,
       }}
     >
-      <DateFilter onFilters={updateFilters}></DateFilter>
-      <InputTaxo rank="classe"></InputTaxo>
-      <InputTaxo rank="order"></InputTaxo>
-      <InputTaxo rank="family"></InputTaxo>
-      <InputTaxo rank="genus"></InputTaxo>
-      <InputTaxo rank="species"></InputTaxo>
+      <Grid
+        container
+        spacing={2}
+        alignItems="center"
+        sx={{ width: "100%", flexWrap: "wrap" }}
+      >
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <DateFilter onFilters={updateFilters} />
+        </Grid>
+        <InputTaxo rank="classe" />
+        <InputTaxo rank="order" />
+        <InputTaxo rank="family" />
+        <InputTaxo rank="genus" />
+        <InputTaxo rank="species" />
+      </Grid>
     </Box>
   );
 };
